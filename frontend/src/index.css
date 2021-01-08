@@ -1,0 +1,23 @@
+#product-search-bar{
+    width: 84%;
+    background-color: whitesmoke;
+    border-radius: 0.2rem;
+}
+
+#product-search-button{
+    background-color: #0275d8;
+}
+
+.navbar-item{
+    font-size: 20px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.fa-shopping-cart{
+    margin: 3px;
+}
+
+.fa-user{
+    margin: 3px;
+}
