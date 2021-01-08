@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar,Form, FormControl, Nav, Button, InputGroup} from 'react-bootstrap';
+import {Navbar,FormControl, Nav, Button, InputGroup} from 'react-bootstrap';
 
 function NavbarComponent(props) {
     return (
@@ -20,7 +20,7 @@ function NavbarComponent(props) {
                             </InputGroup.Append>
                         </InputGroup>
                     <Nav className="ml-auto">
-                        <Nav.Link href="/cart" variant="outline-success" className = 'navbar-item'><i className="fas fa-shopping-cart"></i><span>Cart</span></Nav.Link>
+                        <Nav.Link href="/cart" className = 'navbar-item'><i className="fas fa-shopping-cart"></i><span>Cart</span></Nav.Link>
                         <Nav.Link href="/login" className = 'navbar-item'><i className="fas fa-user"></i><span>Sign In</span></Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

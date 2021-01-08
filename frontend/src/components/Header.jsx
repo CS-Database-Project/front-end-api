@@ -5,7 +5,12 @@ function Header(props) {
 
     return (
         <div>
-            <NavbarComponent></NavbarComponent>
+            <NavbarComponent
+                value = '' 
+                placeholder = 'Search'
+                type = 'text'
+                onSearch = {{}}
+            ></NavbarComponent>
         </div>
     );
 }

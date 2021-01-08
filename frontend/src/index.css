@@ -21,3 +21,26 @@
 .fa-user{
     margin: 3px;
 }
+
+.heading{
+    padding-top: 20px;
+    text-align: center;
+    font-size: 40px;
+}
+
+.form-label{
+    margin: 0;
+    font-size: 20px;
+}
+
+.trademark{
+    color: whitesmoke;
+    width: 100%;
+    font-size: 17px;
+    position: absolute; 
+    text-align: center;
+    padding: 4px; 
+    bottom: 0;
+    background-color: #0275d8;
+}
+
