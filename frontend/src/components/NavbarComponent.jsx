@@ -1,11 +1,12 @@
 import React from 'react';
 import {Navbar,FormControl, Nav, Button, InputGroup} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 function NavbarComponent(props) {
     return (
         <>
             <Navbar bg="primary" >
-                <Navbar.Brand href="/">C E-Commerce</Navbar.Brand>
+                <LinkContainer to ='/'><Navbar.Brand>C E-Commerce</Navbar.Brand></LinkContainer>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                         <InputGroup id = 'product-search-bar'>
@@ -20,8 +21,12 @@ function NavbarComponent(props) {
                             </InputGroup.Append>
                         </InputGroup>
                     <Nav className="ml-auto">
-                        <Nav.Link href="/cart" className = 'navbar-item'><i className="fas fa-shopping-cart"></i><span>Cart</span></Nav.Link>
-                        <Nav.Link href="/login" className = 'navbar-item'><i className="fas fa-user"></i><span>Sign In</span></Nav.Link>
+                        <LinkContainer to = '/cart'>
+                            <Nav.Link className = 'navbar-item'><i className="fas fa-shopping-cart"></i><span>Cart</span></Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to = '/login'>
+                            <Nav.Link className = 'navbar-item'><i className="fas fa-user"></i><span>Sign In</span></Nav.Link>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
                
