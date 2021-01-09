@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
-import CustomForm from './common/CustomForm';
+import CustomForm from '../components/common/CustomForm';
 
 class LoginForm extends CustomForm {
     

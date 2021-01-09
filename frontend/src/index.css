@@ -37,9 +37,9 @@
     color: whitesmoke;
     width: 100%;
     font-size: 17px;
-    position: absolute; 
+    position: fixed; 
     text-align: center;
-    padding: 4px; 
+    padding: 1px; 
     bottom: 0;
     background-color: #0275d8;
 }
