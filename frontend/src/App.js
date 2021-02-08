@@ -8,7 +8,8 @@ import Cart from './screens/Cart';
 import LoginForm from './screens/LoginForm';
 import ShippingScreen from './screens/ShippingScreen';
 import Footer from './components/Footer';
-
+import PaymentScreen from './screens/PaymentScreen';
+import PlaceOrderScreen from './screens/PlaceOrderScreen';
 
 
 const App = () => {
@@ -20,12 +21,11 @@ const App = () => {
             <Switch>
               <Route path='/products/:id' component={ProductScreen} />
               <Route path='/shipping' component={ShippingScreen} />
+              <Route path='/placeOrder' component={PlaceOrderScreen} /> 
+              <Route path='/payment' component={PaymentScreen} /> 
               <Route path='/login' component={LoginForm} />
               <Route path='/cart' component={Cart} />
-              
               <Route path='/' exact component={HomeScreen} />
-             
-               
             </Switch>
           </main>
         </Container>
