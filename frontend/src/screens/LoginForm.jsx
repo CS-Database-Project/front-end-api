@@ -6,7 +6,7 @@ class LoginForm extends CustomForm {
     
     render() {
         return (
-            <>
+            <div>
                 <Form>
                     <h1 className = 'heading'>Log In</h1>
                     {this.renderFormInput(
@@ -26,9 +26,11 @@ class LoginForm extends CustomForm {
                             size: 'lg'
                         }) 
                     }
-                    <Button>Log in</Button>
-                </Form>   
-            </>
+                    <a className="Userlink" href="/reset">Forgot Pasword?</a><br/><br/>
+                    <Button>Log in</Button><br/><br/>
+                </Form>
+                <p style={{fontSize:'20px'}}>New Customer? <a className="Userlink" href="/register">Register</a></p>  
+            </div>
         );
     }
 }
