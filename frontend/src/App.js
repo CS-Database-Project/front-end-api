@@ -8,6 +8,7 @@ import LoginForm from './screens/LoginForm';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import Footer from './components/Footer';
+import SearchResult from './screens/SearchResult';
 
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
               <Route path='/payment' component={PaymentScreen} /> 
               <Route path='/login' component={LoginForm} />
               <Route path='/cart' component={Cart} />
+              <Route path='/search' component={SearchResult} />
               <Route path='/' component={HomeScreen} />
             </Switch>
           </main>
