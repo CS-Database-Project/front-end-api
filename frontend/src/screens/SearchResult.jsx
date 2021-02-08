@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Row, Col, Card } from 'react-bootstrap';
 import Pagination from '../components/Pagination';
 import products from '../products';

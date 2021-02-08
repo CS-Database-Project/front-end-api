@@ -2,7 +2,6 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom'
 import { Container } from 'react-bootstrap';
 import Header from './components/Header';
-import ProductScreen from './screens/ProductScreen';
 import HomeScreen from './screens/HomeScreen';
 import Cart from './screens/Cart';
 import LoginForm from './screens/LoginForm';
@@ -22,7 +21,7 @@ const App = () => {
         <Container >
           <main>
             <Switch>
-              <Route path='/products/:id' component={ProductScreen} />
+
               <Route path='/shipping' component={ShippingScreen} />
               <Route path='/placeOrder' component={PlaceOrderScreen} /> 
               <Route path='/payment' component={PaymentScreen} /> 

@@ -1,8 +1,6 @@
 import React from 'react'
 import {Form, Button, Col} from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
-import CheckoutSteps from '../components/CheckoutSteps'
-import savePaymentMethod from '../actions/cartActions'
 import '../bootstrap.min.css'
 
 const PaymentScreen = ({history}) => {
