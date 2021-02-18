@@ -8,6 +8,7 @@ import LoginForm from './screens/LoginForm';
 import RegisterForm from './screens/RegisterForm';
 import UserProfile from './screens/UserProfile';
 import ResetPassword from './screens/FogotPassword';
+import ProductScreen from './screens/ProductScreen';
 import SearchResult from './screens/SearchResult';
 import ShippingScreen from './screens/ShippingScreen';
 import Footer from './components/Footer';
@@ -22,6 +23,7 @@ const App = () => {
           <main>
             <Switch>
 
+              <Route path='/products/:id' component={ProductScreen} />
               <Route path='/shipping' component={ShippingScreen} />
               <Route path='/placeOrder' component={PlaceOrderScreen} /> 
               <Route path='/payment' component={PaymentScreen} /> 
