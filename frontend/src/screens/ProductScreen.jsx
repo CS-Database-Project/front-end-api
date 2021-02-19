@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react'
 // import { Link } from 'react-router-dom'
 import { getProductById, loadProducts } from '../store/entities/products';
@@ -41,4 +40,4 @@ const ProductScreen = ({match}) => {
     )
 }
 
-export default ProductScreen
+export default ProductScreen;

@@ -16,7 +16,7 @@ export class Search extends Component{
                 <Row style={{width:'800px'}}>
                     {product.map(prod => (
                         <Row key={prod.id}>
-                            <Row key = {prod._id} sm = {1000} md = {1000} lg = {1000} xl = {400}>
+                            <Row key = {prod.product_id} sm = {1000} md = {1000} lg = {1000} xl = {400}>
                                 <Product product = {prod}></Product>
                             </Row>
                         </Row>
