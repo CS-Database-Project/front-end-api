@@ -9,7 +9,7 @@ const HomeScreen = (props) => {
     const dispatch = useDispatch();
     const products = useSelector(getAllProducts);
   
-
+  
     useEffect( () => {
         dispatch(loadProducts());
     });
@@ -18,8 +18,10 @@ const HomeScreen = (props) => {
         <div className = 'mb-4'>
             <h1 className = 'my-3'>Latest Products</h1>
             <Row>
-                {products.list.map( product => 
-                <Col key = {product.productId} sm = {1} md = {2} lg = {3} xl = {4}></Col>)} 
+                {products.map( product => 
+                <Col key = {product.productId + product.variantName} sm = {1} md = {2} lg = {3} xl = {4}>
+                    <Product product= {product}></Product>
+                </Col>)} 
             </Row>
         </div>
     );
