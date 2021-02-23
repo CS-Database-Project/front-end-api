@@ -20,7 +20,7 @@ const slice = createSlice({
         },
 
         productsRequestFailed(products, action){
-            products.loading = false;
+            products.lastFetch = Date.now();
             
         },
 
@@ -74,10 +74,10 @@ export const loadProducts = () => (dispatch, getState) => {
 
     const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
     if (diffInMinutes < refreshTime) return;
-    
+
     return dispatch(
         apiCallBegan({
-            url: productsURL + '/product_view',
+            url: productsURL + '/product-view',
             onStart: productsRequested.type,
             onSuccess: productsReceived.type,
             onError: productsRequestFailed.type
@@ -87,9 +87,16 @@ export const loadProducts = () => (dispatch, getState) => {
 
 
 export const getAllProducts = createSelector(
-    state => state.entities.products,
+    state => state.entities.products.list,
     products => products
 );
+
+export const getProductLoadingStatus = createSelector(
+    state => state.entities.products.loading,
+    loading => loading
+);
+
+
 
 export const getProductById = productId =>
     createSelector(
@@ -117,6 +124,9 @@ export const getProductById = productId =>
 //         onSuccess: productRemoved.type
 //     }));
 // }
+
+
+
 
 
 
