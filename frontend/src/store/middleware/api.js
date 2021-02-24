@@ -18,11 +18,8 @@ const api = ({ dispatch }) => next => async action => {
     // General
     dispatch(actions.apiCallSuccess(response.data));
     //Specific
-    if (onSuccess) {
-      console.log("Calling success", response.data);
-      dispatch({ type: onSuccess, payload: response.data });
-    }
-  
+    if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
+    
   } catch (error) {
       const response = error.response;
       const message = response ? response.data.message : error.message;

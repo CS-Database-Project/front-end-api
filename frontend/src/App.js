@@ -16,6 +16,7 @@ import PaymentScreen from './screens/PaymentScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductScreen from './screens/ProductScreen';
+import Logout from './components/logout';
 
 
 const App = () => {
@@ -40,6 +41,7 @@ const App = () => {
               {/* <Route path='/placeOrder' component={PlaceOrderScreen} />  */}
               <Route path='/payment' component={PaymentScreen} /> 
               <Route path='/login' component={LoginForm} />
+              <Route path='/logout' component={Logout} />
               <Route path='/cart' component={Cart} />
               <Route path='/register' component={RegisterForm} />
               <Route path='/profile' component={UserProfile} />

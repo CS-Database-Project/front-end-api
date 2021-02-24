@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { login } from './../store/auth';
 import {  Formik } from 'formik';
 import * as Yup from 'yup';
+import { toastAction } from './../store/toastAction';
 
 class LoginForm extends CustomForm {
 
@@ -20,8 +21,8 @@ class LoginForm extends CustomForm {
 
     componentDidUpdate() {
         if(this.props.auth.loggedIn){
-            console.log("User Logged In");
             this.props.history.goBack();
+            this.props.loginSuccessful();
         }
         
     }
@@ -79,13 +80,11 @@ class LoginForm extends CustomForm {
                             errorValue: errors.password
                         }) 
                     }
-                    
                     <Button 
                         type='submit'
                     >
                         Login
                     </Button>
-                   
                 </Form>
                 )}
             </Formik>
@@ -99,7 +98,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    loginUser: (data) => dispatch(login('customer', data))
+    loginUser: (data) => dispatch(login('customer', data)),
+    loginSuccessful: () => dispatch(toastAction({ message: "Login Successfull...", type: 'info' }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

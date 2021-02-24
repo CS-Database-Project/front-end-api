@@ -6,8 +6,15 @@ import './bootstrap.min.css';
 import './index.css';
 import App from './App';
 import configureStore from './store/configureStore';
+import { saveState } from './store/localStorage';
 
 const store = configureStore();
+store.subscribe(() => {
+  saveState({
+    auth: store.getState().auth,
+    cart: store.getState().cart
+  });
+})
 
 ReactDOM.render(
   <BrowserRouter>

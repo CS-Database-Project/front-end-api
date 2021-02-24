@@ -27,11 +27,17 @@ const slice = createSlice({
             user.data = action.payload.data;
             user.token = action.payload.token;  
             user.loggedIn = true;
+        },
+
+
+        userLoggedOut(user,action){
+            user.loggedIn = false;
+            user.data = {}
         }
     }
 });
 
-export const { userLoginRequested, userLoginFailed, userLoginSucceeded } = slice.actions;
+export const { userLoginRequested, userLoginFailed, userLoginSucceeded, userLoggedOut } = slice.actions;
 
 export default slice.reducer;
 
@@ -50,3 +56,7 @@ export const login = (usertype, data) => (dispatch) => {
         })
     );
 };
+
+
+export const logout = () => (dispatch) =>dispatch(userLoggedOut());
+

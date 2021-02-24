@@ -31,8 +31,6 @@ const HomeScreen = ({ match }) => {
         const updatedFiltered = getFilteredProducts(products, categories, selectedCategory);
         setFiltered(updatedFiltered);
         setPaginated(paginate(updatedFiltered, currentPage, pageSize));
-        console.log("Loading Products", products);
-        console.log("Loading Categories", categories);
     }, [products, categories, dispatch]);
 
     return (
