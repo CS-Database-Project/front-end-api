@@ -21,7 +21,7 @@ const HomeScreen = ({ match }) => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [filtered, setFiltered] = useState(products);
 
-    const pageSize = 6;
+    const pageSize = 3;
     const [currentPage, setCurrentPage] = useState(1);
     const [paginated, setPaginated] = useState([]);
   

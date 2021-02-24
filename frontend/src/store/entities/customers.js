@@ -14,6 +14,23 @@ const slice = createSlice({
     },
     reducers: {
         //Events => EventHandlers
+
+        customersRegisterRequested(customers, action) {
+            delete customers.registerSuccessful;
+            customers.registering = true;
+        },
+
+        customersRegisterRequestFailed(customers, action) {
+            customers.registering = false;
+        },
+
+        customersRegisterRequestSucceeded(customers, action) {
+            delete customers.registering;
+            customers.registerSuccessful = true;
+            customers.list.push(action.payload.data);
+        },
+
+
         customersRequested(customers, action){
             customers.loading = true;
         },
@@ -29,9 +46,6 @@ const slice = createSlice({
             customers.lastFetch = Date.now();
         },
 
-        // customerCreated(customers, action){
-            //customers.list.push(action.payload);
-        // },
 
         // customerRemoved(customers, action){
             //const index = customers.list.findIndex(p => p.customerId !== action.payload);
@@ -56,7 +70,10 @@ export const {
     customerCreated, 
     customerRemoved, 
     customerUpdated,
-    customersRequestFailed } = slice.actions;
+    customersRequestFailed,
+    customersRegisterRequested,
+    customersRegisterRequestFailed,
+    customersRegisterRequestSucceeded } = slice.actions;
 
 const customersURL = "/customer";
 const refreshTime = configData.REFRESH_TIME;
@@ -82,6 +99,20 @@ export const getAllCustomers = createSelector(
     state => state.entities.customers,
     customers => customers
 );
+
+export const registerCustomer = (customer) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${customersURL}/register`,
+            method: "post",
+            data: customer,
+            onStart: customersRegisterRequested,
+            onSuccess: customersRegisterRequestSucceeded.type,
+            onError: customersRegisterRequestFailed
+        })
+    );
+}
+
 
 //export const addCustomer = (customer) => {
     //apiCallBegan({

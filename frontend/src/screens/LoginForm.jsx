@@ -1,5 +1,6 @@
 import React from 'react';
-import { Form, Button, Spinner, Container } from 'react-bootstrap';
+import { Form, Button, Spinner, Nav } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import CustomForm from '../components/common/CustomForm';
 import { connect } from 'react-redux'
 import { login } from './../store/auth';
@@ -21,10 +22,9 @@ class LoginForm extends CustomForm {
 
     componentDidUpdate() {
         if(this.props.auth.loggedIn){
-            this.props.history.goBack();
+            window.location = '/';
             this.props.loginSuccessful();
-        }
-        
+        }  
     }
 
     submitForm = (values) => {
@@ -80,6 +80,13 @@ class LoginForm extends CustomForm {
                             errorValue: errors.password
                         }) 
                     }
+                        <div style={{fontSize:'20px', display: 'inline'}}>A new Customer?... 
+                            <LinkContainer to = '/register'>
+                                <Nav.Link>Register From Here</Nav.Link>
+                            </LinkContainer> 
+                        </div>
+                        
+     
                     <Button 
                         type='submit'
                     >

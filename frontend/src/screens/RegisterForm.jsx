@@ -1,19 +1,14 @@
 import React from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux'
 import CustomForm from '../components/common/CustomForm';
 import {  Formik } from 'formik';
 import * as Yup from 'yup';
 import { toastAction } from './../store/toastAction';
+import { registerCustomer } from './../store/entities/customers';
 class RegisterForm extends CustomForm {
 
     schema =Yup.object().shape({
-        idNumber: Yup.string()
-                     .matches(/^(?:19|20)?\d{2}(?:[0-35-8]\d\d(?<!(?:000|500|36[7-9]|3[7-9]\d|86[7-9]|8[7-9]\d)))\d{4}(?:[vVxX])$/, "Invalid ID Number. Ex:- 123456789B")
-                     .required("ID Number is required..."),
-        email: Yup.string()
-                  .email("A valid email must be provided...")
-                  .required("Email is required..."),
         firstName : Yup.string()
                        .required('First Name is required...'),
         lastName : Yup.string()
@@ -22,7 +17,11 @@ class RegisterForm extends CustomForm {
                       .min(new Date('1900-01-01'),'Birth Date should be later than 1900-01-01')
                       .max(new Date(), "Birthday must be earlier than current day")
                       .required('Birth Date is required. Ex:- 1998-03-26'),
-        phoneNumber: Yup.string()
+        email: Yup.string()
+                  .email("A valid email must be provided...")
+                  .required("Email is required..."),
+
+        phone: Yup.string()
                         .matches(/^(?:7|0|(?:\+94))[0-9]{9,9}$/, 'Invalid Phone Number. Ex:- 0123458907')
                         .required('Phone number is required...'),
         address: Yup.string()
@@ -45,12 +44,11 @@ class RegisterForm extends CustomForm {
     });
 
     initialValues = {
-        idNumber: '', 
-        email: '',
         firstName: '', 
         lastName : '',
         birthDate: '',
-        phoneNumber: '',
+        phone: '',
+        email: '',
         address: '',
         city: '',
         state: '',
@@ -59,10 +57,17 @@ class RegisterForm extends CustomForm {
         confirmPassword: ''
     };
 
-    submitForm = (values) => {
+    componentDidUpdate() {
         if(this.props.customers.registerSuccessful){
-            console.log("Register Successfull");
-        }
+            this.props.history.push('/login');
+            this.props.registerSuccessful();
+        }  
+    }
+
+    submitForm = (values) => {
+        delete values.confirmPassword;
+        this.props.registerCustomer(values); 
+        console.log(values);
     } 
 
     render() {
@@ -84,44 +89,11 @@ class RegisterForm extends CustomForm {
                 }) => (
                 <Form noValidate onSubmit={handleSubmit}>
                     <h1 className = 'heading'>Register</h1>
-                    {/* {this.props.auth.logging && <div className = 'login-spinner' ><Spinner animation="border"  variant="primary" /></div>} */}
+                    {this.props.customers.registering && <div className = 'login-spinner' ><Spinner animation="border"  variant="primary" /></div>}
                     <Row>
                         <Col>
                             {this.renderFormInput(
-                                {   controlId: 'validationFormik01', 
-                                    label: 'ID Number', 
-                                    type:'text', 
-                                    name:'idNumber', 
-                                    value: values.idNumber,
-                                    placeholder: 'Your ID Number...',
-                                    size: 'lg', 
-                                    onChange: handleChange, 
-                                    touchValue: touched.idNumber, 
-                                    errorValue: errors.idNumber
-                            
-                                }) 
-                            }
-                        </Col>
-                        <Col>
-                            {this.renderFormInput(
-                                {   controlId: 'validationFormik02',
-                                    label: 'Email',
-                                    type:'text',
-                                    name:'email',
-                                    value: values.email,
-                                    placeholder: 'Your Email...',
-                                    size: 'lg',
-                                    onChange: handleChange,
-                                    touchValue: touched.email,
-                                    errorValue: errors.email
-                                })
-                            }
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            {this.renderFormInput(
-                                {   controlId: 'validationFormik03',
+                                {   controlId: 'validationFormik01',
                                     label: 'First Name',
                                     type:'text',
                                     name:'firstName',
@@ -136,7 +108,7 @@ class RegisterForm extends CustomForm {
                         </Col>
                         <Col>
                             {this.renderFormInput(
-                                {   controlId: 'validationFormik04',
+                                {   controlId: 'validationFormik02',
                                     label: 'Last Name',
                                     type:'text',
                                     name:'lastName',
@@ -154,7 +126,7 @@ class RegisterForm extends CustomForm {
                     <Row>
                         <Col>
                             {this.renderFormInput(
-                                {   controlId: 'validationFormik05',
+                                {   controlId: 'validationFormik03',
                                     label: 'Birth Date',
                                     type:'text',
                                     name:'birthDate',
@@ -169,20 +141,33 @@ class RegisterForm extends CustomForm {
                         </Col>
                         <Col>
                             {this.renderFormInput(
-                                {   controlId: 'validationFormik06',
+                                {   controlId: 'validationFormik04',
                                     label: 'Phone Number',
                                     type:'text',
-                                    name:'phoneNumber',
-                                    value: values.phoneNumber,
+                                    name:'phone',
+                                    value: values.phone,
                                     placeholder: 'Your Phone Number...',
                                     size: 'lg',
                                     onChange: handleChange,
-                                    touchValue: touched.phoneNumber,
-                                    errorValue: errors.phoneNumber
+                                    touchValue: touched.phone,
+                                    errorValue: errors.phone
                                 })
                             }
                         </Col>
                     </Row>
+                    {this.renderFormInput(
+                                {   controlId: 'validationFormik02',
+                                    label: 'Email',
+                                    type:'text',
+                                    name:'email',
+                                    value: values.email,
+                                    placeholder: 'Your Email...',
+                                    size: 'lg',
+                                    onChange: handleChange,
+                                    touchValue: touched.email,
+                                    errorValue: errors.email
+                                })
+                            }
 
                     <Row>
                         <Col>
@@ -278,8 +263,6 @@ class RegisterForm extends CustomForm {
                             errorValue: errors.confirmPassword
                         }) 
                     }
-
-                    
                     <Button 
                         type='submit'
                     >
@@ -299,7 +282,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     registerCustomer: (data) => dispatch(registerCustomer(data)),
-    registerSuccessful: () => dispatch(toastAction({ message: "Register Successfull...", type: 'info' }))
+    registerSuccessful: () => dispatch(toastAction({ message: "Register Successfull.Login With Your new account", type: 'info' }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);
