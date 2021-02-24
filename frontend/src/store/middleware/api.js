@@ -5,13 +5,9 @@ import { toastAction } from './../toastAction';
 
 const api = ({ dispatch }) => next => async action => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
-
   const { url, method, data, onStart, onSuccess, onError } = action.payload;
-
   if (onStart) dispatch({ type: onStart });
-
   next(action);
-
   try {
     const response = await axios.request({
       baseURL: configData.API_URL,
@@ -22,14 +18,19 @@ const api = ({ dispatch }) => next => async action => {
     // General
     dispatch(actions.apiCallSuccess(response.data));
     //Specific
-    if (onSuccess) dispatch({ type: onSuccess, payload: response.data });
+    if (onSuccess) {
+      console.log("Calling success", response.data);
+      dispatch({ type: onSuccess, payload: response.data });
+    }
   
   } catch (error) {
+      const response = error.response;
+      const message = response ? response.data.message : error.message;
       //General
-      dispatch(actions.apiCallFailed({message: error.data ? error.data.messag : error.message}));
-      dispatch(toastAction({ message: error.message, type: 'error' }));
-      // Specific
-      if (onError) dispatch({ type: onError, payload: error.message });
+      dispatch(actions.apiCallFailed({ message }));
+      dispatch(toastAction({ message, type: 'error' }));
+      //Specific
+      if (onError) dispatch({ type: onError, payload: message });
   }
 };
 

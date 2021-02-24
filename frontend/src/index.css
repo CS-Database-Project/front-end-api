@@ -33,6 +33,11 @@ main{
     font-size: 40px;
 }
 
+.login-spinner{
+    text-align: center;
+
+}
+
 .form-label{
     margin: 0;
     font-size: 20px;

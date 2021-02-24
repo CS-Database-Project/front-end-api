@@ -1,38 +1,105 @@
 import React from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Spinner, Container } from 'react-bootstrap';
 import CustomForm from '../components/common/CustomForm';
+import { connect } from 'react-redux'
+import { login } from './../store/auth';
+import {  Formik } from 'formik';
+import * as Yup from 'yup';
 
 class LoginForm extends CustomForm {
+
+    schema =Yup.object().shape({
+        username: Yup.string().required("Username is required..."),
+        password: Yup.string().required("Password is required...")     
+    });
+
+    initialValues = {
+            username: '',
+            password: ''
+    };
+
+    componentDidUpdate() {
+        if(this.props.auth.loggedIn){
+            console.log("User Logged In");
+            this.props.history.goBack();
+        }
+        
+    }
+
+    submitForm = (values) => {
+        this.props.loginUser(values);
+        this.setState({logging: true});
+    }
     
     render() {
         return (
-            <div>
-                <Form>
+            <Formik
+                validationSchema = {this.schema}
+                onSubmit = {this.submitForm}
+                initialValues = {this.initialValues}
+            >
+                {({
+                    handleSubmit,
+                    handleChange,
+                    handleBlur,
+                    values,
+                    touched,
+                    isValid,
+                    dirty,
+                    errors
+                }) => (
+                <Form noValidate onSubmit={handleSubmit}>
                     <h1 className = 'heading'>Log In</h1>
+                    {this.props.auth.logging && <div className = 'login-spinner' ><Spinner animation="border"  variant="primary" /></div>}
                     {this.renderFormInput(
-                        {   controlId: "formBasicEmail", 
-                            label: "Email Address", 
-                            type:'email', 
-                            placeholder:'Enter Your Email',
-                            size: 'lg'
+                        {   controlId: 'validationFormik01', 
+                            label: 'Username', 
+                            type:'text', 
+                            name:'username', 
+                            value: values.username,
+                            placeholder: 'Enter your username...',
+                            size: 'lg', 
+                            onChange: handleChange, 
+                            touchValue: touched.username, 
+                            errorValue: this.props.auth.error || errors.username
                     
                         }) 
                     }
+
                     {this.renderFormInput(
-                        {   controlId: "formBasicPassword", 
-                            label: "Password", 
+                        {   controlId: 'validationFormik02', 
+                            label: 'Password', 
                             type:'password', 
-                            placeholder:'Enter Your Password', 
-                            size: 'lg'
+                            name:'password', 
+                            value: values.password,
+                            placeholder: 'Enter your password...',
+                            size: 'lg', 
+                            onChange: handleChange, 
+                            touchValue: touched.password, 
+                            errorValue: errors.password
                         }) 
                     }
-                    <a className="Userlink" href="/reset">Forgot Pasword?</a><br/><br/>
-                    <Button>Log in</Button><br/><br/>
+                    
+                    <Button 
+                        type='submit'
+                    >
+                        Login
+                    </Button>
+                   
                 </Form>
-                <p style={{fontSize:'20px'}}>New Customer? <a className="Userlink" href="/register">Register</a></p>  
-            </div>
+                )}
+            </Formik>
+            
         );
     }
 }
 
-export default LoginForm;
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+const mapDispatchToProps = dispatch => ({
+    loginUser: (data) => dispatch(login('customer', data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
