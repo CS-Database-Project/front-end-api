@@ -14,7 +14,7 @@ store.subscribe(() => {
     auth: store.getState().auth,
     cart: store.getState().cart
   });
-})
+});
 
 ReactDOM.render(
   <BrowserRouter>
