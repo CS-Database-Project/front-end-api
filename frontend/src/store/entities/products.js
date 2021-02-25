@@ -85,7 +85,7 @@ export const loadProducts = () => (dispatch, getState) => {
     );
 };
 
-
+//Selectors
 export const getAllProducts = createSelector(
     state => state.entities.products.list,
     products => products

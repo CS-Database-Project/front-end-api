@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Container, Card} from 'react-bootstrap';
 
-function UpdateProfile(props) {
+function UpdateProfile({ userData }) {
+
     return (
         <Container>
 		    <h1 className = 'userheading'>USER PROFILE</h1>
             <Card bg="primary" text="white" style={{ width: '18rem' }}>
                 <Card.Body>
-                    <Card.Title>Name</Card.Title>
+                    <Card.Title>{`${userData.firstName} ${userData.lastName}`}</Card.Title>
                     <Card.Text>Ayodya</Card.Text>
                     <Card.Title>Email Address</Card.Title>
                     <Card.Text>ayodyaerandi2018@gmail.com</Card.Text>

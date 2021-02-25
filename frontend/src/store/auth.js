@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { apiCallBegan } from './apiActions';
 //Auth Slice
 
@@ -37,12 +37,16 @@ const slice = createSlice({
     }
 });
 
-export const { userLoginRequested, userLoginFailed, userLoginSucceeded, userLoggedOut } = slice.actions;
 
+//Reducer
 export default slice.reducer;
 
 
 //Action Creators
+export const { userLoginRequested, userLoginFailed, userLoginSucceeded, userLoggedOut } = slice.actions;
+
+
+//Action Invokers
 export const login = (usertype, data) => (dispatch) => {
     const url = `${usertype}/login`;
     return dispatch(
@@ -60,3 +64,9 @@ export const login = (usertype, data) => (dispatch) => {
 
 export const logout = () => (dispatch) =>dispatch(userLoggedOut());
 
+//Selectors
+
+export const getAuthDetails = createSelector(
+    state => state.auth.data,
+    userData => userData
+);
