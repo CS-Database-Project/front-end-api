@@ -12,7 +12,10 @@ const store = configureStore();
 store.subscribe(() => {
   saveState({
     auth: store.getState().auth,
-    cart: store.getState().cart
+    cart: store.getState().cart,
+    entities: {
+      products: store.getState().entities.products
+    }
   });
 });
 
