@@ -21,10 +21,16 @@ class LoginForm extends CustomForm {
     };
 
     componentDidUpdate() {
-        if(this.props.auth.loggedIn){
+        if(!this.props.auth.loggedIn)return;
+
+        if(this.props.auth.checkOutStarted)
+            window.location = '/shipping';
+        else
             window.location = '/';
-            this.props.loginSuccessful();
-        }  
+        
+        
+        this.props.loginSuccessful();
+        
     }
 
     submitForm = (values) => {

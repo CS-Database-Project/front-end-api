@@ -48,6 +48,15 @@ const slice = createSlice({
         //     products.list.splice(index, 1);
         //     products.list.push(action.payload);
         // }
+
+        //payload: {productId: 123 ,variantName: , newQuantity:  } 
+        productCountUpdated(products, action){
+            const { productId, variantName, newCount  } = action.payload;
+            const index = products.list.findIndex(p => p.productId === productId );
+            const variants = products.list[index].variants;
+            const variantIndex =variants.findIndex(v => v.name === variantName);
+            variants[variantIndex].countInStock = newCount;
+        }
     }
 });
 
@@ -62,7 +71,8 @@ export const {
     productCreated, 
     productRemoved, 
     productUpdated,
-    productsRequestFailed } = slice.actions;
+    productsRequestFailed,
+    productCountUpdated } = slice.actions;
 
 const productsURL = "/product";
 const refreshTime = configData.REFRESH_TIME;
@@ -107,6 +117,8 @@ export const getProductById = productId =>
             return {};
         }
     );
+
+export const updateProductCount = (updated) => productCountUpdated(updated);
 
 // export const addProduct = (product) => {
 //     apiCallBegan({

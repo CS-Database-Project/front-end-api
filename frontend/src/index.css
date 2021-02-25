@@ -67,6 +67,20 @@ main{
     font-size: 20px;
 }
 
+.cart-image{
+  border-radius: 65px;
+  padding: 5px;
+  width: 150px;
+}
+
+.cart-delete{
+    cursor: pointer;
+}
+
+.empty-cart-message{
+    background-color: #a4ebf3;
+    height: 50px;
+}
 
 
 

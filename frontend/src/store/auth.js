@@ -33,6 +33,14 @@ const slice = createSlice({
         userLoggedOut(user,action){
             user.loggedIn = false;
             user.data = {}
+        },
+
+        checkOutStarted(user, action){
+            user.checkOutStarted = true;
+        },
+
+        checkOutStartedDeleted(user, action) {
+            delete user.checkOutStarted
         }
     }
 });
@@ -43,7 +51,13 @@ export default slice.reducer;
 
 
 //Action Creators
-export const { userLoginRequested, userLoginFailed, userLoginSucceeded, userLoggedOut } = slice.actions;
+export const { 
+    userLoginRequested, 
+    userLoginFailed, 
+    userLoginSucceeded, 
+    userLoggedOut,
+    checkOutStarted,
+    checkOutStartedDeleted } = slice.actions;
 
 
 //Action Invokers
@@ -69,4 +83,19 @@ export const logout = () => (dispatch) =>dispatch(userLoggedOut());
 export const getAuthDetails = createSelector(
     state => state.auth.data,
     userData => userData
+);
+
+
+export const getLoggedInStatus = createSelector(
+    state => state.auth,
+    auth => auth.loggedIn
+);
+
+export const setCheckOutStarted = () => checkOutStarted();
+
+export const deleteCheckOutStarted = () => checkOutStartedDeleted();
+
+export const getCheckoutStatus = createSelector(
+    state => state.auth,
+    auth => auth.checkOutStarted
 );

@@ -1,23 +1,31 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 //Cart Slice 
 const slice = createSlice({
     name: "cart",
-    initialState: [], // {product: {productId: 214, name: "rgerg", ...}, count: 1341}
+    initialState: [],
     reducers: {
         
         /**
          * action.payload: productObject
          */  
         itemAdded(items, action){
-            items.push({product: {...action.payload}, count: 1});
+            const newItem = action.payload
+            const index = items.findIndex(i => i.productId === newItem.productId && i.variantName === newItem.variantName);
+            if(index === -1){
+                items.push(newItem);
+                return;
+            }
+            let itemInCart = items[index];
+            const updatedItem = { ...itemInCart, quantity: itemInCart.quantity + newItem.quantity, total: itemInCart.total + newItem.total};
+            items[index] = updatedItem;
         },
   
         /**
          * action.payload: productID
          */
         itemRemoved(items, action){
-            const index = items.findIndex(i => i.product.productId === action.payload);
+            const index = items.findIndex(i => i.productId === action.payload.productId && i.variantName === action.payload.variantName);
             if(index !== -1){
                 items = items.splice(index, 1);
             }
@@ -52,8 +60,13 @@ export const { itemAdded, itemRemoved, cartEmptied, itemCountUpdated } = slice.a
 //Action Invokers
 export const addToCart = item => itemAdded(item);
 
-export const removeFromCart = productId => itemRemoved(productId);
+export const removeFromCart = (productId,variantName) => itemRemoved({productId, variantName});
 
 export const updateItemCount = (productId, newCount) => itemCountUpdated({productId, count:newCount})
 
 export const emptyCart = () => cartEmptied();
+
+export const getItemsInCart = createSelector(
+    state => state.cart,
+    cart => cart
+);
