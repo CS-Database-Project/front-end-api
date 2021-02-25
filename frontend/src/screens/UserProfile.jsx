@@ -8,6 +8,7 @@ import { getAuthDetails } from './../store/auth';
 function UserProfile(props) {
     const userData = useSelector(getAuthDetails);
     
+    
     return (
         <Container>
             <Row>

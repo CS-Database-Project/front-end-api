@@ -12,7 +12,7 @@ import ResetPassword from './screens/FogotPassword';
 import ShippingScreen from './screens/ShippingScreen';
 import Footer from './components/Footer';
 import PaymentScreen from './screens/PaymentScreen';
-// import PlaceOrderScreen from './screens/PlaceOrderScreen';
+import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductScreen from './screens/ProductScreen';
@@ -38,7 +38,7 @@ const App = () => {
             ></ToastContainer>
             <Switch>
               <Route path='/shipping' component={ShippingScreen} />
-              {/* <Route path='/placeOrder' component={PlaceOrderScreen} />  */}
+              <Route path='/placeOrder' component={PlaceOrderScreen} /> 
               <Route path='/payment' component={PaymentScreen} /> 
               <Route path='/login' component={LoginForm} />
               <Route path='/logout' component={Logout} />
