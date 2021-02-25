@@ -15,118 +15,12 @@ const ProductScreen = ({match}) => {
 
     useEffect(() => {
         dispatch(loadProducts());
-        setRating(calculateRating(product.reviews));
-        
-        console.log(product);
-        
-    }, [product]);
-
-    
+        console.log("Rendering Product", product);
+    });
 
     return (
         <>
-            
-            <Link className='btn btn-light my-3' to='/'>
-                Go Back
-            </Link>
-
-            <Row>
-                <Col md={6}>
-                    <Image src={`/images/${product.productId}.jpg`} fluid/>
-                </Col>
-                <Col md={6}>
-                    <ListGroup variant='flush'>
-                        <ListGroup.Item>
-                            <h2>{product.title}</h2>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <Rating rating={rating} message = {rating === 0 ? "This Product has not been rated yet" : `${rating} From ${product.reviews.length} Reviews`}></Rating>
-                        </ListGroup.Item>
-                        <ListGroup.Item>
-                            <h5>{product.description}</h5>
-                        </ListGroup.Item>
-                        
-                    </ListGroup>
-                    <ListGroup variant="flush">
-                        <h5>Reviews :</h5>
-                            {product.reviews.map(r=><ListGroup.Item>
-                                
-                                <Rating rating={r.rating}></Rating>
-                                <h6>{r.description}</h6>
-                            </ListGroup.Item>)}
-                    </ListGroup>
-                </Col>
-                
-            </Row>
-            <h5>Variants :</h5>
-            {/* <Row >
-                
-                <Col md={6}>
-                    <ListGroupItem> name </ListGroupItem>
-                            {product.variants.map(v=><ListGroup.Item>
-                                <h6>{v.name}</h6>
-                            </ListGroup.Item>)}  
-                </Col>
-                <Col md={4}>
-                    <ListGroupItem> unit price </ListGroupItem>
-                            {product.variants.map(v=><ListGroup.Item>
-                                <h6>{v.unitPrice}</h6>
-                            </ListGroup.Item>)}
-                </Col>
-
-                <Col md={2}>
-                    <ListGroupItem> count in stock </ListGroupItem>
-                            {product.variants.map(v=><ListGroup.Item>
-                                <h6>{v.countInStock}</h6>
-                            </ListGroup.Item>)}
-                </Col>
-                   
-            
-            </Row> */}
-
-            <Table >
-                <thead>
-                    <tr>
-                        <th>name</th>
-                        <th>unit price</th>
-                        <th>count in stock</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <td>
-                            {product.variants.map(v=><ListGroup.Item>
-                                <h6>{v.name}</h6>
-                            </ListGroup.Item>)}
-                    </td>
-                    <td>
-                            {product.variants.map(v=><ListGroup.Item>
-                                <h6>{v.unitPrice}</h6>
-                            </ListGroup.Item>)}
-                    </td>
-                    <td>
-                            {product.variants.map(v=><ListGroup.Item>
-                                <h6>{v.countInStock}</h6>
-                            </ListGroup.Item>)}
-                    </td>
-                </tbody>
-            </Table>
-            
-            {/* <Button onClick ={ () => dispatch(addToCart(product))}>
-                Add To Cart
-            </Button>
-            <Button onClick ={ () => dispatch(removeFromCart(product.productId))}>
-                Remove From Cart
-            </Button>
-            <Button onClick ={ () => {
-                dispatch(emptyCart());
-                dispatch(invokeToast("Emptied Cart", "info"));
-            }}>
-                Empty Cart
-            </Button>
-
-            <Button onClick ={ () => dispatch(updateItemCount(product.productId, 7))}>
-                Update Count Cart
-            </Button> */}
+            <div>{product.title}</div>
         </>
     )
 }
