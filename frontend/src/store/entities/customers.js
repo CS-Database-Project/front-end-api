@@ -75,7 +75,7 @@ export const {
     customersRegisterRequestFailed,
     customersRegisterRequestSucceeded } = slice.actions;
 
-const customersURL = "/customer";
+const customersURL = "customer";
 const refreshTime = configData.REFRESH_TIME;
 
 //Action Invokers
@@ -87,7 +87,7 @@ export const loadCustomers = () => (dispatch, getState) => {
     
     return dispatch(
         apiCallBegan({
-            url: customersURL + '/view*?',
+            url: customersURL + '/view',
             onStart: customersRequested.type,
             onSuccess: customersReceived.type,
             onError: customersRequestFailed.type
