@@ -14,26 +14,26 @@ const ViewCustomers = ({match, history}) => {
     return(
         <div>
             <h1 className = 'heading'>Customers</h1>
+            {customers.length >0 ?
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Customer ID</th>
                         <th>Email</th>
+                        <th>Active Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {customers.map(c =>
                         <tr>
-                            <td>{c.customer_id}</td>
-                            <td>{c.first_name}</td>
-                            <td>{c.last_name}</td>
+                            <td>{c.customerId}</td>
                             <td>{c.email}</td>
+                            <td>{c.activeStatus}</td>
                         </tr>
                     )}
                 </tbody>
             </Table>
+            :(<div>Empty Customers</div>)}
         </div>
     )
 }
