@@ -1,69 +1,112 @@
-import React, { Component } from 'react';
-import { Row, Col, Card } from 'react-bootstrap';
-import Pagination from '../components/Pagination';
-import products from '../products';
-import Search from '../components/Search';
-import { Link } from 'react-router-dom'
-import Category from '../components/filters/Category';
-import PriceRange from '../components/filters/PriceRange';
+import React, { useEffect, useState } from 'react';
+import { Row } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import ButtonSpinner from './../components/common/ButttonSpinner';
+import CommonListGroup from './../components/common/CommonListGroup';
+import Pagination from '../components/common/Pagination';
+import { loadProducts, getAllProducts, getProductLoadingStatus } from './../store/entities/products';
+import { loadCategories, getCategoriesLoadingStatus, getAllCategories } from './../store/entities/categories';
+import { paginate } from './../utils/paginate';
+import Product from '../components/SearchProduct';
+import SearchError from '../components/common/SearchError';
 
-export class SearchResult extends Component {
-  state = {
-    product:[],
-    loading: false,
-    currentPage: 1,
-    productsPerPage: 5
-  };
+const SearchResult = () => {
 
-  componentDidMount() {
-    const getPosts = async () => {
-      this.setState({ loading: true });
-     // const results = await axios.get('https://jsonplaceholder.typicode.com/posts');
-    // const results = await axios.get('products');
-      const results = products;
-      this.setState({ product: results});
-      this.setState({ loading: false });
-    };
+    const dispatch = useDispatch();
+    const products = useSelector(getAllProducts);
 
-    getPosts();
-
-  }
-
-  render() {
-    const { currentPage, productsPerPage,product, loading } = this.state;
-
-    const indexOfLastProduct = currentPage * productsPerPage;
-    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = product.slice(indexOfFirstProduct, indexOfLastProduct);
+    const URL = (window.location.href).split('/');
+    const keyWord = URL[URL.length-1].split('+');
 
 
-    const paginate = pageNum => this.setState({ currentPage: pageNum });
+  
+  const updatedSearched = SearchProducts(products, keyWord );
+  const productsLoading = useSelector(getProductLoadingStatus);
+  const categories = useSelector(getAllCategories);
+  const categoriesLoading = useSelector(getCategoriesLoadingStatus);
 
-    const nextPage = () => this.setState({ currentPage: currentPage + 1 });
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [filtered, setFiltered] = useState(products);
 
-    const prevPage = () => this.setState({ currentPage: currentPage - 1 });
+  const pageSize = 5;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paginated, setPaginated] = useState([]);
 
-    return (
-      <div className="container">
-        <h1 className="my-5 text-primary text-center">Search Results</h1>
-    
-            <Col style={{display:'flex'}}>
-                <div style={{marginRight:'50px'}}>
-                  <Category></Category>
-                  <PriceRange></PriceRange>
-                </div>
-                <div>
-                  <Search product = {currentProducts} loading={loading}></Search>
-                </div>
-            </Col>
-    
-            <div style={{justifyContent:'center', width:'100%'}}>
-                  <Pagination postsPerPage={productsPerPage} totalPosts={product.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage} />
-            </div>
+  useEffect(() => {
+      dispatch(loadProducts());
+      dispatch(loadCategories());
+      const updatedFiltered = getFilteredProducts(updatedSearched, categories, selectedCategory);
+      setFiltered(updatedFiltered);
+      setPaginated(paginate(updatedFiltered, currentPage, pageSize));
+  }, [ products, categories, dispatch]);
 
+  let hidden = false;
+
+  return (
+
+      <div className = 'mb-4'>
+          <h1 className = 'my-3'>Searched Results ({filtered.length} Results)</h1>
+          {productsLoading && <ButtonSpinner message = "Loading Products..." />}
+          {!categoriesLoading &&
+              <CommonListGroup 
+                  onSelect = {(category) => {
+                      setSelectedCategory(category);
+                      const updatedFiltered = getFilteredProducts(updatedSearched, categories, category);
+                      setFiltered(updatedFiltered);
+                      setPaginated(paginate(updatedFiltered, 1, pageSize));
+                  }} 
+                  defaultSelected = {"All"} selected={selectedCategory} 
+                  list={categories.map(c => c.category.name)}
+              />}
+          <Row>
+              {filtered.length !== 0 ? hidden=true : hidden = false}
+              <SearchError hidden={hidden} ></SearchError>
+          </Row>
+          <Row>
+              {paginated.map( product => 
+            <Row key = {product.productId + product.variantName}>
+                 <Product product = {product}></Product>
+            </Row>)} 
+          </Row>
+
+          <Pagination
+              itemsCount = {filtered.length} 
+              pageSize = {pageSize} 
+              currentPage = {currentPage}
+              onPageChange = {(page) => {
+                  setCurrentPage(page);
+                  setPaginated(paginate(filtered, page, pageSize));
+              }}
+          />
       </div>
-    )
-  }
+  )
+
 }
 
-export default SearchResult
+
+function getFilteredProducts(products, categories, filter){
+  if(filter === "All") return products;
+  const category = categories.find(c => c.category.name === filter);
+  const selectedCategoryId = category.category.categoryId;
+  return products.filter(p => p.categories.includes(selectedCategoryId));
+}
+
+export function SearchProducts(products, setKeyWord){
+    const searchProduct =[];
+    for (let i=0; i<products.length; i++){
+        const product = products[i];
+        for(let j=0; j<setKeyWord.length; j++){
+            if(product.title.toLowerCase().includes(setKeyWord[j].toLowerCase())){
+                searchProduct.push(product);
+                break
+            }
+        }
+    }
+    if(searchProduct.length == 0 ){
+        return [];
+    }
+    return searchProduct;
+}
+
+
+export default SearchResult;
