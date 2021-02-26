@@ -9,12 +9,13 @@ const ViewCustomers = ({match, history}) => {
 
     useEffect(() => {
         dispatch(loadCustomers());
-    }, [customers, dispatch]);
+        console.log(customers.length);
+    }, [customers]);
 
     return(
         <div>
             <h1 className = 'heading'>Customers</h1>
-            {customers.length >0 ?
+            {customers.length > 0 ?
             <Table striped bordered hover>
                 <thead>
                     <tr>

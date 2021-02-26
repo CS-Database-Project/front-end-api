@@ -96,7 +96,7 @@ export const loadCustomers = () => (dispatch, getState) => {
 };
 
 export const getAllCustomers = createSelector(
-    state => state.entities.customers,
+    state => state.entities.customers.list,
     customers => customers
 );
 
