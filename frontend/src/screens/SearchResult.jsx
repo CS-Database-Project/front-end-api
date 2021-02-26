@@ -1,69 +1,64 @@
-// import React, { Component } from 'react';
-// import { Row, Col, Card } from 'react-bootstrap';
-// import Pagination from '../components/Pagination';
+import { React, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import Product from './../components/Product';
+import  Pagination from './../components/common/Pagination';
+import queryString from 'query-string';
+import { getAllProducts } from './../store/entities/products';
+import { paginate } from './../utils/paginate';
 
-// import Search from '../components/Search';
-// import { Link } from 'react-router-dom'
-// import Category from '../components/filters/Category';
-// import PriceRange from '../components/filters/PriceRange';
+const SearchResult = ({ location, history }) => {
+    const { filterBy } = queryString.parse(location.search);
+    const products = useSelector(getAllProducts);
+    const [filtered, setFiltered] = useState([]);
 
-// export class SearchResult extends Component {
-//   state = {
-//     product:[],
-//     loading: false,
-//     currentPage: 1,
-//     productsPerPage: 5
-//   };
+    const pageSize = 3;
+    const [currentPage, setCurrentPage] = useState(1);
+    const [paginated, setPaginated] = useState([]);
 
-//   componentDidMount() {
-//     const getPosts = async () => {
-//       this.setState({ loading: true });
-//      // const results = await axios.get('https://jsonplaceholder.typicode.com/posts');
-//     // const results = await axios.get('products');
-//       // const results = products;
-//       // this.setState({ product: results});
-//       this.setState({ loading: false });
-//     };
+    useEffect(() => {
+        const updatedFiltered = getFilteredProducts(products, filterBy);
+        setFiltered(updatedFiltered);
+        setPaginated(paginate(updatedFiltered, currentPage, pageSize));
+    }, [products,location]);
 
-//     getPosts();
+    return ( 
+        <>
+            <Row>
+                <Col lg='5'>
+                    <Button className='my-5' onClick = {() => history.push('/')}>Go Back</Button>
+                </Col>
+                <Col lg='7'>
+                    <h1 className="my-5 text-primary">Search Results</h1>
+                </Col>
+            </Row>
+             
+             {filtered.length > 0 ? <Row>
+                {paginated.map( product => 
+                <Col key = {product.productId + product.variantName} sm = {1} md = {2} lg = {3} xl = {4}>
+                    <Product product= {product}></Product>
+                </Col>)} 
+            </Row> : <Container className ='empty-cart-message' fluid><Row><Col><h5 className ='py-3'>No Products Found...</h5></Col></Row></Container>}
+            <Pagination
+                itemsCount = {filtered.length} 
+                pageSize = {pageSize} 
+                currentPage = {currentPage}
+                onPageChange = {(page) => {
+                    setCurrentPage(page);
+                    setPaginated(paginate(filtered, page, pageSize));
+                }}
+            />
 
-//   }
-
-//   render() {
-//     const { currentPage, productsPerPage,product, loading } = this.state;
-
-//     const indexOfLastProduct = currentPage * productsPerPage;
-//     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-//     const currentProducts = product.slice(indexOfFirstProduct, indexOfLastProduct);
+        </>
+    );
+}
+ 
+export default SearchResult;
 
 
-//     const paginate = pageNum => this.setState({ currentPage: pageNum });
-
-//     const nextPage = () => this.setState({ currentPage: currentPage + 1 });
-
-//     const prevPage = () => this.setState({ currentPage: currentPage - 1 });
-
-//     return (
-//       <div className="container">
-//         <h1 className="my-5 text-primary text-center">Search Results</h1>
-    
-//             <Col style={{display:'flex'}}>
-//                 <div style={{marginRight:'50px'}}>
-//                   <Category></Category>
-//                   <PriceRange></PriceRange>
-//                 </div>
-//                 <div>
-//                   <Search product = {currentProducts} loading={loading}></Search>
-//                 </div>
-//             </Col>
-    
-//             <div style={{justifyContent:'center', width:'100%'}}>
-//                   <Pagination postsPerPage={productsPerPage} totalPosts={product.length} paginate={paginate} nextPage={nextPage} prevPage={prevPage} />
-//             </div>
-
-//       </div>
-//     )
-//   }
-// }
-
-// export default SearchResult
+function getFilteredProducts(products, filterBy){
+    return products.filter(p => 
+        p.title.toLowerCase().includes(filterBy.toLowerCase()) ||
+        p.description.toLowerCase().includes(filterBy.toLowerCase())
+    );
+}

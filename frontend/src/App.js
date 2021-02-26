@@ -8,7 +8,7 @@ import LoginForm from './screens/LoginForm';
 import RegisterForm from './screens/RegisterForm';
 import UserProfile from './screens/UserProfile';
 import ResetPassword from './screens/FogotPassword';
-// import SearchResult from './screens/SearchResult';
+import SearchResult from './screens/SearchResult';
 import ShippingScreen from './screens/ShippingScreen';
 import Footer from './components/Footer';
 import PaymentScreen from './screens/PaymentScreen';
@@ -20,6 +20,7 @@ import Logout from './components/logout';
 
 
 const App = () => {
+
   return ( 
       <>
         <Header/>
@@ -46,7 +47,7 @@ const App = () => {
               <Route path='/register' component={RegisterForm} />
               <Route path='/profile' component={UserProfile} />
               <Route path='/reset' component={ResetPassword} />
-              {/* <Route path='/search' component={SearchResult} /> */}
+              <Route path='/search' component={SearchResult} />
               <Route path='/products/:productId' component = {ProductScreen} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />

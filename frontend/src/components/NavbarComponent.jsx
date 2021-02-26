@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Navbar,FormControl, Nav, Button, InputGroup} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
-function NavbarComponent(props) {
-
+function NavbarComponent() {
+    let history = useHistory();
     const auth = useSelector(state => state.auth);
+    const [searchKeyword, setSearchKeyword ] = useState('');
 
     return (
         <>
@@ -19,9 +21,19 @@ function NavbarComponent(props) {
                                 aria-label="searchProduct"
                                 aria-describedby="basic-addon2"
                                 size = 'lg'
+                                value = {searchKeyword}
+                                onChange = { e => setSearchKeyword(e.target.value)}
                             />
                             <InputGroup.Append id = 'product-search-button'>
-                                <Button className = 'pl-2.5 pr-2.5' variant="primary">Search</Button>
+                                <Button 
+                                    className = 'pl-2.5 pr-2.5' 
+                                    variant="primary" 
+                                    onClick = {() => {
+                                        history.push(`/search?filterBy=${searchKeyword}`)
+                                    }}
+                                >
+                                    Search
+                                </Button>
                             </InputGroup.Append>
                         </InputGroup>
                     <Nav className="ml-auto">

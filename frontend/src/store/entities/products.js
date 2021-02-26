@@ -57,6 +57,7 @@ const slice = createSlice({
             const variantIndex =variants.findIndex(v => v.name === variantName);
             variants[variantIndex].countInStock = newCount;
         }
+
     }
 });
 
