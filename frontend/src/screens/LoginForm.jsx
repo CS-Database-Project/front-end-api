@@ -24,7 +24,7 @@ class LoginForm extends CustomForm {
         if(!this.props.auth.loggedIn)return;
 
         if(this.props.auth.checkOutStarted)
-            window.location = '/shipping';
+            window.location = '/buyMethod';
         else
             window.location = '/';
         

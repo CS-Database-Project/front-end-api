@@ -67,7 +67,7 @@ function Cart({history}) {
                                         dispatch(setCheckOutStarted());
                                         dispatch(toastAction({ message: "Please Login Before Checkout...", type: 'info'}))
                                     }else{
-                                        history.push("/shipping");
+                                        history.push("/buyMethod");
                                     }
                                 
                             }}>

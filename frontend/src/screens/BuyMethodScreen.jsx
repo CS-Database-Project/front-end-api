@@ -1,32 +1,20 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Form, Button, Col} from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
+import { useDispatch, useSelector } from 'react-redux';
 import '../bootstrap.min.css'
 import CommonListGroup from '../components/common/CommonListGroup'
 import CheckoutSteps from '../components/CheckoutSteps'
+import selectBuyMethod from './../store/auth'
 
 
 function BuyMethodScreen ({history}){
-    /*const cart = useSelector((state) => state.cart)
-    const {shippingAddress} = cart
-
-    if(!shippingAddress){
-        history.push('/shipping')
-    }
-
-    const  [paymentMethod, setPaymentMethod]= useState('PayPal')
-
-    const dispatch = useDispatch()
-
-    const submitHandler = (e) =>{
-        e.preventDefault()
-        dispatch(savePaymentMethod({address,city, postalcode,country}))
-        history.push('/payment')
-    }*/
-
- 
+    const dispatch = useDispatch();
+    const [selectedMethod, setSelectedMethod] = useState('HomeDelivery');
     
+    const handleChange = event => setSelectedMethod(event.target.value)
         
+   
     return( <div><FormContainer>
             <CheckoutSteps step1 step2 />
 
@@ -35,53 +23,45 @@ function BuyMethodScreen ({history}){
                 <Form.Group>
                      <Form.Label as='legend'>Select Method</Form.Label>
                 </Form.Group >
-                <Col >
-                     <Form.Check className='my-3' onChange={e=>radioEvent(e)}
+                <Col >  
+                     <Form.Check className='my-3'
                          type='radio'  
                          label='Home Delivery' 
                          id='HomeDelivery' 
                          name='buyMethod' 
                          value='HomeDelivery'  
-                         //checked onChange={(e)=>setPaymentMethod(e.target.value)}
+                         onChange={handleChange}
+                         defaultChecked='HomeDelivery'
                          >
                      </Form.Check>
-                     <Form.Check className='my-3' onChange={e=>radioEvent(e)}
+                     <Form.Check className='my-3'
                          type='radio' 
                          label='Store Pickup' 
                          id='StorePickup' 
                          name='buyMethod' 
                          value='StorePickup'  
-                         //checked onChange={(e)=>setPaymentMethod(e.target.value)}
+                         onChange={handleChange}
                          >
-                     </Form.Check>
-                 </Col>
-                 
+                     </Form.Check>                    
+                 </Col>                
                  <Button 
-                //  onClick = {() => {
-
-                //     const target=this.radioEvent;
-                //     console.log(target);
-                //     if(target==='StorePickup'){
-                //         history.push("/payment");
-                        
-                //     }else{
-                //         history.push("/shipping");
-                //     }}}
+                 onClick = {() =>{
+                    dispatch(selectBuyMethod(selectedMethod));
+                    console.log(selectedMethod);
+                    if(selectedMethod==='StorePickup')
+                        history.push("/payment");                               
+                    else
+                        history.push("/shipping");               
+                    }}               
                     type='submit' variant='primary'>
                  Continue
                  </Button>
             </Form>
         </FormContainer></div>);
-        
-   
-
-
 };
+
 
 export default BuyMethodScreen;
 
-function radioEvent(e){
-    console.log(e.target.value);
-};
 
 

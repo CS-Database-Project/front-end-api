@@ -30,6 +30,8 @@ const slice = createSlice({
         },
 
 
+
+
         userLoggedOut(user,action){
             user.loggedIn = false;
             user.data = {}
@@ -41,7 +43,20 @@ const slice = createSlice({
 
         checkOutStartedDeleted(user, action) {
             delete user.checkOutStarted
-        }
+        },
+
+        buyMethodSelected(user,action){
+
+
+        },
+
+        shippingAddressSelected(user,action){
+
+        },
+
+        
+
+
     }
 });
 
@@ -57,7 +72,10 @@ export const {
     userLoginSucceeded, 
     userLoggedOut,
     checkOutStarted,
-    checkOutStartedDeleted } = slice.actions;
+    checkOutStartedDeleted,
+    buyMethodSelected,
+    shippingAddressSelected
+    } = slice.actions;
 
 
 //Action Invokers
@@ -77,6 +95,8 @@ export const login = (usertype, data) => (dispatch) => {
 
 
 export const logout = () => (dispatch) =>dispatch(userLoggedOut());
+
+export const selectBuyMethod =(selectedMethod) => buyMethodSelected(selectedMethod);
 
 //Selectors
 
