@@ -16,6 +16,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductScreen from './screens/ProductScreen';
+import BuyMethodScreen from './screens/BuyMethodScreen';
 import Logout from './components/logout';
 
 
@@ -37,6 +38,7 @@ const App = () => {
               pauseOnHover            
             ></ToastContainer>
             <Switch>
+              <Route path='/buyMethod' component={BuyMethodScreen} />
               <Route path='/shipping' component={ShippingScreen} />
               <Route path='/placeOrder' component={PlaceOrderScreen} /> 
               <Route path='/payment' component={PaymentScreen} /> 
