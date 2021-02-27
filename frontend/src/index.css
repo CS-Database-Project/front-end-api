@@ -3,7 +3,7 @@ main{
 }
 
 #product-search-bar{
-    width: 74%;
+    width: 64%;
     background-color: whitesmoke;
     border-radius: 0.2rem;
 }
@@ -92,6 +92,12 @@ main{
     display: inline-block;
     font-size: 20px;
 }
+
+
+
+
+
+
 
 
 

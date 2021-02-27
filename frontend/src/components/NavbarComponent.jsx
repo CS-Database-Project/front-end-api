@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import {Navbar,FormControl, Nav, Button, InputGroup} from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import {Navbar,FormControl, Nav,NavDropdown, Button, InputGroup} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
 function NavbarComponent() {
     let history = useHistory();
     const auth = useSelector(state => state.auth);
     const [searchKeyword, setSearchKeyword ] = useState('');
+
+    useEffect(() => {
+        console.log(auth);
+    });
 
     return (
         <>
@@ -47,6 +51,16 @@ function NavbarComponent() {
                         {auth.loggedIn && <LinkContainer to = '/profile'>
                             <Nav.Link className = 'navbar-item'><i className="fas fa-user"></i><span>{auth.data.firstName}</span></Nav.Link>
                         </LinkContainer>}
+
+                        {auth.loggedIn && auth.data.usertype==='Administrator' && 
+                        <NavDropdown title={auth.data.usertype} className ='navbar-item'>
+                                <NavDropdown.Item className='dropdown-item'>
+                                    <LinkContainer className='dropdown-item' to = '/logout'>
+                                        <Nav.Link ><span>Manage Customers</span></Nav.Link>
+                                    </LinkContainer>
+                                </NavDropdown.Item>
+                        </NavDropdown>}
+
                         {auth.loggedIn && <LinkContainer to = '/logout'>
                             <Nav.Link className = 'navbar-item'><span>Logout</span></Nav.Link>
                         </LinkContainer>}
