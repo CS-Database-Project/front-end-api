@@ -82,5 +82,16 @@ main{
     height: 50px;
 }
 
+.new-customer-message{
+    color: black;
+    display: inline-block;
+    font-size: 20px;
+}
+
+.new-customer-register-link{
+    display: inline-block;
+    font-size: 20px;
+}
+
 
 

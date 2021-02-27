@@ -86,9 +86,12 @@ class LoginForm extends CustomForm {
                             errorValue: errors.password
                         }) 
                     }
-                        <div style={{fontSize:'20px', display: 'inline'}}>A new Customer?... 
-                            <LinkContainer to = '/register'>
-                                <Nav.Link>Register From Here</Nav.Link>
+                        <div>
+                            <div className = 'new-customer-message'>
+                                A New Customer? 
+                            </div>
+                            <LinkContainer className = 'new-customer-register-link' to = '/register'>
+                                <Nav.Link>Signup From Here</Nav.Link>
                             </LinkContainer> 
                         </div>
                         
