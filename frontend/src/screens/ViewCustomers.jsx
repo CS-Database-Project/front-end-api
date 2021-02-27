@@ -10,6 +10,7 @@ const ViewCustomers = ({match, history}) => {
     useEffect(() => {
         dispatch(loadCustomers());
         console.log(customers.length);
+        console.log(typeof(activeStatus));
     }, [customers]);
 
     return(
