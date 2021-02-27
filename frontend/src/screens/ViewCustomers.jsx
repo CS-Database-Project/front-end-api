@@ -9,7 +9,7 @@ const ViewCustomers = ({match, history}) => {
 
     useEffect(() => {
         dispatch(loadCustomers());
-        console.log(customers.length);
+        console.log(customers);
     }, [customers]);
 
     return(
@@ -29,7 +29,7 @@ const ViewCustomers = ({match, history}) => {
                         <tr>
                             <td>{c.customerId}</td>
                             <td>{c.email}</td>
-                            <td>{c.activeStatus}</td>
+                            <td>{c.activeStatus.toString()}</td>
                         </tr>
                     )}
                 </tbody>
