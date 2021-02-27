@@ -5,6 +5,7 @@ import Header from './components/Header';
 import HomeScreen from './screens/HomeScreen';
 import Cart from './screens/Cart';
 import LoginForm from './screens/LoginForm';
+import UserLoginForm from './screens/UserLoginForm';
 import RegisterForm from './screens/RegisterForm';
 import UserProfile from './screens/UserProfile';
 import ResetPassword from './screens/FogotPassword';
@@ -42,6 +43,7 @@ const App = () => {
               <Route path='/placeOrder' component={PlaceOrderScreen} /> 
               <Route path='/payment' component={PaymentScreen} /> 
               <Route path='/login' component={LoginForm} />
+              <Route path='/user-login' component={UserLoginForm} />
               <Route path='/logout' component={Logout} />
               <Route path='/cart' component={Cart} />
               <Route path='/register' component={RegisterForm} />
