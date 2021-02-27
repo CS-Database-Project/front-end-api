@@ -45,9 +45,8 @@ const slice = createSlice({
             delete user.checkOutStarted
         },
 
-        buyMethodSelected(user,action){
-
-
+        buyMethodSelected(user, action){
+            user.buyMethod=action.payload;
         },
 
         shippingAddressSelected(user,action){
