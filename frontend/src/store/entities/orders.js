@@ -42,12 +42,12 @@ export const {
     ordersReceived, 
     ordersCreateRequestFailed } = slice.actions;
 
-const ordersURL = "/order";
+const ordersURL = "order";
 const refreshTime = configData.REFRESH_TIME;
 
 
 //Action Invokers
-export const createOrders = () => (dispatch, getState) => {
+export const loadOrders = () => (dispatch, getState) => {
     const { lastFetch } = getState().entities.orders;
 
     const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
@@ -55,7 +55,7 @@ export const createOrders = () => (dispatch, getState) => {
     
     return dispatch(
         apiCallBegan({
-            url: ordersURL + '/order-view',
+            url: ordersURL + '/view-order',
             onStart: ordersCreateRequested.type,
             onSuccess: ordersReceived.type,
             onError: ordersCreateRequestFailed.type
@@ -67,6 +67,7 @@ export const createOrders = () => (dispatch, getState) => {
 export const getAllOrders = createSelector(
     state => state.entities.orders.list,
     orders => orders
+    
 );
 
 export const getOrderById = orderId =>
@@ -79,3 +80,11 @@ export const getOrderById = orderId =>
         }
     );
 
+export const getOrderByCustomerId = customerId =>
+    createSelector(
+        state => state.entities.orders.list,
+        orders => {
+            const h = orders.filter(o=> o.customerId === customerId);
+            return h;
+        }
+    );

@@ -11,10 +11,11 @@ import { saveState } from './store/localStorage';
 const store = configureStore();
 store.subscribe(() => {
   saveState({
-    auth: store.getState().auth,
+    auth: store.getState().auth, 
     cart: store.getState().cart,
     entities: {
-      products: store.getState().entities.products
+      products: store.getState().entities.products,
+      customers: store.getState().entities.customers
     }
   });
 });

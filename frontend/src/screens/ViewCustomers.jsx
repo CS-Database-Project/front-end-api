@@ -22,7 +22,8 @@ const ViewCustomers = ({match, history}) => {
                         <th>Customer ID</th>
                         <th>Email</th>
                         <th>Active Status</th>
-                        <th>Deactivate</th>
+                        <th></th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -30,7 +31,8 @@ const ViewCustomers = ({match, history}) => {
                         <tr>
                             <td>{c.customerId}</td>
                             <td>{c.email}</td>
-                            <td>{c.activeStatus.toString()}</td>
+
+                            <td>{c.activeStatus ? "Active" : "Deactivated"}</td>
                             <td>
                                 {c.activeStatus === true ?
                                     <Button style ={{width:"100px"}}className="btn btn-danger" onClick={() => dispatch(deactivateCustomer(c.customerId))}>Deactivate</Button>

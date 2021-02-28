@@ -47,8 +47,6 @@ function Cart({history}) {
                             )}
                         </tbody>
                     </Table> : (<Container className ='empty-cart-message' fluid><Row><Col><h5 className ='py-3'>Your Cart Is Empty</h5></Col></Row></Container>)}
-
-
                 
                 </Col>
 
@@ -67,7 +65,7 @@ function Cart({history}) {
                                         dispatch(setCheckOutStarted());
                                         dispatch(toastAction({ message: "Please Login Before Checkout...", type: 'info'}))
                                     }else{
-                                        history.push("/shipping");
+                                        history.push("/buyMethod");
                                     }
                                 
                             }}>

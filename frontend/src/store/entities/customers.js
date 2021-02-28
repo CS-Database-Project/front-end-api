@@ -56,6 +56,14 @@ const slice = createSlice({
             const index = customers.list.findIndex(c => c.customerId === customerId );
             customers.list[index].activeStatus = true;
         }
+
+
+        //customerUpdated(customers, action){
+            // const index = customers.list.findIndex(p => p.customerId === action.payload.customerId);
+            // customers.list.splice(index, 1);
+            // customers.list.push(action.payload);
+        // },
+
     }
 });
 
@@ -121,6 +129,7 @@ export const deactivateCustomer = (customerId) =>{
             onSuccess: customerDeactivated.type,
         });
 }
+
 
 export const activateCustomer = (customerId) =>{
     return apiCallBegan({
