@@ -33,8 +33,8 @@ const ViewCustomers = ({match, history}) => {
                             <td>{c.activeStatus.toString()}</td>
                             <td>
                                 {c.activeStatus === true ?
-                                    <Button className="btn btn-danger" onClick={() => dispatch(deactivateCustomer(c.customerId))}>Deactivate</Button>
-                                :   <Button  onClick={() => dispatch(activateCustomer(c.customerId))}>Activate</Button>}
+                                    <Button style ={{width:"100px"}}className="btn btn-danger" onClick={() => dispatch(deactivateCustomer(c.customerId))}>Deactivate</Button>
+                                :   <Button style ={{width:"100px"}} onClick={() => dispatch(activateCustomer(c.customerId))}>Activate</Button>}
                             </td>
                         </tr>
                     )}
