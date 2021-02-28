@@ -1,37 +1,33 @@
 import React from 'react';
-import {Button, Table} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 
-function OrdersTable(props) {
-
-  const orders = [
-    [ 1, "2021-01-25","560.45", "Yes" ,"No"],
-    [ 2, "2021-02-01","100.00", "No" ,"No"],
-    [ 3, "2021-01-14","1025.56", "Yes" ,"Yes"]
-  ];
+function OrdersTable({orderData, heading = null}) {
 
     return (
       <div>
-          <h1 className = 'userheading'>MY ORDERS</h1>
+          { heading ? <h1 className = 'userheading'>{heading}</h1> : null}
           <Table striped bordered hover>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
+                <th>ORDER ID</th>
+                <th>ORDER DATE</th>
+                <th>DISPATCHED DATE</th>
+                <th>DELIVERY METHOD</th>
+                <th>ORDER STATUS</th>
+                <th>COMMENTS</th>
+            
               </tr>
             </thead>
             <tbody>
-            {orders.map((item, index) => {
+            {orderData.map(o =>  {
             return (
               <tr>
-                <td>{item[0]}</td>
-                <td>{item[1]}</td>
-                <td>{item[2]}</td>
-                <td>{item[3]}</td>
-                <td>{item[4]}</td>
+                <td width="10%">{`${o.orderId}`}</td>
+                <td width="40%">{`${o.orderDate}`}</td>
+                <td width="25%">{`${o.dispatchedDate}`}</td>
+                <td width="10%">{`${o.deliveryMethod}`}</td>
+                <td width="10%">{`${o.orderStatusId}`}</td>
+                <td width="5%">{`${o.comments}`}</td>
               </tr>
             );
           })}

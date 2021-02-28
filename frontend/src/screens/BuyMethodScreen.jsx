@@ -28,7 +28,7 @@ function BuyMethodScreen ({history}){
     
         
     return( <div><FormContainer>
-            <CheckoutSteps step1 step2 />
+            
 
             <h1 className='my-3'>Buy Method</h1>
             <Form className='my-3'>
@@ -36,7 +36,7 @@ function BuyMethodScreen ({history}){
                      <Form.Label as='legend'>Select Method</Form.Label>
                 </Form.Group >
                 <Col >
-                     <Form.Check className='my-3' onChange={e=>radioEvent(e)}
+                     <Form.Check className='my-3' 
                          type='radio'  
                          label='Home Delivery' 
                          id='HomeDelivery' 
@@ -45,7 +45,7 @@ function BuyMethodScreen ({history}){
                          //checked onChange={(e)=>setPaymentMethod(e.target.value)}
                          >
                      </Form.Check>
-                     <Form.Check className='my-3' onChange={e=>radioEvent(e)}
+                     <Form.Check className='my-3' 
                          type='radio' 
                          label='Store Pickup' 
                          id='StorePickup' 
@@ -80,8 +80,8 @@ function BuyMethodScreen ({history}){
 
 export default BuyMethodScreen;
 
-function radioEvent(e){
-    console.log(e.target.value);
-};
+// function radioEvent(e){
+//     console.log(e.target.value);
+// };
 
 
