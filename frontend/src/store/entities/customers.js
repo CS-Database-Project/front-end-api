@@ -30,7 +30,6 @@ const slice = createSlice({
             customers.list.push(action.payload.data);
         },
 
-
         customersRequested(customers, action){
             customers.loading = true;
         },
@@ -46,11 +45,13 @@ const slice = createSlice({
             customers.lastFetch = Date.now();
         },
 
-
-        // customerRemoved(customers, action){
-            //const index = customers.list.findIndex(p => p.customerId !== action.payload);
-            //customers = customers.list.splice(index, 1);   
-        // },
+        customerDeactivated(customers, action){
+            const { customerId } = action.payload;
+            const index = customers.list.findIndex(c => c.customerId === customerId );
+            customers[index].activeStatus = false;
+            customers.list.push(action.payload);
+        }
+        
 
         //customerUpdated(customers, action){
             // const index = customers.list.findIndex(p => p.customerId === action.payload.customerId);
@@ -68,12 +69,12 @@ export const {
     customersRequested, 
     customersReceived,
     customerCreated, 
-    customerRemoved, 
+    customerDeactivated, 
     customerUpdated,
     customersRequestFailed,
     customersRegisterRequested,
     customersRegisterRequestFailed,
-    customersRegisterRequestSucceeded } = slice.actions;
+    customersRegisterRequestSucceeded} = slice.actions;
 
 const customersURL = "customer";
 const refreshTime = configData.REFRESH_TIME;
@@ -113,6 +114,14 @@ export const registerCustomer = (customer) => (dispatch) => {
     );
 }
 
+export const deactivateCustomer = (customerId) =>{
+        apiCallBegan({
+            url: `${customersURL}/change-account-status`,
+            method: "put",
+            data: customerId,
+            onSuccess: customerDeactivated.type,
+        })
+}
 
 //export const addCustomer = (customer) => {
     //apiCallBegan({
