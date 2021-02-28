@@ -49,7 +49,7 @@ const App = () => {
               <Route path='/reset' component={ResetPassword} />
               {/* <Route path='/search' component={SearchResult} /> */}
               <Route path='/products/:productId' component = {ProductScreen} />
-              <Route path='/view_customers' component = {ViewCustomers} />
+              <Route path='/customers' component = {ViewCustomers} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />
             </Switch>

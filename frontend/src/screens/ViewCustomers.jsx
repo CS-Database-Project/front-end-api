@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import {loadCustomers,  getAllCustomers, deactivateCustomer} from '../store/entities/customers';
+import {loadCustomers,  getAllCustomers, deactivateCustomer, activateCustomer} from '../store/entities/customers';
 import { useDispatch, useSelector } from 'react-redux';
 import {Table, Button} from 'react-bootstrap';
 
@@ -32,9 +32,9 @@ const ViewCustomers = ({match, history}) => {
                             <td>{c.email}</td>
                             <td>{c.activeStatus.toString()}</td>
                             <td>
-                                <Button  
-                                    onClick={() => dispatch(deactivateCustomer(c.customerId))}
-                                >Deactivate</Button>
+                                {c.activeStatus === true ?
+                                    <Button className="btn btn-danger" onClick={() => dispatch(deactivateCustomer(c.customerId))}>Deactivate</Button>
+                                :   <Button  onClick={() => dispatch(activateCustomer(c.customerId))}>Activate</Button>}
                             </td>
                         </tr>
                     )}

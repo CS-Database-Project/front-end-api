@@ -49,8 +49,13 @@ const slice = createSlice({
             const { customerId } = action.payload.data;
             const index = customers.list.findIndex(c => c.customerId === customerId );
             customers.list[index].activeStatus = false;
-        }
+        },
         
+        customerActivated(customers, action){
+            const { customerId } = action.payload.data;
+            const index = customers.list.findIndex(c => c.customerId === customerId );
+            customers.list[index].activeStatus = true;
+        }
 
         //customerUpdated(customers, action){
             // const index = customers.list.findIndex(p => p.customerId === action.payload.customerId);
@@ -67,7 +72,8 @@ export default slice.reducer;
 export const { 
     customersRequested, 
     customersReceived,
-    customerCreated, 
+    customerCreated,
+    customerActivated, 
     customerDeactivated, 
     customerUpdated,
     customersRequestFailed,
@@ -120,6 +126,15 @@ export const deactivateCustomer = (customerId) =>{
             data: {customerId, activeStatus: false},
             onSuccess: customerDeactivated.type,
         });
+}
+
+export const activateCustomer = (customerId) =>{
+    return apiCallBegan({
+        url: `${customersURL}/change-account-status`,
+        method: "put",
+        data: {customerId, activeStatus: true},
+        onSuccess: customerActivated.type,
+    });
 }
 
 //export const addCustomer = (customer) => {
