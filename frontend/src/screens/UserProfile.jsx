@@ -20,7 +20,10 @@ function UserProfile(props) {
         <Container>
             <Row>
                 <Col className="px-3" md={4}><ProfileUpdate userData={userData}/></Col>
-                <Col md={8}><OrdersTable orderData={orderData}/></Col>
+                {orderData.length > 0 ? 
+                <Col md={8}><OrdersTable orderData={orderData}/></Col> :
+                <Col md={8}><Container className ='empty-cart-message' fluid><Row  className='my-5'><Col><h5 className ='py-3'>You Have Not Placed Any Orders Yet...</h5></Col></Row></Container></Col>
+                }
             </Row>
         </Container>
     );
