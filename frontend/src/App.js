@@ -18,7 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductScreen from './screens/ProductScreen';
 import Logout from './components/logout';
-
+import UserRegisterForm from './screens/userRegisterForm';
 
 const App = () => {
 
@@ -39,6 +39,7 @@ const App = () => {
               pauseOnHover            
             ></ToastContainer>
             <Switch>
+              <Route path='/user-register' component={UserRegisterForm} />
               <Route path='/shipping' component={ShippingScreen} />
               <Route path='/placeOrder' component={PlaceOrderScreen} /> 
               <Route path='/payment' component={PaymentScreen} /> 
