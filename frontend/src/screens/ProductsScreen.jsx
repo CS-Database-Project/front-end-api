@@ -10,8 +10,6 @@ const ProductsScreen = () => {
         <>
             <h1 className='heading'>Products</h1>
             <ProductsTable products={products}></ProductsTable>
-        
-      
         </>
     );
 }
