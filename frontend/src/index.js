@@ -14,7 +14,8 @@ store.subscribe(() => {
     auth: store.getState().auth,
     cart: store.getState().cart,
     entities: {
-      products: store.getState().entities.products
+      products: store.getState().entities.products,
+      customers: store.getState().entities.customers
     }
   });
 });
