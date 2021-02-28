@@ -5,7 +5,7 @@ import {Table, Button} from 'react-bootstrap';
 
 const ViewCustomers = ({match, history}) => {
     const dispatch = useDispatch();
-    const users = useSelector(getAllUsers);
+    const users = useSelector(getAllUsers).list;
 
     useEffect(() => {
         dispatch(loadUsers());
@@ -15,6 +15,7 @@ const ViewCustomers = ({match, history}) => {
     return(
         <div>
             <h1 className = 'heading'>Users</h1>
+            <Button className ='my-3' onClick = { () => history.push('/user-register')}>Add User</Button>
             {users.length > 0 ?
             <Table striped bordered hover>
                 <thead>
@@ -32,10 +33,10 @@ const ViewCustomers = ({match, history}) => {
                             <td>{u.userId}</td>
                             <td>{u.email}</td>
                             <td>{u.usertype}</td>
-                            <td>{u.activeStatus.toString()}</td>
-                            <td>{u.usertype === 'operator' && u.activeStatus === true ?
+                            <td>{u.activeStatus ? "Active" : "Deactivated"}</td>
+                            <td>{u.usertype === 'Operator' && u.activeStatus === true ?
                                     <Button style ={{width:"100px"}}className="btn btn-danger" onClick={() => dispatch(deactivateUser(u.userId))}>Deactivate</Button>
-                                :u.usertype === 'operator' && u.activeStatus === false ?
+                                :u.usertype === 'Operator' && u.activeStatus === false ?
                                 <Button style ={{width:"100px"}} onClick={() => dispatch(activateUser(u.userId))}>Activate</Button>:(<p></p>)}
                             </td>
                         </tr>

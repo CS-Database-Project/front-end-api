@@ -1,13 +1,11 @@
 import React from 'react';
-import {Button, Table} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
 
-function OrdersTable({orderData}) {
-  console.log(orderData);
-  
+function OrdersTable({orderData, heading = null}) {
 
     return (
       <div>
-          <h1 className = 'userheading'>MY ORDERS</h1>
+          { heading ? <h1 className = 'userheading'>{heading}</h1> : null}
           <Table striped bordered hover>
             <thead>
               <tr>

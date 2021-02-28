@@ -89,7 +89,7 @@ class UserRegisterForm extends CustomForm {
                     errors
                 }) => (
                 <Form noValidate onSubmit={handleSubmit}>
-                    <h1 className = 'heading'>Register</h1>
+                    <h1 className = 'heading'>User Register</h1>
                     {this.props.users.registering && <div className = 'login-spinner' ><Spinner animation="border"  variant="primary" /></div>}
                     <Row>
                         <Col>

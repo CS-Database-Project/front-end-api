@@ -55,7 +55,7 @@ function NavbarComponent() {
 
     
 
-                        {auth.loggedIn && auth.data.usertype==='Administrator' && 
+                        {auth.loggedIn && (auth.data.usertype==='Administrator' || auth.data.usertype==='Operator') && 
                         <Dropdown className="my-2 dropdown">
                         
                             <Dropdown.Toggle   className='dropdown-toogle'>
@@ -72,13 +72,13 @@ function NavbarComponent() {
                                         <Nav.Link ><span>Manage Orders</span></Nav.Link>
                                 </LinkContainer></Dropdown.Item>
 
-                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/customers'>
+                                { auth.data.usertype==='Administrator' && <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/customers'>
                                         <Nav.Link ><span>Manage Customers</span></Nav.Link>
-                                </LinkContainer></Dropdown.Item>
+                                </LinkContainer></Dropdown.Item>}
 
-                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/users'>
+                                {auth.data.usertype==='Administrator' && <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/users'>
                                         <Nav.Link ><span>Manage Users</span></Nav.Link>
-                                </LinkContainer></Dropdown.Item>
+                                </LinkContainer></Dropdown.Item>}
 
                             </Dropdown.Menu>
                         </Dropdown>}

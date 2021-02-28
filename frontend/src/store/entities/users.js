@@ -86,8 +86,7 @@ export const {
     usersRegisterRequestFailed,
     usersRegisterRequestSucceeded,
     usersActivated, 
-    usersDeactivated, 
-    usersRequestFailed } = slice.actions;
+    usersDeactivated } = slice.actions;
 
 const usersURL = "user";
 const refreshTime = configData.REFRESH_TIME;
@@ -127,9 +126,6 @@ export const registerUser = (user) => (dispatch) => {
     );
 }
 
-    state => state.entities.users.list,
-    users => users
-);
 
 export const deactivateUser = (userId) =>{
     return apiCallBegan({
