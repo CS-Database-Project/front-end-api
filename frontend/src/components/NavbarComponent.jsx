@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {Navbar,FormControl, Nav,NavDropdown, Button, InputGroup, Dropdown} from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { LinkContainer,Link } from 'react-router-bootstrap';
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
@@ -70,9 +70,19 @@ function NavbarComponent() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu  className='dropdown-menu'>
-                                <Dropdown.Item className="dropdown-item" href="#/action-1">Manage Customers</Dropdown.Item>
-                                <Dropdown.Item className="dropdown-item" href="#/action-2">Manage Customers</Dropdown.Item>
-                                <Dropdown.Item className="dropdown-item" href="#/action-3">Something else</Dropdown.Item>
+                                
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '#/action1'>
+                                        <Nav.Link ><span>Manage Customers</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '#/action2'>
+                                        <Nav.Link ><span>Manage Customers</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '#/action3'>
+                                        <Nav.Link ><span>Something else</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+
                             </Dropdown.Menu>
                         </Dropdown>}
 
