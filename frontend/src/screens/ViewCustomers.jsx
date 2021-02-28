@@ -33,7 +33,7 @@ const ViewCustomers = ({match, history}) => {
                             <td>{c.activeStatus.toString()}</td>
                             <td>
                                 <Button  
-                                    onClick={() => dispatch(deactivateCustomer())}
+                                    onClick={() => dispatch(deactivateCustomer(c.customerId))}
                                 >Deactivate</Button>
                             </td>
                         </tr>

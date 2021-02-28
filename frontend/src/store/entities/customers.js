@@ -46,10 +46,9 @@ const slice = createSlice({
         },
 
         customerDeactivated(customers, action){
-            const { customerId } = action.payload;
+            const { customerId } = action.payload.data;
             const index = customers.list.findIndex(c => c.customerId === customerId );
-            customers[index].activeStatus = false;
-            customers.list.push(action.payload);
+            customers.list[index].activeStatus = false;
         }
         
 
@@ -115,12 +114,12 @@ export const registerCustomer = (customer) => (dispatch) => {
 }
 
 export const deactivateCustomer = (customerId) =>{
-        apiCallBegan({
+        return apiCallBegan({
             url: `${customersURL}/change-account-status`,
             method: "put",
-            data: customerId,
+            data: {customerId, activeStatus: false},
             onSuccess: customerDeactivated.type,
-        })
+        });
 }
 
 //export const addCustomer = (customer) => {
