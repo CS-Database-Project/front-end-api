@@ -17,8 +17,13 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductScreen from './screens/ProductScreen';
+import ViewCustomers from './screens/ViewCustomers';
+import ViewUsers from './screens/ViewUsers';
+import BuyMethodScreen from './screens/BuyMethodScreen';
+import ProductsScreen from './screens/ProductsScreen';
 import Logout from './components/logout';
 import UserRegisterForm from './screens/userRegisterForm';
+import OrdersScreen from './screens/OrdersScreen';
 
 const App = () => {
 
@@ -40,6 +45,7 @@ const App = () => {
             ></ToastContainer>
             <Switch>
               <Route path='/user-register' component={UserRegisterForm} />
+              <Route path='/buyMethod' component={BuyMethodScreen} />
               <Route path='/shipping' component={ShippingScreen} />
               <Route path='/placeOrder' component={PlaceOrderScreen} /> 
               <Route path='/payment' component={PaymentScreen} /> 
@@ -52,6 +58,10 @@ const App = () => {
               <Route path='/reset' component={ResetPassword} />
               <Route path='/search' component={SearchResult} />
               <Route path='/products/:productId' component = {ProductScreen} />
+              <Route path='/customers' component = {ViewCustomers} />
+              <Route path='/users' component = {ViewUsers} />
+              <Route path='/products' component={ProductsScreen} />
+              <Route path='/orders' component={OrdersScreen} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />
             </Switch>

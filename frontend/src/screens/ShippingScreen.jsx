@@ -1,13 +1,23 @@
 import React from 'react'
 import { Form, Button } from 'react-bootstrap'
-import CustomForm from '../components/common/CustomForm';
+import CustomForm from '../components/common/CustomForm'
+import { connect } from 'react-redux'
+import { login } from './../store/auth'
+import CheckoutSteps from '../components/CheckoutSteps'
+import { getAuthDetails } from './../store/auth';
+import { useSelector, useDispatch } from 'react-redux'
 
 class ShippingScreen extends CustomForm {
+
+  
+
   render(){
+ 
     return(
    
       <>   
         <Form>
+        
         <h1>Shipping</h1>
           {this.renderFormInput(
             {   controlId: "formBasicAddress", 
@@ -15,6 +25,7 @@ class ShippingScreen extends CustomForm {
                 type:'text', 
                 placeholder:'Enter Your Address',
                 size: 'lg'
+                
         
             }) 
           }
@@ -32,7 +43,8 @@ class ShippingScreen extends CustomForm {
                 label: "Postal Code", 
                 type:'text', 
                 placeholder:'Enter Your Postal Code',
-                size: 'lg'
+                size: 'lg',
+                value: this.prop.auth.address
         
             }) 
           }
@@ -45,7 +57,7 @@ class ShippingScreen extends CustomForm {
         
             }) 
           }
-          <Button>Continue</Button>
+          <Button onClick={()=> window.location='/payment'}>Continue</Button>
         </Form>
   
      </>
@@ -54,6 +66,16 @@ class ShippingScreen extends CustomForm {
   }
   
 }
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+const mapDispatchToProps = dispatch => ({
+  loginUser: (data) => dispatch(login('customer', data))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShippingScreen);
   
 
-export default ShippingScreen;
+// export default ShippingScreen;

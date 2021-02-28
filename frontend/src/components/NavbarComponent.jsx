@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
-import {Navbar,FormControl, Nav, Button, InputGroup} from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import {Navbar,FormControl, Nav,NavDropdown, Button, InputGroup, Dropdown} from 'react-bootstrap';
+import { LinkContainer,Link } from 'react-router-bootstrap';
+import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
+
 
 function NavbarComponent() {
     let history = useHistory();
     const auth = useSelector(state => state.auth);
     const [searchKeyword, setSearchKeyword ] = useState('');
+
+    useEffect(() => {
+        console.log(auth);
+    });
 
     return (
         <>
@@ -47,6 +52,39 @@ function NavbarComponent() {
                         {auth.loggedIn && <LinkContainer to = '/profile'>
                             <Nav.Link className = 'navbar-item'><i className="fas fa-user"></i><span>{auth.data.firstName}</span></Nav.Link>
                         </LinkContainer>}
+
+    
+
+                        {auth.loggedIn && auth.data.usertype==='Administrator' && 
+                        <Dropdown className="my-2 dropdown">
+                        
+                            <Dropdown.Toggle   className='dropdown-toogle'>
+                                {auth.data.usertype}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu  className='dropdown-menu'>
+
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/products'>
+                                        <Nav.Link ><span>Manage Products</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+                                
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/orders'>
+                                        <Nav.Link ><span>Manage Orders</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/customers'>
+                                        <Nav.Link ><span>Manage Customers</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/users'>
+                                        <Nav.Link ><span>Manage Users</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+
+                            </Dropdown.Menu>
+                        </Dropdown>}
+
+
+
                         {auth.loggedIn && <LinkContainer to = '/logout'>
                             <Nav.Link className = 'navbar-item'><span>Logout</span></Nav.Link>
                         </LinkContainer>}

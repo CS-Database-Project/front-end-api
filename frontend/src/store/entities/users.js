@@ -30,7 +30,6 @@ const slice = createSlice({
             users.list.push(action.payload.data);
         },
 
-
         usersRequested(users, action){
             users.loading = true;
         },
@@ -57,6 +56,18 @@ const slice = createSlice({
             // users.list.splice(index, 1);
             // users.list.push(action.payload);
         // },
+
+        usersDeactivated(users, action){
+            const { userId } = action.payload.data;
+            const index = users.list.findIndex(u => u.userId === userId );
+            users.list[index].activeStatus = false;
+        },
+        
+        usersActivated(users, action){
+            const { userId } = action.payload.data;
+            const index = users.list.findIndex(u => u.userId === userId );
+            users.list[index].activeStatus = true;
+        }
     }
 });
 
@@ -73,9 +84,12 @@ export const {
     usersRequestFailed,
     usersRegisterRequested,
     usersRegisterRequestFailed,
-    usersRegisterRequestSucceeded } = slice.actions;
+    usersRegisterRequestSucceeded,
+    usersActivated, 
+    usersDeactivated, 
+    usersRequestFailed } = slice.actions;
 
-const usersURL = "/user";
+const usersURL = "user";
 const refreshTime = configData.REFRESH_TIME;
 
 //Action Invokers
@@ -87,7 +101,7 @@ export const loadUsers = () => (dispatch, getState) => {
     
     return dispatch(
         apiCallBegan({
-            url: usersURL + '/view*?',
+            url: usersURL + '/view',
             onStart: usersRequested.type,
             onSuccess: usersReceived.type,
             onError: usersRequestFailed.type
@@ -113,20 +127,25 @@ export const registerUser = (user) => (dispatch) => {
     );
 }
 
+    state => state.entities.users.list,
+    users => users
+);
 
-//export const addUser = (user) => {
-    //apiCallBegan({
-        //url: usersURL,
-        //method: "post",
-        //data: user,
-        //onSuccess: userCreated.type
-    //});
-//}
+export const deactivateUser = (userId) =>{
+    return apiCallBegan({
+        url: `${usersURL}/change-account-status`,
+        method: "put",
+        data: {userId, activeStatus: false},
+        onSuccess: usersDeactivated.type,
+    });
+}
 
-//export const deleteUser = (id) => {
-    //return(apiCallBegan({
-        //url: `${usersURL}/user_delete/${id}`,
-        //method: "delete",
-        //onSuccess: userRemoved.type
-    //}));
-//}
+export const activateUser = (userId) =>{
+return apiCallBegan({
+    url: `${usersURL}/change-account-status`,
+    method: "put",
+    data: {userId, activeStatus: true},
+    onSuccess: usersActivated.type,
+});
+}
+
