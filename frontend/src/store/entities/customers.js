@@ -30,7 +30,6 @@ const slice = createSlice({
             customers.list.push(action.payload.data);
         },
 
-
         customersRequested(customers, action){
             customers.loading = true;
         },
@@ -46,17 +45,17 @@ const slice = createSlice({
             customers.lastFetch = Date.now();
         },
 
-
-        // customerRemoved(customers, action){
-            //const index = customers.list.findIndex(p => p.customerId !== action.payload);
-            //customers = customers.list.splice(index, 1);   
-        // },
-
-        //customerUpdated(customers, action){
-            // const index = customers.list.findIndex(p => p.customerId === action.payload.customerId);
-            // customers.list.splice(index, 1);
-            // customers.list.push(action.payload);
-        // },
+        customerDeactivated(customers, action){
+            const { customerId } = action.payload.data;
+            const index = customers.list.findIndex(c => c.customerId === customerId );
+            customers.list[index].activeStatus = false;
+        },
+        
+        customerActivated(customers, action){
+            const { customerId } = action.payload.data;
+            const index = customers.list.findIndex(c => c.customerId === customerId );
+            customers.list[index].activeStatus = true;
+        }
     }
 });
 
@@ -67,15 +66,16 @@ export default slice.reducer;
 export const { 
     customersRequested, 
     customersReceived,
-    customerCreated, 
-    customerRemoved, 
+    customerCreated,
+    customerActivated, 
+    customerDeactivated, 
     customerUpdated,
     customersRequestFailed,
     customersRegisterRequested,
     customersRegisterRequestFailed,
-    customersRegisterRequestSucceeded } = slice.actions;
+    customersRegisterRequestSucceeded} = slice.actions;
 
-const customersURL = "/customer";
+const customersURL = "customer";
 const refreshTime = configData.REFRESH_TIME;
 
 //Action Invokers
@@ -87,7 +87,7 @@ export const loadCustomers = () => (dispatch, getState) => {
     
     return dispatch(
         apiCallBegan({
-            url: customersURL + '/view*?',
+            url: customersURL + '/view',
             onStart: customersRequested.type,
             onSuccess: customersReceived.type,
             onError: customersRequestFailed.type
@@ -96,7 +96,7 @@ export const loadCustomers = () => (dispatch, getState) => {
 };
 
 export const getAllCustomers = createSelector(
-    state => state.entities.customers,
+    state => state.entities.customers.list,
     customers => customers
 );
 
@@ -113,20 +113,20 @@ export const registerCustomer = (customer) => (dispatch) => {
     );
 }
 
+export const deactivateCustomer = (customerId) =>{
+        return apiCallBegan({
+            url: `${customersURL}/change-account-status`,
+            method: "put",
+            data: {customerId, activeStatus: false},
+            onSuccess: customerDeactivated.type,
+        });
+}
 
-//export const addCustomer = (customer) => {
-    //apiCallBegan({
-        //url: customersURL,
-        //method: "post",
-        //data: customer,
-        //onSuccess: customerCreated.type
-    //});
-//}
-
-//export const deleteCustomer = (id) => {
-    //return(apiCallBegan({
-        //url: `${customersURL}/customer_delete/${id}`,
-        //method: "delete",
-        //onSuccess: customerRemoved.type
-    //}));
-//}
+export const activateCustomer = (customerId) =>{
+    return apiCallBegan({
+        url: `${customersURL}/change-account-status`,
+        method: "put",
+        data: {customerId, activeStatus: true},
+        onSuccess: customerActivated.type,
+    });
+}
