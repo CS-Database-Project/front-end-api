@@ -17,6 +17,7 @@ import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductScreen from './screens/ProductScreen';
+import ProductsScreen from './screens/ProductsScreen';
 import Logout from './components/logout';
 
 
@@ -51,6 +52,7 @@ const App = () => {
               <Route path='/reset' component={ResetPassword} />
               <Route path='/search' component={SearchResult} />
               <Route path='/products/:productId' component = {ProductScreen} />
+              <Route path='/products' component={ProductsScreen} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />
             </Switch>

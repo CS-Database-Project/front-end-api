@@ -53,14 +53,7 @@ function NavbarComponent() {
                             <Nav.Link className = 'navbar-item'><i className="fas fa-user"></i><span>{auth.data.firstName}</span></Nav.Link>
                         </LinkContainer>}
 
-                        {/* {auth.loggedIn && auth.data.usertype==='Administrator' && 
-                        <NavDropdown title={auth.data.usertype} className ='navbar-item'>
-                                <NavDropdown.Item className='dropdown-item'>
-                                    <LinkContainer className='dropdown-item' to = '/logout'>
-                                        <Nav.Link ><span>Manage Customers</span></Nav.Link>
-                                    </LinkContainer>
-                                </NavDropdown.Item>
-                        </NavDropdown>} */}
+    
 
                         {auth.loggedIn && auth.data.usertype==='Administrator' && 
                         <Dropdown className="my-2 dropdown">
@@ -70,17 +63,21 @@ function NavbarComponent() {
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu  className='dropdown-menu'>
+
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/products'>
+                                        <Nav.Link ><span>Manage Products</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
                                 
-                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '#/action1'>
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/orders'>
+                                        <Nav.Link ><span>Manage Orders</span></Nav.Link>
+                                </LinkContainer></Dropdown.Item>
+
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/customers'>
                                         <Nav.Link ><span>Manage Customers</span></Nav.Link>
                                 </LinkContainer></Dropdown.Item>
 
-                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '#/action2'>
-                                        <Nav.Link ><span>Manage Customers</span></Nav.Link>
-                                </LinkContainer></Dropdown.Item>
-
-                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '#/action3'>
-                                        <Nav.Link ><span>Something else</span></Nav.Link>
+                                <Dropdown.Item  ><LinkContainer className="dropdown-item" to = '/users'>
+                                        <Nav.Link ><span>Manage Users</span></Nav.Link>
                                 </LinkContainer></Dropdown.Item>
 
                             </Dropdown.Menu>
