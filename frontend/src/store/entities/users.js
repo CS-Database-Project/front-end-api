@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import configData from '../../config.json';
 import moment from 'moment';
 
-//Customers slice
+//users slice
 const slice = createSlice({
     name: "users",
     initialState: {
@@ -14,6 +14,22 @@ const slice = createSlice({
     },
     reducers: {
         //Events => EventHandlers
+
+        usersRegisterRequested(users, action) {
+            delete users.registerSuccessful;
+            users.registering = true;
+        },
+
+        usersRegisterRequestFailed(users, action) {
+            users.registering = false;
+        },
+
+        usersRegisterRequestSucceeded(users, action) {
+            delete users.registering;
+            users.registerSuccessful = true;
+            users.list.push(action.payload.data);
+        },
+
         usersRequested(users, action){
             users.loading = true;
         },
@@ -28,6 +44,18 @@ const slice = createSlice({
             users.loading = false;
             users.lastFetch = Date.now();
         },
+
+
+        // userRemoved(users, action){
+            //const index = users.list.findIndex(p => p.userId !== action.payload);
+            //users = users.list.splice(index, 1);   
+        // },
+
+        //userUpdated(users, action){
+            // const index = users.list.findIndex(p => p.userId === action.payload.userId);
+            // users.list.splice(index, 1);
+            // users.list.push(action.payload);
+        // },
 
         usersDeactivated(users, action){
             const { userId } = action.payload.data;
@@ -50,9 +78,16 @@ export default slice.reducer;
 export const { 
     usersRequested, 
     usersReceived,
+    userCreated, 
+    userRemoved, 
+    userUpdated,
+    usersRequestFailed,
+    usersRegisterRequested,
+    usersRegisterRequestFailed,
+    usersRegisterRequestSucceeded,
     usersActivated, 
     usersDeactivated, 
-    usersRequestFailed} = slice.actions;
+    usersRequestFailed } = slice.actions;
 
 const usersURL = "user";
 const refreshTime = configData.REFRESH_TIME;
@@ -75,6 +110,23 @@ export const loadUsers = () => (dispatch, getState) => {
 };
 
 export const getAllUsers = createSelector(
+    state => state.entities.users,
+    users => users
+);
+
+export const registerUser = (user) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${usersURL}/user-register`,
+            method: "post",
+            data: user,
+            onStart: usersRegisterRequested,
+            onSuccess: usersRegisterRequestSucceeded.type,
+            onError: usersRegisterRequestFailed
+        })
+    );
+}
+
     state => state.entities.users.list,
     users => users
 );
@@ -96,3 +148,4 @@ return apiCallBegan({
     onSuccess: usersActivated.type,
 });
 }
+

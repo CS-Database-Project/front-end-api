@@ -22,8 +22,8 @@ import ViewUsers from './screens/ViewUsers';
 import BuyMethodScreen from './screens/BuyMethodScreen';
 import ProductsScreen from './screens/ProductsScreen';
 import Logout from './components/logout';
+import UserRegisterForm from './screens/userRegisterForm';
 import OrdersScreen from './screens/OrdersScreen';
-
 
 const App = () => {
 
@@ -44,6 +44,7 @@ const App = () => {
               pauseOnHover            
             ></ToastContainer>
             <Switch>
+              <Route path='/user-register' component={UserRegisterForm} />
               <Route path='/buyMethod' component={BuyMethodScreen} />
               <Route path='/shipping' component={ShippingScreen} />
               <Route path='/placeOrder' component={PlaceOrderScreen} /> 
