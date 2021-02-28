@@ -31,7 +31,7 @@ const HomeScreen = ({ match }) => {
         const updatedFiltered = getFilteredProducts(products, categories, selectedCategory);
         setFiltered(updatedFiltered);
         setPaginated(paginate(updatedFiltered, currentPage, pageSize));
-    }, [products, categories, dispatch]);
+    }, [products, categories]);
 
     return (
         <div className = 'mb-4'>
