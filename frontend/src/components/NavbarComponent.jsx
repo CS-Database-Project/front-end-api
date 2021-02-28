@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {Navbar,FormControl, Nav,NavDropdown, Button, InputGroup} from 'react-bootstrap';
+import {Navbar,FormControl, Nav,NavDropdown, Button, InputGroup, Dropdown} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
+
 
 function NavbarComponent() {
     let history = useHistory();
@@ -52,14 +53,30 @@ function NavbarComponent() {
                             <Nav.Link className = 'navbar-item'><i className="fas fa-user"></i><span>{auth.data.firstName}</span></Nav.Link>
                         </LinkContainer>}
 
-                        {auth.loggedIn && auth.data.usertype==='Administrator' && 
+                        {/* {auth.loggedIn && auth.data.usertype==='Administrator' && 
                         <NavDropdown title={auth.data.usertype} className ='navbar-item'>
                                 <NavDropdown.Item className='dropdown-item'>
                                     <LinkContainer className='dropdown-item' to = '/logout'>
                                         <Nav.Link ><span>Manage Customers</span></Nav.Link>
                                     </LinkContainer>
                                 </NavDropdown.Item>
-                        </NavDropdown>}
+                        </NavDropdown>} */}
+
+                        {auth.loggedIn && auth.data.usertype==='Administrator' && 
+                        <Dropdown className="my-2 dropdown">
+                        
+                            <Dropdown.Toggle   className='dropdown-toogle'>
+                                {auth.data.usertype}
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu  className='dropdown-menu'>
+                                <Dropdown.Item className="dropdown-item" href="#/action-1">Manage Customers</Dropdown.Item>
+                                <Dropdown.Item className="dropdown-item" href="#/action-2">Manage Customers</Dropdown.Item>
+                                <Dropdown.Item className="dropdown-item" href="#/action-3">Something else</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>}
+
+
 
                         {auth.loggedIn && <LinkContainer to = '/logout'>
                             <Nav.Link className = 'navbar-item'><span>Logout</span></Nav.Link>
