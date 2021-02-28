@@ -21,6 +21,7 @@ import BuyMethodScreen from './screens/BuyMethodScreen';
 import ProductsScreen from './screens/ProductsScreen';
 import ViewCustomers from './screens/ViewCustomers';
 import Logout from './components/logout';
+import OrdersScreen from './screens/OrdersScreen';
 
 
 const App = () => {
@@ -57,6 +58,7 @@ const App = () => {
               <Route path='/products/:productId' component = {ProductScreen} />
               <Route path='/products' component={ProductsScreen} />
               <Route path='/customers' component = {ViewCustomers} />
+              <Route path='/orders' component={OrdersScreen} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />
             </Switch>
