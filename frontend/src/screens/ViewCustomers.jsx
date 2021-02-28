@@ -23,6 +23,7 @@ const ViewCustomers = ({match, history}) => {
                         <th>Email</th>
                         <th>Active Status</th>
                         <th></th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,7 @@ const ViewCustomers = ({match, history}) => {
                         <tr>
                             <td>{c.customerId}</td>
                             <td>{c.email}</td>
+
                             <td>{c.activeStatus ? "Active" : "Deactivated"}</td>
                             <td>
                                 {c.activeStatus === true ?
