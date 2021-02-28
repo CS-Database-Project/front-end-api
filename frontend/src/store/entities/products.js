@@ -20,7 +20,7 @@ const slice = createSlice({
         },
 
         productsRequestFailed(products, action){
-            products.lastFetch = Date.now();
+            products.loading = false;
             
         },
 
