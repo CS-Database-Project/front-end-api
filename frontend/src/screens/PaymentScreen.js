@@ -2,6 +2,8 @@ import React from 'react'
 import {Form, Button, Col} from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import '../bootstrap.min.css'
+import {CheckoutSteps} from '../components/CheckoutSteps'
+
 
 const PaymentScreen = ({history}) => {
     /*const cart = useSelector((state) => state.cart)
@@ -24,6 +26,7 @@ const PaymentScreen = ({history}) => {
     return(
         <FormContainer>
             
+
             <h1>Payment</h1>
             <Form >
                 <Form.Group>
