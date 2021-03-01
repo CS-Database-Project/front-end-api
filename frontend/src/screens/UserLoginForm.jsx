@@ -3,12 +3,12 @@ import { Form, Button, Spinner, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import CustomForm from '../components/common/CustomForm';
 import { connect } from 'react-redux'
-import { login } from './../store/auth';
+import { login } from '../store/auth';
 import {  Formik } from 'formik';
 import * as Yup from 'yup';
-import { toastAction } from './../store/toastAction';
+import { toastAction } from '../store/toastAction';
 
-class LoginForm extends CustomForm {
+class UserLoginForm extends CustomForm {
 
     schema =Yup.object().shape({
         username: Yup.string().required("Username is required..."),
@@ -23,10 +23,8 @@ class LoginForm extends CustomForm {
     componentDidUpdate() {
         if(!this.props.auth.loggedIn)return;
 
-        if(this.props.auth.checkOutStarted)
-            window.location = '/buyMethod';
-        else
-            window.location = '/';
+     
+        window.location = '/';
         
         
         this.props.loginSuccessful();
@@ -86,25 +84,15 @@ class LoginForm extends CustomForm {
                             errorValue: errors.password
                         }) 
                     }
-                        <div>
-                            <div className = 'new-customer-message'>
-                                A New Customer? 
-                            </div>
-                            <LinkContainer className = 'new-customer-register-link' to = '/register'>
-                                <Nav.Link>Signup From Here</Nav.Link>
-                            </LinkContainer> 
-                        </div>
 
-                         <LinkContainer to = '/user-login'>
-                                <Nav.Link>User Login</Nav.Link>
-                            </LinkContainer> 
-                        
-     
+                    
+                     
                     <Button 
                         type='submit'
                     >
                         Login
                     </Button>
+
                 </Form>
                 )}
             </Formik>
@@ -118,8 +106,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    loginUser: (data) => dispatch(login('customer', data)),
+    loginUser: (data) => dispatch(login('user', data)),
     loginSuccessful: () => dispatch(toastAction({ message: "Login Successfull...", type: 'info' }))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(UserLoginForm);

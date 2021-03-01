@@ -15,13 +15,14 @@ function BuyMethodScreen ({history}){
         
    
     return( <div><FormContainer>
-            <CheckoutSteps step1 step2 />
+            
 
             <h1 className='my-3'>Buy Method</h1>
             <Form className='my-3'>
                 <Form.Group>
                      <Form.Label as='legend'>Select Method</Form.Label>
                 </Form.Group >
+
                 <Col >  
                      <Form.Check className='my-3'
                          type='radio'  
@@ -62,6 +63,7 @@ function BuyMethodScreen ({history}){
 
 
 export default BuyMethodScreen;
+
 
 
 

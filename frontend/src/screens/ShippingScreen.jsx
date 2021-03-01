@@ -102,6 +102,7 @@ class ShippingScreen extends CustomForm {
   </Formik> 
     )
 }
+
 }
 
 const mapStateToProps = state => ({
@@ -109,8 +110,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  shippingAddress: (data) => dispatch(selectShippingAddress( data))
-  
-}); 
+  shippingAddress: (data) => dispatch(selectShippingAddress( data))  
+});
 
 export default connect(mapStateToProps,mapDispatchToProps)(ShippingScreen);
+

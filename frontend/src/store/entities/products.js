@@ -20,7 +20,7 @@ const slice = createSlice({
         },
 
         productsRequestFailed(products, action){
-            products.lastFetch = Date.now();
+            products.loading = false;
             
         },
 
@@ -57,6 +57,7 @@ const slice = createSlice({
             const variantIndex =variants.findIndex(v => v.name === variantName);
             variants[variantIndex].countInStock = newCount;
         }
+
     }
 });
 
