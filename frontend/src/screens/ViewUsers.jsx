@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import {loadUsers,  getAllUsers, deactivateUser, activateUser} from '../store/entities/users';
 import { useDispatch, useSelector } from 'react-redux';
 import {Table, Button} from 'react-bootstrap';
+import {loadUsers,  getAllUsers, deactivateUser, activateUser, makeUserAdmin} from '../store/entities/users';
 
 const ViewCustomers = ({match, history}) => {
     const dispatch = useDispatch();
@@ -38,6 +38,11 @@ const ViewCustomers = ({match, history}) => {
                                     <Button style ={{width:"100px"}}className="btn btn-danger" onClick={() => dispatch(deactivateUser(u.userId))}>Deactivate</Button>
                                 :u.usertype === 'Operator' && u.activeStatus === false ?
                                 <Button style ={{width:"100px"}} onClick={() => dispatch(activateUser(u.userId))}>Activate</Button>:(<p></p>)}
+                            </td>
+
+                            <td>{u.usertype === 'Operator' && u.activeStatus === true ?
+                                    <Button style ={{width:"120px"}}className="btn btn-danger" onClick={() => dispatch(makeUserAdmin(u.userId))}>Make Admin</Button>
+                                    : <div></div>}
                             </td>
                         </tr>
                     )}
