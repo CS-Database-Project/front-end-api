@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../bootstrap.min.css'
 import CommonListGroup from '../components/common/CommonListGroup'
 import CheckoutSteps from '../components/CheckoutSteps'
-import {selectBuyMethod} from './../store/auth'
-
+import { selectBuyMethod } from './../store/auth';
 
 function BuyMethodScreen ({history}){
     const dispatch = useDispatch();
@@ -44,18 +43,19 @@ function BuyMethodScreen ({history}){
                          >
                      </Form.Check>                    
                  </Col>                
-                 <Button 
-                 onClick = {() =>{
-                    dispatch(selectBuyMethod(selectedMethod));
-                    console.log(selectedMethod);
-                    if(selectedMethod==='StorePickup')
-                        history.push("/payment");                               
-                    else
-                        history.push("/shipping");               
-                    }}               
-                    type='submit' variant='primary'>
-                 Continue
-                 </Button>
+                <Button 
+                    onClick = {() =>{
+                        dispatch(selectBuyMethod(selectedMethod));
+                        if(selectedMethod==='StorePickup')
+                            history.push("/payment");                               
+                        else
+                            history.push("/shipping");               
+                        }
+                    }               
+                    variant='primary'
+                >
+                Continue
+                </Button>
             </Form>
         </FormContainer></div>);
 };
