@@ -1,4 +1,4 @@
-import { Table, Image } from 'react-bootstrap';
+import { Table, Image, Button } from 'react-bootstrap';
 
 const ProductsTable = ({ products }) => {
 
@@ -6,23 +6,26 @@ const ProductsTable = ({ products }) => {
         <Table striped bordered hover variant="light">
             <thead>
                 <tr>
-                <th></th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Weight (g)</th>
                 <th>SKU</th>
+                <th></th>
+                 <th></th>
                 </tr>
             </thead>
             <tbody>
                 {products.map(p => 
                     <tr>
-                        <td>{<Image className = 'cart-image' src={`/images/${p.productId}.jpg`}/>}</td>
+                
                         <td>{p.productId}</td>
                         <td>{p.title}</td>
                         <td>{p.description}</td>
                         <td>{p.weight}</td>
                         <td>{p.sku}</td>
+                        <td><Button>Edit</Button></td>
+                        <td><Button variant='danger'>Remove</Button></td>
                     </tr>
                 )}
             </tbody>

@@ -21,6 +21,7 @@ import ViewCustomers from './screens/ViewCustomers';
 import ViewUsers from './screens/ViewUsers';
 import BuyMethodScreen from './screens/BuyMethodScreen';
 import ProductsScreen from './screens/ProductsScreen';
+import ProductRegisterForm from './screens/ProductRegisterForm';
 import Logout from './components/logout';
 import UserRegisterForm from './screens/userRegisterForm';
 import OrdersScreen from './screens/OrdersScreen';
@@ -60,6 +61,7 @@ const App = () => {
               <Route path='/products/:productId' component = {ProductScreen} />
               <Route path='/customers' component = {ViewCustomers} />
               <Route path='/users' component = {ViewUsers} />
+              <Route path='/product-register' component={ProductRegisterForm} /> 
               <Route path='/products' component={ProductsScreen} />
               <Route path='/orders' component={OrdersScreen} />
               <Route path='/' component={HomeScreen} />
