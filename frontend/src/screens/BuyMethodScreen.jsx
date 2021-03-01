@@ -16,7 +16,7 @@ function BuyMethodScreen ({history}){
    
     return( <div><FormContainer>
             
-
+            <CheckoutSteps step1 step2/>
             <h1 className='my-3'>Buy Method</h1>
             <Form className='my-3'>
                 <Form.Group>
