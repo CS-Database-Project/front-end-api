@@ -116,7 +116,7 @@ export const getAllUsers = createSelector(
 export const registerUser = (user) => (dispatch) => {
     return dispatch(
         apiCallBegan({
-            url: `${usersURL}/user-register`,
+            url: `${usersURL}/register`,
             method: "post",
             data: user,
             onStart: usersRegisterRequested,
