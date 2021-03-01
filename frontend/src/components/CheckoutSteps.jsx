@@ -1,73 +1,61 @@
 import React from 'react'
-import {Nav} from 'react-bootstrap'
-import {LinkContainer} from 'react-router-bootstrap'
+import { Nav } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 
-function CheckoutSteps({step1, step2, step3, step4, step5}){
-    return(
-        <Nav className='justify-content-center mb-4'>
+const CheckoutSteps = ({ step1, step2, step3, step4, step5 }) => {
+  return (
+    <Nav className='justify-content-center mb-4'>
+      <Nav.Item>
+        {step1 ? (
+          <LinkContainer to='/login'>
+            <Nav.Link><h5>Sign In</h5></Nav.Link>
+          </LinkContainer>
+        ) : (
+          <Nav.Link disabled>Sign In</Nav.Link>
+        )}
+      </Nav.Item>
 
-            <Nav.Item>
-                {
-                    step1 ? (
-                        <LinkContainer to='/login'>
-                            <Nav.Link>Sign In</Nav.Link>
-                        </LinkContainer>
-                    ) : (
-                        <Nav.Link disabled>Sign In</Nav.Link>
-                    )
-                }
-            </Nav.Item>
+      <Nav.Item>
+        {step2 ? (
+          <LinkContainer to='/buyMethod'>
+            <Nav.Link><h5>Buy Method</h5></Nav.Link>
+          </LinkContainer>
+        ) : (
+          <Nav.Link disabled>Buy Method</Nav.Link>
+        )}
+      </Nav.Item>
 
-            <Nav.Item>
-                {
-                    step2 ? (
-                        <LinkContainer to='/buyMethod'>
-                            <Nav.link>Buy Method</Nav.link>
-                        </LinkContainer>
-                    ) : (
-                        <Nav.link disabled>Sign In</Nav.link>
-                    )
-                }
-            </Nav.Item>
+      <Nav.Item>
+        {step3 ? (
+          <LinkContainer to='/shipping'>
+            <Nav.Link><h5>Shipping</h5></Nav.Link>
+          </LinkContainer>
+        ) : (
+          <Nav.Link disabled>Shipping</Nav.Link>
+        )}
+      </Nav.Item>
 
-            <Nav.Item>
-                {
-                    step3 ? (
-                        <LinkContainer to='/shipping'>
-                            <Nav.link>Shipping</Nav.link>
-                        </LinkContainer>
-                    ) : (
-                        <Nav.link disabled>Sign In</Nav.link>
-                    )
-                }
-            </Nav.Item>
+      <Nav.Item>
+        {step4 ? (
+          <LinkContainer to='/payment'>
+            <Nav.Link><h5>Payment</h5></Nav.Link>
+          </LinkContainer>
+        ) : (
+          <Nav.Link disabled>Payment</Nav.Link>
+        )}
+      </Nav.Item>
 
-            <Nav.Item>
-                {
-                    step4 ? (
-                        <LinkContainer to='/payment'>
-                            <Nav.link>Payment</Nav.link>
-                        </LinkContainer>
-                    ) : (
-                        <Nav.link disabled>Sign In</Nav.link>
-                    )
-                }
-            </Nav.Item>
-
-            <Nav.Item>
-                {
-                    step5 ? (
-                        <LinkContainer to='/placeorder'>
-                            <Nav.link>Place Order</Nav.link>
-                        </LinkContainer>
-                    ) : (
-                        <Nav.link disabled>Sign In</Nav.link>
-                    )
-                }
-            </Nav.Item>
-
-        </Nav>
-    )
+      <Nav.Item>
+        {step5 ? (
+          <LinkContainer to='/placeorder'>
+            <Nav.Link><h5>Place Order</h5></Nav.Link>
+          </LinkContainer>
+        ) : (
+          <Nav.Link disabled>Place Order</Nav.Link>
+        )}
+      </Nav.Item>
+    </Nav>
+  )
 }
 
 export default CheckoutSteps;

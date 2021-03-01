@@ -30,17 +30,28 @@ const slice = createSlice({
         },
 
 
+
+
         userLoggedOut(user,action){
             user.loggedIn = false;
-            user.data = {}
+            user.data = {};
+            delete user.checkOutStarted;
         },
 
         checkOutStarted(user, action){
             user.checkOutStarted = true;
         },
 
-        checkOutStartedDeleted(user, action) {
-            delete user.checkOutStarted
+        buyMethodSelected(user, action){
+            user.buyMethod=action.payload;
+        },
+
+        shippingAddressSelected(user,action){
+            user.shippingAddress=action.payload;            
+        },
+
+        paymentMethodSelected(user, action){
+            user.paymentMethod=action.payload;
         }
     }
 });
@@ -57,7 +68,10 @@ export const {
     userLoginSucceeded, 
     userLoggedOut,
     checkOutStarted,
-    checkOutStartedDeleted } = slice.actions;
+    buyMethodSelected,
+    shippingAddressSelected,
+    paymentMethodSelected
+    } = slice.actions;
 
 
 //Action Invokers
@@ -78,6 +92,12 @@ export const login = (usertype, data) => (dispatch) => {
 
 export const logout = () => (dispatch) =>dispatch(userLoggedOut());
 
+export const selectBuyMethod =(selectedMethod) => buyMethodSelected(selectedMethod);
+
+export const selectShippingAddress =(a) => shippingAddressSelected(a);
+
+export const selectPaymentMethod =(selectedMethod) => paymentMethodSelected(selectedMethod);
+
 //Selectors
 
 export const getAuthDetails = createSelector(
@@ -92,8 +112,6 @@ export const getLoggedInStatus = createSelector(
 );
 
 export const setCheckOutStarted = () => checkOutStarted();
-
-export const deleteCheckOutStarted = () => checkOutStartedDeleted();
 
 export const getCheckoutStatus = createSelector(
     state => state.auth,
