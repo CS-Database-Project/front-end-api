@@ -34,15 +34,12 @@ const slice = createSlice({
 
         userLoggedOut(user,action){
             user.loggedIn = false;
-            user.data = {}
+            user.data = {};
+            delete user.checkOutStarted;
         },
 
         checkOutStarted(user, action){
             user.checkOutStarted = true;
-        },
-
-        checkOutStartedDeleted(user, action) {
-            delete user.checkOutStarted
         },
 
         buyMethodSelected(user, action){
@@ -71,7 +68,6 @@ export const {
     userLoginSucceeded, 
     userLoggedOut,
     checkOutStarted,
-    checkOutStartedDeleted,
     buyMethodSelected,
     shippingAddressSelected,
     paymentMethodSelected
@@ -116,8 +112,6 @@ export const getLoggedInStatus = createSelector(
 );
 
 export const setCheckOutStarted = () => checkOutStarted();
-
-export const deleteCheckOutStarted = () => checkOutStartedDeleted();
 
 export const getCheckoutStatus = createSelector(
     state => state.auth,
