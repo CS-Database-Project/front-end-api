@@ -1,13 +1,14 @@
 import React, {useState} from 'react'
 import {Form, Button, Col} from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
+import { useDispatch, useSelector } from 'react-redux';
 import '../bootstrap.min.css'
 import CheckoutSteps from '../components/CheckoutSteps'
+import {selectPaymentMethod} from './../store/auth'
 
 const PaymentScreen = ({history}) => {
-
+    const dispatch = useDispatch();
     const [selectedMethod, setSelectedMethod] = useState('PayPal');
-    
     const handleChange = event => setSelectedMethod(event.target.value)
 
     return(
@@ -39,7 +40,11 @@ const PaymentScreen = ({history}) => {
                          >
                      </Form.Check>
                  </Col>                 
-                 <Button onClick = {() =>{history.push("/placeOrder")}}type='submit' variant='primary'>
+                 <Button 
+
+                 onClick = {() =>{
+                     dispatch(selectPaymentMethod(selectedMethod));
+                     history.push("/placeOrder")}}type='submit' variant='primary'>
                     Continue
                  </Button>
             </Form>

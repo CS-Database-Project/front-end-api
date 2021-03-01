@@ -4,12 +4,14 @@ import CustomForm from '../components/common/CustomForm'
 import { connect } from 'react-redux'
 import {  Formik } from 'formik';
 import * as Yup from 'yup';
-import { login } from './../store/auth';
+import { selectShippingAddress } from './../store/auth';
 import CheckoutSteps from '../components/CheckoutSteps'
 import FormContainer from '../components/FormContainer'
+import { useDispatch, useSelector } from 'react-redux';
+
 
 class ShippingScreen extends CustomForm {
-
+    
     schema =Yup.object().shape({
       address: Yup.string().required('Home Address is required...'),
       city: Yup.string().required('City is required...'),
@@ -23,8 +25,8 @@ class ShippingScreen extends CustomForm {
     };
 
     submitForm = (values) => {
+      this.props.shippingAddress(values);
       this.props.history.push("/payment");
-      console.log(values);
     
     } 
   
@@ -106,9 +108,9 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-/* const mapDispatchToProps = dispatch => ({
-  loginUser: (data) => dispatch(login('customer', data)),
-  loginSuccessful: () => dispatch(toastAction({ message: "Login Successfull...", type: 'info' }))
-}); */
+const mapDispatchToProps = dispatch => ({
+  shippingAddress: (data) => dispatch(selectShippingAddress( data))
+  
+}); 
 
-export default connect(mapStateToProps)(ShippingScreen);
+export default connect(mapStateToProps,mapDispatchToProps)(ShippingScreen);

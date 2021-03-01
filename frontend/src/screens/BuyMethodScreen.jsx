@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import '../bootstrap.min.css'
 import CommonListGroup from '../components/common/CommonListGroup'
 import CheckoutSteps from '../components/CheckoutSteps'
-import selectBuyMethod from './../store/auth'
+import {selectBuyMethod} from './../store/auth'
 
 
 function BuyMethodScreen ({history}){

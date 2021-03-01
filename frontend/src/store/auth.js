@@ -45,18 +45,17 @@ const slice = createSlice({
             delete user.checkOutStarted
         },
 
-        buyMethodSelected(user,action){
-
-
+        buyMethodSelected(user, action){
+            user.buyMethod=action.payload;
         },
 
         shippingAddressSelected(user,action){
-
+            user.shippingAddress=action.payload;            
         },
 
-        
-
-
+        paymentMethodSelected(user, action){
+            user.paymentMethod=action.payload;
+        }
     }
 });
 
@@ -74,7 +73,8 @@ export const {
     checkOutStarted,
     checkOutStartedDeleted,
     buyMethodSelected,
-    shippingAddressSelected
+    shippingAddressSelected,
+    paymentMethodSelected
     } = slice.actions;
 
 
@@ -97,6 +97,10 @@ export const login = (usertype, data) => (dispatch) => {
 export const logout = () => (dispatch) =>dispatch(userLoggedOut());
 
 export const selectBuyMethod =(selectedMethod) => buyMethodSelected(selectedMethod);
+
+export const selectShippingAddress =(a) => shippingAddressSelected(a);
+
+export const selectPaymentMethod =(selectedMethod) => paymentMethodSelected(selectedMethod);
 
 //Selectors
 
