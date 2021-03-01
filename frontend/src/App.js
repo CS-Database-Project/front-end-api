@@ -24,6 +24,7 @@ import ProductsScreen from './screens/ProductsScreen';
 import Logout from './components/logout';
 import UserRegisterForm from './screens/userRegisterForm';
 import OrdersScreen from './screens/OrdersScreen';
+import EditProfile from './screens/EditProfile';
 
 const App = () => {
 
@@ -62,6 +63,7 @@ const App = () => {
               <Route path='/users' component = {ViewUsers} />
               <Route path='/products' component={ProductsScreen} />
               <Route path='/orders' component={OrdersScreen} />
+              <Route path='/Edit profile' component={EditProfile} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />
             </Switch>

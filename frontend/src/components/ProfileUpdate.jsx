@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {Container, Card} from 'react-bootstrap';
+import {Container, Card,Button} from 'react-bootstrap';
 
 function UpdateProfile({ userData }) {
 
@@ -16,6 +16,7 @@ function UpdateProfile({ userData }) {
                     <Card.Text>{`${userData.address} `},<br/>{`${userData.city} `},<br/>{`${userData.state} `}</Card.Text>
                     <Card.Title>Phone number</Card.Title>
                     <Card.Text>{`${userData.phone} `}</Card.Text>
+                    <Button type='submit'  className='btn btn-light' onClick={()=> window.location='/Edit profile'}>Edit Profile</Button>
                 </Card.Body>
             </Card>
         </Container>    

@@ -55,14 +55,24 @@ const slice = createSlice({
             const { customerId } = action.payload.data;
             const index = customers.list.findIndex(c => c.customerId === customerId );
             customers.list[index].activeStatus = true;
+        },
+
+        customersUpdateRequested(customers, action) {
+            delete customers.updateSuccessful;
+            customers.updating = true;
+        },
+
+        customersUpdateRequestFailed(customers, action) {
+            customers.updating = false;
+        },
+
+        customersUpdateRequestSucceeded(customers, action){
+            delete customers.updating;
+            customers.updateSuccessful = true;
+            const index = customers.list.findIndex(c => c.customerId === action.payload.customerId);
+            customers.list.splice(index, 1);
+            customers.list.push(action.payload);
         }
-
-
-        //customerUpdated(customers, action){
-            // const index = customers.list.findIndex(p => p.customerId === action.payload.customerId);
-            // customers.list.splice(index, 1);
-            // customers.list.push(action.payload);
-        // },
 
     }
 });
@@ -76,8 +86,10 @@ export const {
     customersReceived,
     customerCreated,
     customerActivated, 
-    customerDeactivated, 
-    customerUpdated,
+    customerDeactivated,
+    customersUpdateRequested,
+    customersUpdateRequestFailed, 
+    customersUpdateRequestSucceeded,
     customersRequestFailed,
     customersRegisterRequested,
     customersRegisterRequestFailed,
@@ -138,4 +150,17 @@ export const activateCustomer = (customerId) =>{
         data: {customerId, activeStatus: true},
         onSuccess: customerActivated.type,
     });
+}
+
+export const updateCustomerDetails = (customer) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${customersURL}/update-details`,
+            method: "put",
+            data: customer,
+            onStart: customersUpdateRequested,
+            onSuccess: customersUpdateRequestSucceeded.type,
+            onError: customersUpdateRequestFailed
+        })
+    );
 }
