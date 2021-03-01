@@ -88,3 +88,16 @@ export const getOrderByCustomerId = customerId =>
             return h;
         }
     );
+
+export const placeOrder = (order) => (dispatch)=>{
+        return dispatch(
+            apiCallBegan({
+                url: ordersURL + '/placeOrder', 
+                method: "post",
+                data: order,
+                onStart: ordersCreateRequested.type,
+                onSuccess: ordersReceived.type,
+                onError: ordersCreateRequestFailed.type
+            })
+        );
+    }
