@@ -28,7 +28,8 @@ import OrdersScreen from './screens/OrdersScreen';
 const App = () => {
 
   return ( 
-      <>
+      <div class="home">
+
         <Header/>
         <Container >
           <main>
@@ -68,7 +69,7 @@ const App = () => {
           </main>
         </Container>
         <Footer/>
-      </>
+      </div>
    );
 }
  
