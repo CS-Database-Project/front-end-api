@@ -26,7 +26,13 @@ const slice = createSlice({
 
         // payload: [message: , data: ]
         categoriesReceived(categories, action) {
-            categories.list = action.payload.data;
+            const data = action.payload.data;
+            for(let c of data){
+                if(c.subCategories[0] === null){
+                    c.subCategories = []
+                }
+            }
+            categories.list = data;
             categories.loading = false;
             categories.lastFetch = Date.now();
         },
@@ -42,7 +48,7 @@ const slice = createSlice({
 
         addMainCategoryRequestSucceeded(categories, action) {
             categories.adding = false;
-            categories.list.push(action.payload);
+            categories.list.push(action.payload.data);
             categories.mainCategoryAdded = true;
         },
 
