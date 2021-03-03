@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Button, Table } from 'react-bootstrap';
+import { Container, Table, Row, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadProducts, getDeletedProducts } from './../store/entities/products';
 
@@ -16,6 +16,7 @@ const DeletedProductsScreen = () => {
     return ( 
          <>
             <h1 className='heading'>Deleted Products</h1>
+            {deletedProducts.length >0 ?
             <Table striped bordered hover variant="light">
             <thead>
                 <tr>
@@ -38,7 +39,7 @@ const DeletedProductsScreen = () => {
                     </tr>
                 )}
             </tbody>
-        </Table>
+        </Table> : <Container className ='empty-cart-message' fluid><Row><Col><h5 className ='py-3'>"No Deleted Products To Display...</h5></Col></Row></Container>}
         </>
      );
 }
