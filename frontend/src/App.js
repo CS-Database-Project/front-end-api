@@ -29,6 +29,7 @@ import CategoriesScreen from './screens/CategoriesScreen';
 import AddMainCategoryForm from './screens/AddMainCategoryForm';
 import AddSubCategoryForm from './screens/AddSubCategoryForm';
 import DeletedProductsScreen from './screens/DeletedProductsScreen';
+import AddCustomAttributeForm from './screens/AddCustomAttributeForm';
 
 const App = () => {
 
@@ -71,6 +72,7 @@ const App = () => {
               <Route path='/categories' component={CategoriesScreen} />
               <Route path='/add-main-category' component={AddMainCategoryForm} />
               <Route path='/add-sub-category' component={AddSubCategoryForm} />
+              <Route path='/add-custom-attribute' component={AddCustomAttributeForm} />
               <Route path='/orders' component={OrdersScreen} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />
