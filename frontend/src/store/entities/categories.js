@@ -52,6 +52,22 @@ const slice = createSlice({
             categories.mainCategoryAdded = true;
         },
 
+        addSubCategoryRequested(categories, action) {
+            categories.adding = true;
+            categories.subCategoryAdded = false;
+        },
+
+        addSubCategoryRequestFailed(categories, action) {
+            categories.adding = false;
+        },
+
+        addSubCategoryRequestSucceeded(categories, action) {
+            categories.adding = false;
+            const index = categories.list.findIndex(c => c.category.categoryId === action.payload.data.mainCategoryId);
+            categories.list[index].subCategories.push({ categoryId: action.payload.data.subCategoryId, name: action.payload.data.subCategoryName});
+            categories.subCategoryAdded = true;
+        },
+
 
         
     }
@@ -70,7 +86,10 @@ export const {
     categoriesRequestFailed,
     addMainCategoryRequested,
     addMainCategoryRequestFailed,
-    addMainCategoryRequestSucceeded} = slice.actions;
+    addMainCategoryRequestSucceeded,
+    addSubCategoryRequested,
+    addSubCategoryRequestFailed,
+    addSubCategoryRequestSucceeded } = slice.actions;
 
 const categoriesURL = "product";
 const refreshTime = configData.REFRESH_TIME;
@@ -119,6 +138,19 @@ export const addMainCategory = (categoryName) => {
         onStart: addMainCategoryRequested.type,
         onSuccess: addMainCategoryRequestSucceeded.type,
         onError: addMainCategoryRequestFailed.type
+    }))
+};
+
+
+export const addSubCategory = (subCategoryName, mainCategoryId) => {
+
+    return (apiCallBegan({
+        url: categoriesURL + '/sub-category-register',
+        data: {mainCategoryId, subCategoryName },
+        method: 'post',
+        onStart: addSubCategoryRequested.type,
+        onSuccess: addSubCategoryRequestSucceeded.type,
+        onError: addSubCategoryRequestFailed.type
     }))
 }
 
