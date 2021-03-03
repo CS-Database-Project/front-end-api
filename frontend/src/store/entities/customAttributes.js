@@ -75,7 +75,7 @@ export const loadCustomAttributes = () => (dispatch, getState) => {
 
     return dispatch(
         apiCallBegan({
-            url: customAttributesURL + '/category-view',
+            url: customAttributesURL + '/custom-attribute-view',
             onStart: customAttributesRequested.type,
             onSuccess:  customAttributesReceived.type,
             onError: customAttributesRequestFailed.type
@@ -99,7 +99,7 @@ export const addCustomAttribute = (name, type) => {
 
 //Selectors 
 
-const getAllCustomAttributes = createSelector(
-    state => state.entities.customAttributes,
+export const getAllCustomAttributes = createSelector(
+    state => state.entities.customAttributes.list,
     attributes => attributes
 )

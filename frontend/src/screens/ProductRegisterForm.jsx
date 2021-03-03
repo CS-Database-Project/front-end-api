@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Form, FormControl, Button, Row, Col, Spinner } from 'react-bootstrap';
+import ImageUploader from 'react-images-upload';
 import {  Formik } from 'formik';
 import * as Yup from 'yup';
-import { toastAction } from '../store/toastAction';
+import { getAllCategories, loadCategories } from './../store/entities/categories';
+import { createProduct } from './../store/entities/products';
+import { getAllCustomAttributes, loadCustomAttributes } from './../store/entities/customAttributes';
+import { saveImage } from './../store/entities/products';
+import axios from 'axios';
+import { toastAction } from './../store/toastAction';
 
 
 function ProductRegisterForm(){
+    const dispatch = useDispatch();
 
     const [ schema, setSchema ] = useState({ 
                             title : Yup.string()
@@ -30,11 +38,49 @@ function ProductRegisterForm(){
                                                 unitPrice0: '',
                                                 countInStock0: ''
                                             });
-    
+    //variants
     const [ variants, setVariants ] = useState([{}]);
-    const [formElements, setFormElements] = useState(4);   
+
+    const formElements = useState(4);  
     
+    //categories
+    const categories = useSelector(getAllCategories);
+
+
+    //Main Categories
+    const [ selectedMainCategories, setSelectedMainCategories ] = useState(['']);
     
+    //Sub Categories
+    const [ selectedSubCategories, setSelectedSubCategories ] = useState([getInitialState(categories, selectedMainCategories)]);
+
+    //Custom Attributes
+    const customAttributes = useSelector(getAllCustomAttributes);
+    // const customAttributes = [{name:'Color', type:"Text"}, {name:'Brand', type:'Text'}];
+    const [ selectedCustomAttributes, setSelectedCustomAttributes ] = useState([customAttributes.length > 0 ?  {name:customAttributes[0].name, value:''} : {name:'', value:''}]);
+
+    //Image
+    const [ image, setImage ] = useState('');
+
+    useEffect(() =>{
+        dispatch(loadCategories());
+        dispatch(loadCustomAttributes());
+        if(selectedMainCategories.length ===1 && selectedMainCategories[0] ===''){
+            if(categories.length !==0){
+                const selected = [categories[0].category.name];
+                setSelectedMainCategories(selected);
+            }
+        }
+
+        if(selectedCustomAttributes.length ===1 && selectedCustomAttributes[0].name ===''){
+            if(customAttributes.length !==0){
+                const selected = [{name: customAttributes[0].name, value: ''}];
+                setSelectedCustomAttributes(selected);
+            }
+        }
+    },[selectedMainCategories, selectedSubCategories, selectedCustomAttributes, customAttributes, categories]);
+
+
+    //variants
     const handleVariantAdded = () => {
         const newVariants = [...variants, {}];
         const newSchema = {...schema, 
@@ -48,33 +94,113 @@ function ProductRegisterForm(){
                              [`unitPrice${variants.length}`]: '',
                              [`countInStock${variants.length}`]: ''
         };
-
         setVariants(newVariants);
         setSchema(newSchema);
         setInitialValues(newInitialValues);
     }
 
-    const handleVariantDeleted = () => {
-        const newVariants = [...variants];
-        newVariants.pop();
+
+    const handleVariantDeleted = (values) => {
+        let newVariants = [...variants];
+        newVariants = newVariants.splice(0,variants.length-1);
         const newSchema = {...schema};
+        //Deleting from schema
         delete newSchema[`variant${variants.length-1}`];
         delete newSchema[`unitPrice${variants.length-1}`];
         delete newSchema[`countInStock${variants.length-1}`];
 
         const newInitialValues = {...initialValues};
+        //Deleting from initial values
         delete newInitialValues[`variant${variants.length-1}`];
         delete newInitialValues[`unitPrice${variants.length-1}`];
         delete newInitialValues[`countInStock${variants.length-1}`];
 
-        setVariants(newVariants);
-        setSchema(newSchema);
+        //Deleting from values of Formik
+        delete values[`variant${variants.length - 1}`];
+        delete values[`unitPrice${variants.length - 1}`];
+        delete values[`countInStock${variants.length - 1}`];
+
         setInitialValues(newInitialValues);
+        setVariants(newVariants);
+        setSchema(newSchema);  
     }
 
-    const submitForm = (values) => {
-        console.log(values);
-    } 
+    //Main Categories
+    const handleMainCategoryInputDeleted = () => {
+        const updated = [...selectedMainCategories];
+        updated.pop();
+        setSelectedMainCategories(updated);
+    }
+
+    const handleMainCategoryInputAdded = () => {
+        const updated = [...selectedMainCategories, ''];
+        setSelectedMainCategories(updated);
+    }
+
+    //Sub Categories
+
+    const handleSubCategoryInputAdded = () => {
+        const updated = [...selectedSubCategories, ''];
+        setSelectedSubCategories(updated);
+    };
+
+    const handleSubCategoryInputDeleted = () => {
+        const updated = [...selectedSubCategories];
+        updated.pop();
+        setSelectedSubCategories(updated);
+    };
+
+    //Custom Attributes
+
+    const handleCustomAttributeInputAdded = () => {
+        const updated = [...selectedCustomAttributes, {}];
+        setSelectedCustomAttributes(updated);
+    }
+
+    const handleCustomAttributeInputDeleted = () => {
+        const updated = [...selectedCustomAttributes];
+        updated.pop();
+        setSelectedCustomAttributes(updated);
+    }
+
+    const onDrop = (picture) => {
+        setImage(picture);
+        console.log(picture);
+        console.log("Uploading");
+    }
+    
+
+    const submitForm = async (values) => {
+        const {title, sku, weight, description } = values;
+        const mainCategoriesNames = [...new Set(selectedMainCategories)];
+        const subCategoriesNames = [...new Set(selectedSubCategories)];
+        const categoryIds = getCategoryIDS(categories, mainCategoriesNames, subCategoriesNames);
+        const customAttributesNames = [...new Set(selectedCustomAttributes)];
+        updateStructuredCustomAttributes(customAttributes, customAttributesNames);
+        const picture = image.pop();
+
+        const formData = new FormData();
+        formData.append('productImage', picture);
+        
+        try{
+            
+          
+            const response = await axios.request({
+                url: 'http://localhost:8000/api/product/product-register',
+                method: 'post',
+                data: {title, sku, weight, description, 
+                    variants: JSON.stringify(variants),
+                    categories: JSON.stringify(categoryIds),
+                    customAttributes: JSON.stringify(customAttributesNames)
+                },
+            });
+            const productId = response.data.data;
+            dispatch(saveImage(formData, productId));
+            dispatch(toastAction({ message: "Register Success...", type: 'info' }));
+        }catch(e){
+            dispatch(toastAction({ message: "Register Failed...", type: 'error' }));
+        }  
+    }
     
    
     return (
@@ -94,7 +220,7 @@ function ProductRegisterForm(){
                 errors
             }) => (
             <Form noValidate onSubmit={handleSubmit}>
-                <h1 className = 'heading my-2'>User Register</h1>
+                <h1 className = 'heading my-2'>Product Register</h1>
                 <Row>
                     <Col>
                         <Form.Group controlId= 'validationFormik01'>
@@ -180,7 +306,14 @@ function ProductRegisterForm(){
                                         type='text'
                                         name={`variant${index}`}
                                         value={values[`variant${index}`]}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            handleChange(e);
+                                            const updated = {...variants[index]};
+                                            updated.name = e.target.value;
+                                            const newVariants = [...variants];
+                                            newVariants[index] = updated;
+                                            setVariants(newVariants);
+                                        }}
                                         placeholder='Variant Name'
                                         isValid={touched[`variant${index}`] && !errors[`variant${index}`]}
                                         isInvalid={!!errors[`variant${index}`]}
@@ -197,7 +330,14 @@ function ProductRegisterForm(){
                                         type='text'
                                         name={`unitPrice${index}`}
                                         value={values[`unitPrice${index}`]}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            handleChange(e);
+                                            const updated = {...variants[index]};
+                                            updated.unitPrice = e.target.value;
+                                            const newVariants = [...variants];
+                                            newVariants[index] = updated;
+                                            setVariants(newVariants);
+                                        }}
                                         placeholder='Unit Price'
                                         isValid={touched[`unitPrice${index}`] && !errors[`unitPrice${index}`]}
                                         isInvalid={!!errors[`unitPrice${index}`]}
@@ -208,13 +348,20 @@ function ProductRegisterForm(){
                             </Col>
 
                             <Col>
-                                <Form.Group controlId= {`validationFormik${formElements + index + 3 >= 10 ? `${formElements + index + 3}`: `0${formElements + index + 2}`}`}>
+                                <Form.Group controlId= {`validationFormik${formElements + index + 3 >= 10 ? `${formElements + index + 3}`: `0${formElements + index + 3}`}`}>
                                     <Form.Label className = 'form-label'>Count In Stock</Form.Label>
                                     <Form.Control 
                                         type='text'
                                         name={`countInStock${index}`}
                                         value={values[`countInStock${index}`]}
-                                        onChange={handleChange}
+                                        onChange={(e) => {
+                                            handleChange(e);
+                                            const updated = {...variants[index]};
+                                            updated.countInStock = e.target.value;
+                                            const newVariants = [...variants];
+                                            newVariants[index] = updated;
+                                            setVariants(newVariants);
+                                        }}
                                         placeholder='Count In Stock'
                                         isValid={touched[`countInStock${index}`] && !errors[`countInStock${index}`]}
                                         isInvalid={!!errors[`countInStock${index}`]}
@@ -228,7 +375,7 @@ function ProductRegisterForm(){
                             <Col>
                                 { index === variants.length-1 && <div className ='my-4'>
                                     <Button onClick = {() => handleVariantAdded()} className = 'mx-2' variant='primary'>+</Button>
-                                    {index !==0 && <Button onClick = {() => handleVariantDeleted()} className = 'mx-2' variant='danger'>-</Button>}
+                                    {index !==0 && <Button onClick = {() => handleVariantDeleted(values)} className = 'mx-2' variant='danger'>-</Button>}
                                 </div>}
                             </Col>
 
@@ -236,6 +383,102 @@ function ProductRegisterForm(){
                         </>
                     ); 
                 })}
+                <h3 className='my-4'>Categories</h3>
+               
+                    
+                {selectedMainCategories.map((mc, index) => <Row className='mx-4'>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>Main Category </Form.Label>
+                            <Form.Control onChange = {(e) => {
+                                const updated = [...selectedMainCategories];
+                                updated[index] = e.target.value;
+                                setSelectedMainCategories(updated);  
+                            }} as="select">
+                                {categories.map((c,index) => <option selected={index === 0? 'selected': null}>{c.category.name}</option>)}
+                            </Form.Control>
+                        </Form.Group>
+                    </Col>
+                    
+                    <Col>
+                        { index === selectedMainCategories.length-1 && <div>
+                            <Button onClick= {() => handleMainCategoryInputAdded()} className='mx-2 my-4' variant='primary'>+</Button>
+                            { index !==0 && <Button onClick= {() => handleMainCategoryInputDeleted()} className='mx-2 my-4' variant='danger'>-</Button>}
+                        </div>}
+                    </Col>
+                    
+                </Row>)}
+
+                {selectedSubCategories.map((sc, index) => <Row className='mx-4'>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>Sub Category </Form.Label>
+                            <Form.Control onChange = {(e) => {
+                                const updated = [...selectedSubCategories];
+                                updated[index] = e.target.value;
+                                setSelectedSubCategories(updated);  
+                            }} as="select">
+                                {getSubCategories(categories, selectedMainCategories).map((sc,index) => <option selected>{sc}</option>)}
+                            </Form.Control>
+                        </Form.Group>
+                    </Col>
+                    
+                    <Col>
+                        { index === selectedSubCategories.length-1 && <div>
+                            <Button onClick= {() => handleSubCategoryInputAdded()} className='mx-2 my-4' variant='primary'>+</Button>
+                            { index !==0 && <Button onClick= {() => handleSubCategoryInputDeleted()} className='mx-2 my-4' variant='danger'>-</Button>}
+                        </div>}
+                    </Col>
+                    
+                </Row>)}
+                <h3>Custom Attributes</h3>
+                {selectedCustomAttributes.map((ca, index) => <Row className='mx-4'>
+                    <Col>
+                        <Form.Group>
+                            <Form.Label>Custom Attribute </Form.Label>
+                            <Form.Control onChange = {(e) => {
+                                const updated = [...selectedCustomAttributes];
+                                updated[index].name = e.target.value;
+                                console.log("Updating", updated);
+                                setSelectedCustomAttributes(updated);  
+                            }} as="select">
+                                {customAttributes.map((ca,index) => <option selected={index === 0? 'selected': null}>{`${ca.name}`}</option>)}
+                            </Form.Control>
+                        </Form.Group>
+                    </Col>
+
+                    <Col>
+                    <Form.Group controlId="formBasicText">
+                        <Form.Label>Value</Form.Label>
+                        <Form.Control onChange = {(e) => {
+                            const updated = [...selectedCustomAttributes];
+                            updated[index].value = e.target.value;
+                            setSelectedCustomAttributes(updated); 
+                        }}type="text" placeholder="Enter Value" value={ca.value}/>
+                    </Form.Group>
+                    
+                    
+                    
+                    </Col>
+                    
+                    <Col>
+                        { index === selectedCustomAttributes.length-1 && <div>
+                            <Button onClick= {() => handleCustomAttributeInputAdded()} className='mx-2 my-4' variant='primary'>+</Button>
+                            { index !==0 && <Button onClick= {() => handleCustomAttributeInputDeleted()} className='mx-2 my-4' variant='danger'>-</Button>}
+                        </div>}
+                    </Col>
+                    
+                </Row>)}
+                <h3>Upload Image</h3>
+                <ImageUploader
+                    withIcon={true}
+                    buttonText='Choose images'
+                    onChange={onDrop}
+                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                    maxFileSize={5242880}
+                    withPreview ={true}
+                />
+        
 
                 <Button 
                     type='submit'
@@ -253,4 +496,73 @@ function ProductRegisterForm(){
 
 
 export default ProductRegisterForm;
+
+
+
+function getSubCategories(categories, selectedMainCategories){
+    let subCategories = [];
+
+    for(let item of categories){
+        if(selectedMainCategories.includes(item.category.name)){
+            subCategories = [...subCategories, ...item.subCategories.map(sc => sc.name)];
+        }
+    }
+    return subCategories;
+}
+
+
+function getCategoryIDS(categories, main, sub){
+    
+    const filtered = categories.filter(c => {
+        if(main.includes(c.category.name)){
+            return c;
+        }
+    });
+
+    const mainIds = filtered.map(f => f.category.categoryId);
+    
+    let subIds = [];
+    for(let f of filtered){
+        const subs = f.subCategories;
+        for(let s of subs){
+            if(sub.includes(s.name)){
+                subIds = [...subIds, s.categoryId];
+            }
+        }
+    }
+
+    return [...mainIds, ...subIds];
+}
+
+function updateStructuredCustomAttributes(customAttributes, selected){
+
+    for(let a of selected){
+        const index = customAttributes.findIndex(ca => ca.name === a.name);
+        if(index !== -1)
+            a.customAttributeId = customAttributes[index].customAttributeId;
+    }
+}
+
+
+function getInitialState(categories, selectedMainCategories){
+
+    const filtered = categories.filter(c => selectedMainCategories.includes(c.category.name));
+
+    let subsAll = [];
+
+    for(let f of filtered){
+        const subs = f.subCategories;
+        subsAll = [...subsAll, ...subs]
+    }
+
+    if(subsAll.length > 0 ){
+        return subsAll.pop().name;
+    }else{
+        return '';
+    }
+
+
+
+}
+
 

@@ -126,17 +126,18 @@ export const getProductById = productId =>
 
 export const updateProductCount = (updated) => productCountUpdated(updated);
 
-export const createProduct = (product) => (dispatch, getState) => {
+
+export const saveImage = (image, productId) => (dispatch, getState) => {
     const config = {
         headers: {
             'Content-Type': `multipart/form-data`,
         }
     };
     return dispatch(apiCallBegan({
-            url: productsURL + "/product-register",
-            method: "post",
-            data: product,
-            config
+        url: productsURL + "/product-register-image/" + productId,
+        method: "post",
+        data: image,
+        config
     }));
 }
 

@@ -14,7 +14,7 @@ const Product = ({ product }) => {
         <>
             <Card className = 'my-3 p-3 rounded'>
                 <Link to = {`/products/${product.productId}`}>
-                    <Card.Img src={`/images/${product.productId}.jpg`}  variant = 'top'/>
+                    <Card.Img src={`http://localhost:8000/files/${product.productId}.jpg`}  variant = 'top'/>
                 </Link>
                 <Card.Body>
                     <Link to = {`/products/${product.productId}`}>
