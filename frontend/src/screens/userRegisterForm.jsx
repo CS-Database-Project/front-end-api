@@ -264,9 +264,7 @@ class UserRegisterForm extends CustomForm {
                             errorValue: errors.confirmPassword
                         }) 
                     }
-                    <Button 
-                        type='submit'
-                    >
+                    <Button type='submit' >
                         Register
                     </Button>
                     <br/>

@@ -3,7 +3,7 @@ import { Table, Image } from 'react-bootstrap';
 const ProductsTable = ({ products }) => {
 
     return ( 
-        <Table striped bordered hover variant="light">
+        <Table striped bordered hover variant="light" className="tables">
             <thead>
                 <tr>
                 <th></th>

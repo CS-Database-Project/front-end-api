@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Spinner, Nav } from 'react-bootstrap';
+import { Form, Button, Spinner, Nav ,Row,Col} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import CustomForm from '../components/common/CustomForm';
 import { connect } from 'react-redux'
@@ -38,6 +38,12 @@ class UserLoginForm extends CustomForm {
     
     render() {
         return (
+            <Row className="my-5">
+                <Col md={5} className="user-form-login">
+                    <h3 className="welcome">WELCOME BACK</h3>
+                </Col>
+                    
+                <Col md={5}>
             <Formik
                 validationSchema = {this.schema}
                 onSubmit = {this.submitForm}
@@ -53,8 +59,8 @@ class UserLoginForm extends CustomForm {
                     dirty,
                     errors
                 }) => (
-                <Form noValidate onSubmit={handleSubmit}>
-                    <h1 className = 'heading'>Log In</h1>
+                <Form noValidate onSubmit={handleSubmit} className="mx-3">
+                    <h5 className = 'user-heading'>Login User Account</h5>
                     {this.props.auth.logging && <div className = 'login-spinner' ><Spinner animation="border"  variant="primary" /></div>}
                     {this.renderFormInput(
                         {   controlId: 'validationFormik01', 
@@ -88,14 +94,14 @@ class UserLoginForm extends CustomForm {
                     
                      
                     <Button 
-                        type='submit'
+                        type='submit' className="user-login-btn" variant="danger"
                     >
                         Login
                     </Button>
 
                 </Form>
                 )}
-            </Formik>
+            </Formik></Col></Row>
             
         );
     }

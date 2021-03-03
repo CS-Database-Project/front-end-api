@@ -34,8 +34,7 @@ const HomeScreen = ({ match }) => {
     }, [products, categories]);
 
     return (
-        <div className = 'mb-4'>
-            <h1 className = 'my-3'>Latest Products</h1>
+        <div className = 'mb-4 my-4'>
             {productsLoading && <ButtonSpinner message = "Loading Products..." />}
             {!categoriesLoading &&
                 <CommonListGroup 

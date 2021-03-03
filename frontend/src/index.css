@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Akaya+Telivigala&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
 main {
   min-height: 100vh;
 }
@@ -26,13 +30,6 @@ main {
   margin: 3px;
 }
 
-.heading {
-  padding-top: 20px;
-  padding-bottom: 10px;
-  text-align: center;
-  font-size: 40px;
-}
-
 .login-spinner {
   text-align: center;
 }
@@ -49,7 +46,8 @@ main {
   text-align: center;
   padding: 1px;
   bottom: 0;
-  background-color: #0275d8;
+  /* background-color: #0275d8; */
+  background-image: url('./images/449926.jpg');
 }
 
 .star {
@@ -82,7 +80,7 @@ main {
 }
 
 .new-customer-message {
-  color: black;
+  color: rgb(75, 71, 71);
   display: inline-block;
   font-size: 20px;
 }
@@ -90,6 +88,27 @@ main {
 .new-customer-register-link {
   display: inline-block;
   font-size: 20px;
+}
+
+.new-customer{
+  margin-top: 13px;
+}
+
+.user-message {
+  color: rgb(75, 71, 71);
+  display: inline-block;
+  font-size: 20px;
+}
+
+
+.user-login-link {
+  display: inline-block;
+  font-size: 20px;
+  color: rgb(224, 90, 119);
+}
+
+.user-login-link:hover{
+  color: rgb(209, 62, 94);
 }
 
 .dropdown-menu {
@@ -128,7 +147,86 @@ main {
 
 .home{
   background-image: url("./images/wp3404276-white-and-blue-wallpapers.jpg");
-  
-  
+   
 }
 
+.back{
+  background-image: url("./images/449926.jpg");
+}
+
+.sitename{
+  color: rgb(26, 54, 105);
+  font-family: RocknRoll One;
+  font-size: 25px;
+}
+
+.form-login{
+  background-image: url("./images/449926.jpg");
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.user-form-login{
+  background-image: url("./images/b.jpeg");
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.heading {
+  padding-top: 20px;
+  padding-bottom: 10px;
+  text-align: center;
+  font-size: 25px;
+  color: #55a6ec;
+}
+
+.user-heading {
+  padding-top: 20px;
+  padding-bottom: 10px;
+  text-align: center;
+  font-size: 25px;
+  color: #ec5555;
+}
+
+.login-btn{
+  padding-right: 12rem;
+  padding-left: 12rem;
+}
+
+
+.user-login-btn{
+  padding-right: 12rem;
+  padding-left: 12rem;
+}
+
+
+.welcome{
+  padding: 160px 10px 130px 70px ;
+  color: white;
+  font-size: 40px;
+  font-family: Pacifico;
+}
+
+.checkout{
+  background-image: url('./images/WhatsApp\ Image\ 2021-03-02\ at\ 21.47.05.jpeg');
+  margin-top: 15px;
+  padding-top: 10px;
+  border-radius: 5px;
+}
+
+.step{
+  color: rgb(6, 74, 129);
+}
+
+.tables{
+  background-color: #55c9ec2d;
+}
+
+.table thead th{
+  font-size: 17px;
+
+}
+
+.table tbody td{
+  font-size: 14px;
+}
