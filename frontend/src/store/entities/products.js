@@ -56,6 +56,31 @@ const slice = createSlice({
             const variants = products.list[index].variants;
             const variantIndex =variants.findIndex(v => v.name === variantName);
             variants[variantIndex].countInStock = newCount;
+        },
+
+        productsReviewRequested(products, action){
+            products.loading = true;
+        },
+
+        productsReviewRequestFailed(products, action){
+            products.loading = false;
+            
+        },
+
+        // payload: [message: , data: ]
+        productsReviewReceived(products, action){
+            products.list = action.payload.data;
+            products.loading = false;
+            products.lastFetch = Date.now();
+        },
+
+        productReviewAdded(products,action){
+            const { productId,customerId,rating,description } = action.payload;
+            console.log(action.payload);
+            // const index = products.list.findIndex(p => p.productId === productId );
+            // products.list[index].rating=rating;
+            // products.list[index].description=description;
+            
         }
 
     }
@@ -73,7 +98,12 @@ export const {
     productRemoved, 
     productUpdated,
     productsRequestFailed,
-    productCountUpdated } = slice.actions;
+    productCountUpdated,
+    productReviewAdded,
+    productsReviewRequested,
+    productsReviewReceived,
+    productsReviewRequestFailed } = slice.actions;
+                            
 
 const productsURL = "/product";
 const refreshTime = configData.REFRESH_TIME;
@@ -95,6 +125,23 @@ export const loadProducts = () => (dispatch, getState) => {
         })
     );
 };
+
+export const loadReviews = () => (dispatch, getState) => {
+    const { lastFetch } = getState().entities.products;
+
+    const diffInMinutes = moment().diff(moment(lastFetch), "minutes");
+    if (diffInMinutes < refreshTime) return;
+
+    return dispatch(
+        apiCallBegan({
+            url: productsURL + '/product-review-view',
+            onStart: productsReviewRequested.type,
+            onSuccess: productsReviewReceived.type,
+            onError: productsReviewRequestFailed.type
+        })
+    );
+};
+
 
 //Selectors
 export const getAllProducts = createSelector(
@@ -135,6 +182,17 @@ export const getProductById = productId =>
     );
 
 export const updateProductCount = (updated) => productCountUpdated(updated);
+
+
+export const addProductReview = (productId,customerId,rating,description) =>{
+    return apiCallBegan({
+        url: `${productsURL}/product-review-register/${productId}`,
+        method: "post",
+        data: {productId,customerId,rating,description},
+        onSuccess: productReviewAdded.type,
+    });
+}
+
 
 // export const addProduct = (product) => {
 //     apiCallBegan({

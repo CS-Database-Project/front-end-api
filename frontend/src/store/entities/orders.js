@@ -29,6 +29,12 @@ const slice = createSlice({
             orders.loading = false;
             orders.lastFetch = Date.now();
         }, 
+        orderStatusUpdated(orders, action){
+            const { orderId,orderStatusId  } = action.payload;
+            console.log(action.payload);
+            // const index = orders.list.findIndex(o => o.orderId === orderId );
+            // orders.list[index].orderStatusId = orderStatusId;
+        }
     }
 });
 
@@ -40,7 +46,8 @@ export default slice.reducer;
 export const { 
     ordersCreateRequested, 
     ordersReceived, 
-    ordersCreateRequestFailed } = slice.actions;
+    ordersCreateRequestFailed,
+    orderStatusUpdated } = slice.actions;
 
 const ordersURL = "order";
 const refreshTime = configData.REFRESH_TIME;
@@ -101,3 +108,13 @@ export const placeOrder = (order) => (dispatch)=>{
             })
         );
     }
+
+
+export const updateOrderStatus = (orderId,orderStatusId) =>{
+        return apiCallBegan({
+            url: `${ordersURL}/update-order-status/${orderId}`,
+            method: "put",
+            data: {orderId,orderStatusId},
+            onSuccess: orderStatusUpdated.type,
+        });
+}

@@ -7,7 +7,7 @@ import { getLoggedInStatus, getAuthDetails , setCheckOutStarted} from '../store/
 import { getItemsInCart } from './../store/cart';
 import { toastAction } from './../store/toastAction';
 import {placeOrder } from '../store/entities/orders';
-import { getAllOrders, loadOrders, getOrderById} from './../store/entities/orders';
+import { getAllOrders, loadOrders, getOrderById, updateOrderStatus} from './../store/entities/orders';
 import {getProductByIds} from './../store/entities/products';
 
 const PlaceOrderScreen= ({match})=>{
@@ -15,6 +15,7 @@ const PlaceOrderScreen= ({match})=>{
     const auth = useSelector(state => state.auth);
     const userData = useSelector(getAuthDetails);
     const orderData = useSelector(getOrderById(match.params.orderId));
+    console.log(orderData);
 
     /* const productData = orderData.items;
     let pr=[];
@@ -35,7 +36,21 @@ const PlaceOrderScreen= ({match})=>{
     return(
             
         <> 
-        <h3 className='my-3'>ORDER ID: {orderData.orderId}</h3>  
+
+        <Row>
+            <Col md={6}><h3 className='my-4 '>ORDER ID: {orderData.orderId}</h3></Col>
+            <Col sm={6}>
+                {auth.data.usertype==='Administrator' || auth.data.usertype==='Operator' ?
+                <Link className='btn btn-light my-3 mx-5 ' to='/orders'>
+                    Go Back
+                </Link>:
+                <Link className='btn btn-light my-3 mx-5 ' to='/profile'>
+                    Go Back
+                </Link>
+                }
+            </Col> 
+        </Row>
+         
         <Row>
 
             <Col md={8} className='my-3'>
@@ -49,14 +64,14 @@ const PlaceOrderScreen= ({match})=>{
                 <ListGroup.Item>
                     <h3>Payment Method</h3>
                     <p>
-                        <strong>{orderData.paymentMethodId}</strong>
+                        <h5>{orderData.payment}</h5>
                     </p>
                 </ListGroup.Item>
 
                 <ListGroup.Item>
                     <h3>Order Status</h3>
-                    <p>
-                        <strong>{orderData.orderStatusId}</strong>
+                    <p style={{backgroundColor:'lightgreen' , padding:'8px'}}>
+                        <h5>{orderData.status}</h5>
                     </p>
                 </ListGroup.Item>
 
@@ -67,9 +82,10 @@ const PlaceOrderScreen= ({match})=>{
                         <Card style={{width:'100%'}}>
                         <Col style={{display:'flex'}}>                           
                             <Card.Img src={`/images/${i.productId}.jpg`}  variant = 'top' style={{height:'7rem', width:'8rem', marginTop:'0.5rem'}}/>                            
-                            <Card.Body style={{marginLeft:'20px'}}>                               
-                                <Card.Text as='div' style={{fontSize:'17px', fontWeight:'500'}}><strong>{i.variantName}</strong></Card.Text>                                   
-                                <Card.Text as = 'div'><h3 style={{fontSize:'17px'}}>${i.unitPrice}</h3></Card.Text>
+                            <Card.Body style={{marginLeft:'20px'}}> 
+                                <Card.Text as='div' style={{fontSize:'17px', fontWeight:'500'}}><strong>{i.product}</strong></Card.Text>                              
+                                <Card.Text as='div' style={{fontSize:'17px', fontWeight:'500'}}>Variant: {i.variantName}</Card.Text>                                   
+                                <Card.Text as = 'div'><h3 style={{fontSize:'17px'}}>Price: ${i.unitPrice}</h3></Card.Text>
                                 <Card.Text as = 'div'><h3 style={{fontSize:'15px'}}>Quantity: {i.quantity}</h3></Card.Text>
                             </Card.Body>
                         </Col>
@@ -88,8 +104,17 @@ const PlaceOrderScreen= ({match})=>{
                             <Card.Title>Total Amount: <strong style={{fontSize:'20px', marginLeft:'0.5rem'}}>${getTotalPrice(orderData.items)}</strong></Card.Title>
                             <hr></hr>
                             {auth.loggedIn && (auth.data.usertype==='Administrator' || auth.data.usertype==='Operator') && 
-                            <Button className = 'my-3' style={{width:'100%', fontSize:'15px'}}>
-                                Set to Delivered
+                            <Button disabled={orderData.status==='delivered' ? true:false}
+                            onClick={()=>dispatch(updateOrderStatus(orderData.orderId,setOrderStatusId(orderData.orderStatusId)))} className = 'my-3' style={{width:'100%', fontSize:'15px'}}>
+                                {orderData.status==='pending' && 
+                                    <h4>Set to On the Way</h4>
+                                }
+                                {orderData.status==='on the way' && 
+                                    <h4>Set to Delivered</h4>
+                                }
+                                {orderData.status==='delivered' && 
+                                    <h4>Already Delivered</h4>
+                                }
                             </Button>}
                         </Card.Body>
                 </Card>
@@ -114,4 +139,10 @@ function getTotalPrice(items){
     for(let item of items)
         total = total + item.unitPrice;
     return total.toFixed(2);
+}
+
+function setOrderStatusId(id){
+    let statusId =parseInt(id)+1;
+    statusId= statusId.toString();
+    return statusId;
 }
