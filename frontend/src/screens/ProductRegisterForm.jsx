@@ -178,9 +178,10 @@ function ProductRegisterForm(){
         const customAttributesNames = [...new Set(selectedCustomAttributes)];
         updateStructuredCustomAttributes(customAttributes, customAttributesNames);
         const picture = image.pop();
-
+        console.log(categoryIds);
         const formData = new FormData();
         formData.append('productImage', picture);
+        console.log(customAttributesNames);
         
         try{
             
