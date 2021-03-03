@@ -36,11 +36,11 @@ const slice = createSlice({
         //     products.list.push(action.payload);
         // },
 
-        // //payload: {productId: 123} Deleted product id
-        // productRemoved(products, action){
-        //     const index = products.list.findIndex(p => p.productId !== action.payload);
-        //     products = products.list.splice(index, 1);   
-        // },
+        //payload: {productId: 123} Deleted product id
+        productRemoved(products, action){
+            const index = products.list.findIndex(p => p.productId === action.payload.data);
+            products.list[index].deleted = true;    
+        },
 
         // //payload: {productId: 123 , name: sgs, ...} updated product
         // productUpdated(products, action){
@@ -51,7 +51,7 @@ const slice = createSlice({
 
         //payload: {productId: 123 ,variantName: , newQuantity:  } 
         productCountUpdated(products, action){
-            const { productId, variantName, newCount  } = action.payload;
+            const { productId, variantName, countInStock: newCount  } = action.payload.data;
             const index = products.list.findIndex(p => p.productId === productId );
             const variants = products.list[index].variants;
             const variantIndex =variants.findIndex(v => v.name === variantName);
@@ -146,7 +146,12 @@ export const loadReviews = () => (dispatch, getState) => {
 //Selectors
 export const getAllProducts = createSelector(
     state => state.entities.products.list,
-    products => products
+    products => products.filter(p => p.deleted === false)
+);
+
+export const getDeletedProducts = createSelector(
+    state => state.entities.products.list,
+    products => products.filter(p => p.deleted === true)
 );
 
 export const getProductLoadingStatus = createSelector(
@@ -184,6 +189,7 @@ export const getProductById = productId =>
 export const updateProductCount = (updated) => productCountUpdated(updated);
 
 
+
 export const addProductReview = (productId,customerId,rating,description) =>{
     return apiCallBegan({
         url: `${productsURL}/product-review-register/${productId}`,
@@ -193,23 +199,38 @@ export const addProductReview = (productId,customerId,rating,description) =>{
     });
 }
 
+export const saveImage = (image, productId) => (dispatch, getState) => {
+    const config = {
+        headers: {
+            'Content-Type': `multipart/form-data`,
+        }
+    };
+    return dispatch(apiCallBegan({
+        url: productsURL + "/product-register-image/" + productId,
+        method: "post",
+        data: image,
+        config
+    }));
+}
 
-// export const addProduct = (product) => {
-//     apiCallBegan({
-//         url: productsURL,
-//         method: "post",
-//         data: product,
-//         onSuccess: productCreated.type
-//     });
-// }
+export const deleteProduct = (id) => {
+    return(apiCallBegan({
+        url: `${productsURL}/product-delete/${id}`,
+        method: "delete",
+        onSuccess: productRemoved.type
+    }));
+}
 
-// export const deleteProduct = (id) => {
-//     return(apiCallBegan({
-//         url: `${productsURL}/product_delete/${id}`,
-//         method: "delete",
-//         onSuccess: productRemoved.type
-//     }));
-// }
+export const updateProductStock = (stockUpdate) => {
+    return apiCallBegan({
+        url: productsURL + `/product-stock-update`,
+        method: "put",
+        data: stockUpdate,
+        onSuccess: productCountUpdated.type,
+    });
+
+};
+
 
 
 
