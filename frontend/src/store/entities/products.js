@@ -150,6 +150,17 @@ export const deleteProduct = (id) => {
 }
 
 
+export const updateProductStock = (stockUpdate) => {
+    return apiCallBegan({
+        url: productsURL + `/product-stock-update`,
+        method: "put",
+        data: stockUpdate,
+        onSuccess: productCountUpdated.type,
+    });
+
+};
+
+
 
 
 
