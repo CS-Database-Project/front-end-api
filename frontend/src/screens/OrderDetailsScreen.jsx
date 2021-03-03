@@ -71,7 +71,7 @@ const PlaceOrderScreen= ({match})=>{
                 <ListGroup.Item>
                     <h3>Order Status</h3>
                     <p style={{backgroundColor:'lightgreen' , padding:'8px'}}>
-                        <h5>{orderData.status}</h5>
+                        <h5>{orderData.orderStatusId==='1'? 'Pending': orderData.orderStatusId==='2'? 'On the way': 'Delivered'}</h5>
                     </p>
                 </ListGroup.Item>
 
@@ -104,15 +104,15 @@ const PlaceOrderScreen= ({match})=>{
                             <Card.Title>Total Amount: <strong style={{fontSize:'20px', marginLeft:'0.5rem'}}>${getTotalPrice(orderData.items)}</strong></Card.Title>
                             <hr></hr>
                             {auth.loggedIn && (auth.data.usertype==='Administrator' || auth.data.usertype==='Operator') && 
-                            <Button disabled={orderData.status==='delivered' ? true:false}
+                            <Button disabled={orderData.orderStatusId==='3' ? true:false}
                             onClick={()=>dispatch(updateOrderStatus(orderData.orderId,setOrderStatusId(orderData.orderStatusId)))} className = 'my-3' style={{width:'100%', fontSize:'15px'}}>
-                                {orderData.status==='pending' && 
+                                {orderData.orderStatusId==='1' && 
                                     <h4>Set to On the Way</h4>
                                 }
-                                {orderData.status==='on the way' && 
+                                {orderData.orderStatusId==='2' && 
                                     <h4>Set to Delivered</h4>
                                 }
-                                {orderData.status==='delivered' && 
+                                {orderData.orderStatusId==='3' && 
                                     <h4>Already Delivered</h4>
                                 }
                             </Button>}

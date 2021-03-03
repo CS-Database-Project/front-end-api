@@ -75,11 +75,11 @@ const slice = createSlice({
         },
 
         productReviewAdded(products,action){
-            const { productId,customerId,rating,description } = action.payload;
+            const { productId,customerId,rating,description } = action.payload.data;
             console.log(action.payload);
-            // const index = products.list.findIndex(p => p.productId === productId );
-            // products.list[index].rating=rating;
-            // products.list[index].description=description;
+            const index = products.list.findIndex(p => p.productId === productId );
+            products.list[index].reviews.push({rating,description});
+            //products.list[index].description=description;
             
         }
 

@@ -30,10 +30,11 @@ const slice = createSlice({
             orders.lastFetch = Date.now();
         }, 
         orderStatusUpdated(orders, action){
-            const { orderId,orderStatusId  } = action.payload;
+            const { orderId,orderStatusId  } = action.payload.data;
             console.log(action.payload);
-            // const index = orders.list.findIndex(o => o.orderId === orderId );
-            // orders.list[index].orderStatusId = orderStatusId;
+            const index = orders.list.findIndex(o => o.orderId === orderId );
+            console.log(orders.list[index]);
+            orders.list[index].orderStatusId = orderStatusId;
         }
     }
 });
