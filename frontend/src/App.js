@@ -28,6 +28,7 @@ import OrdersScreen from './screens/OrdersScreen';
 import CategoriesScreen from './screens/CategoriesScreen';
 import AddMainCategoryForm from './screens/AddMainCategoryForm';
 import AddSubCategoryForm from './screens/AddSubCategoryForm';
+import DeletedProductsScreen from './screens/DeletedProductsScreen';
 
 const App = () => {
 
@@ -66,6 +67,7 @@ const App = () => {
               <Route path='/users' component = {ViewUsers} />
               <Route path='/product-register' component={ProductRegisterForm} /> 
               <Route path='/products' component={ProductsScreen} />
+              <Route path='/deleted-products' component={DeletedProductsScreen} /> 
               <Route path='/categories' component={CategoriesScreen} />
               <Route path='/add-main-category' component={AddMainCategoryForm} />
               <Route path='/add-sub-category' component={AddSubCategoryForm} />

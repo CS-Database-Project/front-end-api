@@ -102,6 +102,11 @@ export const getAllProducts = createSelector(
     products => products.filter(p => p.deleted === false)
 );
 
+export const getDeletedProducts = createSelector(
+    state => state.entities.products.list,
+    products => products.filter(p => p.deleted === true)
+);
+
 export const getProductLoadingStatus = createSelector(
     state => state.entities.products.loading,
     loading => loading
