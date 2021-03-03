@@ -11,8 +11,7 @@ const ProductsScreen = ({ history }) => {
         <>
             <h1 className='heading'>Products</h1>
                 <Button className ='my-3 mx-3' onClick = { () => history.push('/product-register')}>Add Product</Button>
-                <Button className ='my-3 mx-3' onClick = { () => history.push('/product-register')}>Add Main Category</Button>
-                <Button className ='my-3 mx-3' onClick = { () => history.push('/product-register')}>Add Sub Category</Button>
+                <Button className ='my-3 mx-3' onClick = { () => history.push('/categories')}>Manage Categories</Button>
                 <Button className ='my-3 mx-3' onClick = { () => history.push('/product-register')}>Manage Stock</Button>
             <ProductsTable products={products}></ProductsTable>
         </>

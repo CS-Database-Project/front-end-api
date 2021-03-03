@@ -15,6 +15,7 @@ store.subscribe(() => {
     cart: store.getState().cart,
     entities: {
       products: store.getState().entities.products,
+      categories: store.getState().entities.categories,
       customers: store.getState().entities.customers
     }
   });

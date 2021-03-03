@@ -25,6 +25,8 @@ import ProductRegisterForm from './screens/ProductRegisterForm';
 import Logout from './components/logout';
 import UserRegisterForm from './screens/userRegisterForm';
 import OrdersScreen from './screens/OrdersScreen';
+import CategoriesScreen from './screens/CategoriesScreen';
+import AddMainCategoryForm from './screens/AddMainCategoryForm';
 
 const App = () => {
 
@@ -63,6 +65,8 @@ const App = () => {
               <Route path='/users' component = {ViewUsers} />
               <Route path='/product-register' component={ProductRegisterForm} /> 
               <Route path='/products' component={ProductsScreen} />
+              <Route path='/categories' component={CategoriesScreen} />
+              <Route path='/add-main-category' component={AddMainCategoryForm} />
               <Route path='/orders' component={OrdersScreen} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />

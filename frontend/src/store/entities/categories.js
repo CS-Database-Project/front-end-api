@@ -31,6 +31,22 @@ const slice = createSlice({
             categories.lastFetch = Date.now();
         },
 
+        addMainCategoryRequested(categories, action){
+            categories.adding = true;
+            categories.mainCategoryAdded = false;
+        },
+
+        addMainCategoryRequestFailed(categories, action) {
+            categories.adding = false;
+        },
+
+        addMainCategoryRequestSucceeded(categories, action) {
+            categories.adding = false;
+            categories.list.push(action.payload);
+            categories.mainCategoryAdded = true;
+        },
+
+
         
     }
 });
@@ -45,9 +61,12 @@ export const {
     productCreated,
     productRemoved,
     productUpdated,
-    categoriesRequestFailed } = slice.actions;
+    categoriesRequestFailed,
+    addMainCategoryRequested,
+    addMainCategoryRequestFailed,
+    addMainCategoryRequestSucceeded} = slice.actions;
 
-const categoriesURL = "/product";
+const categoriesURL = "product";
 const refreshTime = configData.REFRESH_TIME;
 
 
@@ -78,4 +97,23 @@ export const getCategoriesLoadingStatus = createSelector(
     state => state.entities.products.loading,
     loading => loading
 );
+
+
+export const getCategoryAddingStatus = createSelector(
+    state => state.entities.categories.adding,
+    adding => adding
+);
+
+export const addMainCategory = (categoryName) => {
+    
+    return (apiCallBegan({
+        url: categoriesURL + '/main-category-register',
+        data: { name: categoryName },
+        method: 'post',
+        onStart: addMainCategoryRequested.type,
+        onSuccess: addMainCategoryRequestSucceeded.type,
+        onError: addMainCategoryRequestFailed.type
+    }))
+}
+
 
