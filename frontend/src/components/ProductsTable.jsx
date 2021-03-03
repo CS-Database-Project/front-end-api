@@ -1,6 +1,9 @@
 import { Table, Image, Button } from 'react-bootstrap';
+import { deleteProduct } from './../store/entities/products';
+import { useDispatch } from 'react-redux';
 
 const ProductsTable = ({ products }) => {
+    const dispatch = useDispatch();
 
     return ( 
         <Table striped bordered hover variant="light">
@@ -25,7 +28,7 @@ const ProductsTable = ({ products }) => {
                         <td>{p.weight}</td>
                         <td>{p.sku}</td>
                         <td><Button>Edit</Button></td>
-                        <td><Button variant='danger'>Remove</Button></td>
+                        <td><Button onClick = {() => dispatch(deleteProduct(p.productId))} variant='danger'>Remove</Button></td>
                     </tr>
                 )}
             </tbody>

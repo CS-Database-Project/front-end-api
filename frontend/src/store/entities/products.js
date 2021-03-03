@@ -36,11 +36,11 @@ const slice = createSlice({
         //     products.list.push(action.payload);
         // },
 
-        // //payload: {productId: 123} Deleted product id
-        // productRemoved(products, action){
-        //     const index = products.list.findIndex(p => p.productId !== action.payload);
-        //     products = products.list.splice(index, 1);   
-        // },
+        //payload: {productId: 123} Deleted product id
+        productRemoved(products, action){
+            const index = products.list.findIndex(p => p.productId === action.payload.data);
+            products.list[index].deleted = true;    
+        },
 
         // //payload: {productId: 123 , name: sgs, ...} updated product
         // productUpdated(products, action){
@@ -99,7 +99,7 @@ export const loadProducts = () => (dispatch, getState) => {
 //Selectors
 export const getAllProducts = createSelector(
     state => state.entities.products.list,
-    products => products
+    products => products.filter(p => p.deleted === false)
 );
 
 export const getProductLoadingStatus = createSelector(
@@ -121,22 +121,27 @@ export const getProductById = productId =>
 
 export const updateProductCount = (updated) => productCountUpdated(updated);
 
-// export const addProduct = (product) => {
-//     apiCallBegan({
-//         url: productsURL,
-//         method: "post",
-//         data: product,
-//         onSuccess: productCreated.type
-//     });
-// }
+export const createProduct = (product) => (dispatch, getState) => {
+    const config = {
+        headers: {
+            'Content-Type': `multipart/form-data`,
+        }
+    };
+    return dispatch(apiCallBegan({
+            url: productsURL + "/product-register",
+            method: "post",
+            data: product,
+            config
+    }));
+}
 
-// export const deleteProduct = (id) => {
-//     return(apiCallBegan({
-//         url: `${productsURL}/product_delete/${id}`,
-//         method: "delete",
-//         onSuccess: productRemoved.type
-//     }));
-// }
+export const deleteProduct = (id) => {
+    return(apiCallBegan({
+        url: `${productsURL}/product-delete/${id}`,
+        method: "delete",
+        onSuccess: productRemoved.type
+    }));
+}
 
 
 
