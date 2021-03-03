@@ -13,7 +13,8 @@ function UserProfile(props) {
 
     useEffect(() => {
         console.log("Loading")
-        dispatch(loadOrders());
+        dispatch(loadOrders())
+        console.log(orderData);
     });
 
     return (
