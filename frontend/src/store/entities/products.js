@@ -51,7 +51,7 @@ const slice = createSlice({
 
         //payload: {productId: 123 ,variantName: , newQuantity:  } 
         productCountUpdated(products, action){
-            const { productId, variantName, newCount  } = action.payload;
+            const { productId, variantName, countInStock: newCount  } = action.payload.data;
             const index = products.list.findIndex(p => p.productId === productId );
             const variants = products.list[index].variants;
             const variantIndex =variants.findIndex(v => v.name === variantName);
