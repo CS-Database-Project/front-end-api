@@ -57,19 +57,24 @@ const slice = createSlice({
             customers.list[index].activeStatus = true;
         },
 
-        customersUpdateRequested(customers, action) {
-            delete customers.updateSuccessful;
-            customers.updating = true;
+        customersUpdated(customers, action){
+            const { customerId } = action.payload.data;
+            const index = customers.list.findIndex(c => c.customerId === customerId);
+            customers.list.splice(index, 1);
+            customers.list.push(action.payload);
         },
 
-        customersUpdateRequestFailed(customers, action) {
-            customers.updating = false;
+        customerUsernameUpdated(customers,action){
+            const { username} = action.payload.data;
+            const index = customers.list.findIndex(c => c.username=== username);
+            customers.list.splice(index, 1);
+            customers.list.push(action.payload);
         },
 
-        customersUpdateRequestSucceeded(customers, action){
-            delete customers.updating;
-            customers.updateSuccessful = true;
-            const index = customers.list.findIndex(c => c.customerId === action.payload.customerId);
+        customerPasswordUpdated(customers,action){
+            const { customerId} = action.payload.data;
+            console.log(action.payload.data);
+            const index = customers.list.findIndex(c => c.customerId=== customerId);
             customers.list.splice(index, 1);
             customers.list.push(action.payload);
         }
@@ -87,13 +92,13 @@ export const {
     customerCreated,
     customerActivated, 
     customerDeactivated,
-    customersUpdateRequested,
-    customersUpdateRequestFailed, 
-    customersUpdateRequestSucceeded,
+    customersUpdated,
     customersRequestFailed,
     customersRegisterRequested,
     customersRegisterRequestFailed,
-    customersRegisterRequestSucceeded} = slice.actions;
+    customersRegisterRequestSucceeded,
+    customerUsernameUpdated ,
+    customerPasswordUpdated   } = slice.actions;
 
 const customersURL = "customer";
 const refreshTime = configData.REFRESH_TIME;
@@ -158,9 +163,29 @@ export const updateCustomerDetails = (customer) => (dispatch) => {
             url: `${customersURL}/update-details`,
             method: "put",
             data: customer,
-            onStart: customersUpdateRequested,
-            onSuccess: customersUpdateRequestSucceeded.type,
-            onError: customersUpdateRequestFailed
+            onSuccess: customersUpdated.type,
+        })
+    );
+}
+
+export const updateCustomerUsername = (username) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${customersURL}/change-username`,
+            method: "put",
+            data: username,
+            onSuccess: customerUsernameUpdated.type,
+        })
+    );
+}
+
+export const updateCustomerPassword = (customerId) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${customersURL}/change-password`,
+            method: "put",
+            data: customerId,
+            onSuccess: customerPasswordUpdated.type,
         })
     );
 }

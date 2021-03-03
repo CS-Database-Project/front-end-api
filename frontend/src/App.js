@@ -8,7 +8,7 @@ import LoginForm from './screens/LoginForm';
 import UserLoginForm from './screens/UserLoginForm';
 import RegisterForm from './screens/RegisterForm';
 import UserProfile from './screens/UserProfile';
-import ResetPassword from './screens/FogotPassword';
+//import ResetPassword from './screens/FogotPassword';
 import SearchResult from './screens/SearchResult';
 import ShippingScreen from './screens/ShippingScreen';
 import Footer from './components/Footer';
@@ -25,6 +25,8 @@ import Logout from './components/logout';
 import UserRegisterForm from './screens/userRegisterForm';
 import OrdersScreen from './screens/OrdersScreen';
 import EditProfile from './screens/EditProfile';
+import ResetUsername from './screens/ResetUsername';
+import ResetPassword from './screens/ResetPassword';
 
 const App = () => {
 
@@ -64,6 +66,8 @@ const App = () => {
               <Route path='/products' component={ProductsScreen} />
               <Route path='/orders' component={OrdersScreen} />
               <Route path='/Edit profile' component={EditProfile} />
+              <Route path='/reset username' component={ResetUsername} />
+              <Route path='/reset password' component={ResetPassword} />
               <Route path='/' component={HomeScreen} />
               <Route path='/' exact component={HomeScreen} />
             </Switch>

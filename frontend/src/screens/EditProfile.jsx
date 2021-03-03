@@ -1,11 +1,12 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import CustomForm from '../components/common/CustomForm'
+import React from 'react';
+import { connect } from 'react-redux';
+import CustomForm from '../components/common/CustomForm';
 import { Form, Button, Row, Col, Spinner } from 'react-bootstrap';
 import * as Yup from 'yup';
 import {  Formik } from 'formik';
 import { updateCustomerDetails } from './../store/entities/customers';
 import { toastAction } from './../store/toastAction';
+import { getAuthDetails } from './../store/auth';
 
 class EditProfile extends CustomForm {
     schema =Yup.object().shape({
@@ -30,46 +31,33 @@ class EditProfile extends CustomForm {
                  .required('City is required...'),
         state: Yup.string()
                   .required('State is required...'),
-        username: Yup.string()
-                     .min(5, "At least five characters should be used")
-                     .max(20, "Use less than 20 characters")
-                     .required('Username is required...'),
-        password: Yup.string()
-                     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character")
-                     .required('Password is required...'),
-        confirmPassword: Yup.string()
-                            .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character")
-                            .oneOf([Yup.ref('password'), null], "Does not match with password")
-                            .required('Please confirm your password...')
     });
 
     initialValues = {
-        firstName: '', 
-        lastName : '',
-        birthDate: '',
-        phone: '',
-        email: '',
-        address: '',
-        city: '',
-        state: '',
-        username: '',
-        password: '',
-        confirmPassword: ''
+        customerId: this.props.auth.data.customerId,   
+        firstName: this.props.auth.data.firstName, 
+        lastName : this.props.auth.data.lastName,
+        birthDate: this.props.auth.data.birthDate,
+        phone: this.props.auth.data.phone,
+        email: this.props.auth.data.email,
+        address: this.props.auth.data.address,
+        city: this.props.auth.data.city,
+        state: this.props.auth.data.state
     };
 
     componentDidUpdate() {
-        if(this.props.customers.updateSuccessful){
+        if(this.props.updateCustomerDetails){
             this.props.history.push('/profile');
             this.props.updateSuccessful();
         }  
     }
 
     submitForm = (values) => {
-        delete values.confirmPassword;
         this.props.updateCustomerDetails(values); 
         console.log(values);
+        console.log(this.props.auth.data.customerId)
     }
-
+    
     render(){
     return(
         <Formik
@@ -96,6 +84,7 @@ class EditProfile extends CustomForm {
                                     label: 'First Name',
                                     type:'text',
                                     name:'firstName',
+                                    value:values.firstName,
                                     placeholder: 'Your First Name...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -110,6 +99,7 @@ class EditProfile extends CustomForm {
                                     label: 'Last Name',
                                     type:'text',
                                     name:'lastName',
+                                    value:values.lastName,
                                     placeholder: 'Your Last Name...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -126,6 +116,7 @@ class EditProfile extends CustomForm {
                                     label: 'Birth Date',
                                     type:'text',
                                     name:'birthDate',
+                                    value:values.birthDate,
                                     placeholder: 'Your Birth Date...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -140,6 +131,7 @@ class EditProfile extends CustomForm {
                                     label: 'Phone Number',
                                     type:'text',
                                     name:'phone',
+                                    value:values.phone,
                                     placeholder: 'Your Phone Number...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -154,6 +146,7 @@ class EditProfile extends CustomForm {
                                     label: 'Email',
                                     type:'text',
                                     name:'email',
+                                    value:values.email,
                                     placeholder: 'Your Email...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -169,6 +162,7 @@ class EditProfile extends CustomForm {
                                     label: 'Address',
                                     type:'text',
                                     name:'address',
+                                    value: values.address,
                                     placeholder: 'Your Address...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -183,6 +177,7 @@ class EditProfile extends CustomForm {
                                     label: 'City',
                                     type:'text',
                                     name:'city',
+                                    value:values.city,
                                     placeholder: 'Your City...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -197,6 +192,7 @@ class EditProfile extends CustomForm {
                                     label: 'State',
                                     type:'text',
                                     name:'state',
+                                    value:values.state,
                                     placeholder: 'Your State...',
                                     size: 'lg',
                                     onChange: handleChange,
@@ -206,50 +202,6 @@ class EditProfile extends CustomForm {
                             }
                         </Col>
                     </Row>
-
-                    <Row>
-                        <Col>
-                            {this.renderFormInput(
-                                {   controlId: 'validation_Formik10',
-                                    label: 'Username',
-                                    type:'text',
-                                    name:'username',
-                                    placeholder: 'Your Username...',
-                                    size: 'lg',
-                                    onChange: handleChange,
-                                    touchValue: touched.username,
-                                    errorValue: errors.username
-                                })
-                            }
-                        </Col>
-                        <Col>
-                            {this.renderFormInput(
-                                {   controlId: 'validation_Formik11',
-                                    label: 'Password',
-                                    type:'password',
-                                    name:'password',
-                                    placeholder: 'Your Password...',
-                                    size: 'lg',
-                                    onChange: handleChange,
-                                    touchValue: touched.password,
-                                    errorValue: errors.password
-                                })
-                            }
-                        </Col>
-                    </Row>
-
-                     {this.renderFormInput(
-                        {   controlId: 'validation_Formik12', 
-                            label: 'Confirm Password', 
-                            type:'password', 
-                            name:'confirmPassword', 
-                            placeholder: 'Confirm Password...',
-                            size: 'lg',
-                            onChange: handleChange, 
-                            touchValue: touched.confirmPassword, 
-                            errorValue: errors.confirmPassword 
-                        }) 
-                    }
                     <Button type='submit'>Edit</Button>
                     <br/>
                     <br/>
@@ -260,7 +212,8 @@ class EditProfile extends CustomForm {
 }
 }
 const mapStateToProps = state => ({
-    customers: state.entities.customers
+    customers: state.entities.customers,
+    auth: state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
