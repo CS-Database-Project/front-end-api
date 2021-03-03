@@ -25,12 +25,15 @@ import ProductRegisterForm from './screens/ProductRegisterForm';
 import Logout from './components/logout';
 import UserRegisterForm from './screens/userRegisterForm';
 import OrdersScreen from './screens/OrdersScreen';
+
 import CategoriesScreen from './screens/CategoriesScreen';
 import AddMainCategoryForm from './screens/AddMainCategoryForm';
 import AddSubCategoryForm from './screens/AddSubCategoryForm';
 import DeletedProductsScreen from './screens/DeletedProductsScreen';
 import AddCustomAttributeForm from './screens/AddCustomAttributeForm';
 import ManageStock from './screens/ManageStock';
+import OrderDetailsScreen from './screens/OrderDetailsScreen';
+
 
 const App = () => {
 
@@ -51,6 +54,7 @@ const App = () => {
               pauseOnHover            
             ></ToastContainer>
             <Switch>
+              <Route path='/order-details/:orderId' component={OrderDetailsScreen} />
               <Route path='/user-register' component={UserRegisterForm} />
               <Route path='/buyMethod' component={BuyMethodScreen} />
               <Route path='/shipping' component={ShippingScreen} />

@@ -124,6 +124,21 @@ export const getProductById = productId =>
         }
     );
 
+    export const getProductByIds = productIds =>
+    createSelector(
+        state => state.entities.products.list,
+        products => {
+            let p=[];
+            for(let i=0; i<productIds.length;i++){
+                const index = products.findIndex(p => p.productId === productIds[i]);
+                
+                p.push(products[index]);
+            }
+            
+            return p;
+        }
+    );
+
 export const updateProductCount = (updated) => productCountUpdated(updated);
 
 

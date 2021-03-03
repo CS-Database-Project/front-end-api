@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Button, Spinner, Nav } from 'react-bootstrap';
+import { Form, Button, Spinner, Nav, Row, Col } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import CustomForm from '../components/common/CustomForm';
 import { connect } from 'react-redux'
@@ -55,6 +55,9 @@ class LoginForm extends CustomForm {
                     dirty,
                     errors
                 }) => (
+
+                <Row>
+                <Col md={5}>
                 <Form noValidate onSubmit={handleSubmit}>
                     <h1 className = 'heading'>Log In</h1>
                     {this.props.auth.logging && <div className = 'login-spinner' ><Spinner animation="border"  variant="primary" /></div>}
@@ -94,18 +97,20 @@ class LoginForm extends CustomForm {
                                 <Nav.Link>Signup From Here</Nav.Link>
                             </LinkContainer> 
                         </div>
-
-                         <LinkContainer to = '/user-login'>
-                                <Nav.Link>User Login</Nav.Link>
-                            </LinkContainer> 
-                        
-     
-                    <Button 
-                        type='submit'
-                    >
+                    <Button type='submit'>
                         Login
                     </Button>
                 </Form>
+                </Col>
+                <Col md={4}></Col>
+                <Col md={3} >
+                    <div >
+                        <LinkContainer className='my-5 mx-5' to = '/user-login'>
+                            <Button type="button">USER LOGIN</Button>
+                        </LinkContainer>
+                    </div>         
+                </Col>
+                </Row>
                 )}
             </Formik>
             
