@@ -27,7 +27,6 @@ const ProductsTable = ({ products }) => {
                         <td>{p.description}</td>
                         <td>{p.weight}</td>
                         <td>{p.sku}</td>
-                        <td><Button>Edit</Button></td>
                         <td><Button onClick = {() => dispatch(deleteProduct(p.productId))} variant='danger'>Remove</Button></td>
                     </tr>
                 )}
