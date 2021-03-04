@@ -16,8 +16,8 @@ function NavbarComponent() {
 
     return (
         <>
-            <Navbar bg="primary" >
-                <LinkContainer to ='/'><Navbar.Brand>C E-Commerce</Navbar.Brand></LinkContainer>
+            <Navbar className="back" >
+                <LinkContainer to ='/'><Navbar.Brand><h2 class="sitename">C E-Commerce</h2></Navbar.Brand></LinkContainer>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                         <InputGroup id = 'product-search-bar'>
