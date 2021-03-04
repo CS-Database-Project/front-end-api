@@ -4,6 +4,7 @@ import categoriesReducer from './categories';
 import customersReducer from './customers';
 import usersReducer from './users';
 import ordersReducer from './orders'
+import customAttributesreducer from './customAttributes';
 
 
 export default combineReducers({
@@ -11,5 +12,6 @@ export default combineReducers({
   customers: customersReducer,
   categories: categoriesReducer,
   users: usersReducer,
-  orders : ordersReducer
+  orders : ordersReducer,
+  customAttributes: customAttributesreducer
 });

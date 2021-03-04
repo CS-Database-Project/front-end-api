@@ -60,7 +60,7 @@ class UserRegisterForm extends CustomForm {
 
     componentDidUpdate() {
         if(this.props.users.registerSuccessful){
-            this.props.history.push('/user-login');
+            window.location = '/users';
             this.props.registerSuccessful();
         }  
     }
@@ -281,7 +281,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     registerUser: (data) => dispatch(registerUser(data)),
-    registerSuccessful: () => dispatch(toastAction({ message: "Register Successfull.Login With Your new account", type: 'info' }))
+    registerSuccessful: () => dispatch(toastAction({ message: "User Added Successfully...", type: 'info' }))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRegisterForm);

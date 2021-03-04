@@ -8,6 +8,7 @@ import Pagination from '../components/common/Pagination';
 import { loadProducts, getAllProducts, getProductLoadingStatus } from './../store/entities/products';
 import { loadCategories, getCategoriesLoadingStatus, getAllCategories } from './../store/entities/categories';
 import { paginate } from './../utils/paginate';
+import { loadOrders } from './../store/entities/orders';
 
 
 
@@ -28,6 +29,7 @@ const HomeScreen = ({ match }) => {
     useEffect(() => {
         dispatch(loadProducts());
         dispatch(loadCategories());
+        dispatch(loadOrders())
         const updatedFiltered = getFilteredProducts(products, categories, selectedCategory);
         setFiltered(updatedFiltered);
         setPaginated(paginate(updatedFiltered, currentPage, pageSize));

@@ -1,34 +1,44 @@
 import React, { useEffect ,useState} from 'react'
 import { Link } from 'react-router-dom'
-import { getProductById, loadProducts, updateProductCount } from '../store/entities/products';
+import { getProductById, loadProducts,loadReviews, updateProductCount,addProductReview } from '../store/entities/products';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Row,Col,Image ,ListGroupItem,ListGroup,Card,Table, Form} from 'react-bootstrap';
 import Rating from '../components/Rating'
 import { addToCart, getItemsInCart } from './../store/cart';
-
+import { getAuthDetails} from '../store/auth';
 
 
 const ProductScreen = ({match, history}) => {
     const dispatch = useDispatch();
+    const auth = useSelector(state => state.auth);
     const product = useSelector(getProductById(match.params.productId));
+    const userData = useSelector(getAuthDetails);
     const itemsInCart = useSelector(getItemsInCart);
     const [ selectedVariant, setSelectedVariant ] = useState({});
     const [ selectedQuantity, setSelectedQuantity ] = useState(0);
     const [rating, setRating ] = useState(0);
+    const [comment, setComment ] = useState('');
 
     useEffect(() => {
         initiateSelectedVariant(product, setSelectedVariant);
         dispatch(loadProducts());
+        dispatch(loadReviews());
         setRating(calculateRating(product.reviews));   
         console.log(product);
         console.log(selectedVariant);
     }, [product, dispatch]);
 
+    const submitHandler = (e) => {
+        e.preventDefault()
+        dispatch(
+            addProductReview(match.params.productId,userData.customerId,rating,comment)
+        )
+      }
     
-
+    
     return (
         <>
-            
+
             <Link className='btn btn-light my-3' to='/'>
                 Go Back
             </Link>
@@ -37,7 +47,7 @@ const ProductScreen = ({match, history}) => {
                 <Col lg={8}>
                     <Row>
                         <Col md={6}>
-                            <Image src={`/images/${product.productId}.jpg`} fluid/>
+                            <Image src={`http://localhost:8000/files/${product.productId}.jpg`} fluid/>
                         </Col>
                         <Col md={6}>
                             <ListGroup variant='flush'>
@@ -52,7 +62,7 @@ const ProductScreen = ({match, history}) => {
                                 </ListGroup.Item>
                     
                             </ListGroup>
-                            {product.reviews.length > 0 &&
+                            {/* {product.reviews.length > 0 &&
                             <ListGroup variant="flush">
                                 <h5>Reviews :</h5>
                                     {product.reviews.map(r=><ListGroup.Item>
@@ -60,7 +70,7 @@ const ProductScreen = ({match, history}) => {
                                         <Rating rating={r.rating}></Rating>
                                         <h6>{r.description}</h6>
                                     </ListGroup.Item>)}
-                            </ListGroup>}
+                            </ListGroup>} */}
                         </Col>
                     
                     </Row>
@@ -92,6 +102,62 @@ const ProductScreen = ({match, history}) => {
                             </td>
                         </tbody>
                     </Table>}
+
+                                {product.reviews.length > 0 &&
+                                <ListGroup variant="flush">
+                                    <h5>Reviews :</h5>
+                                        {product.reviews.map(r=><ListGroup.Item>
+                        
+                                            <Rating rating={r.rating}></Rating>
+                                            <h6>{r.description}</h6>
+                                        </ListGroup.Item>)}
+                                </ListGroup>}
+
+                    {auth.loggedIn && auth.data.usertype!='Administrator' && auth.data.usertype!='Operator' ? (                        
+                    <Form onSubmit={submitHandler}>
+                        <h5>Add Review:</h5>
+                      <Form.Group className='mx-4' controlId='rating'>
+                        <Form.Label><h6>Rating</h6></Form.Label>
+                        <Form.Control
+                          as='select'
+                          value={rating}
+                          onChange={(e) => setRating(e.target.value)}
+                        >
+                          <option value=''>Select...</option>
+                          <option value='1'>1 - Poor</option>
+                          <option value='2'>2 - Fair</option>
+                          <option value='3'>3 - Good</option>
+                          <option value='4'>4 - Very Good</option>
+                          <option value='5'>5 - Excellent</option>
+                        </Form.Control>
+                      </Form.Group>
+
+                      <Form.Group className='mx-4' controlId='comment'>
+                        <Form.Label ><h6>Comment</h6></Form.Label>
+                        <Form.Control
+                          as='textarea'
+                          row='3'
+                          placeholder='add a comment here'
+                          value={comment}
+                          onChange={(e) => setComment(e.target.value)} 
+                        ></Form.Control>
+                      </Form.Group>
+                      <Button
+                        type='submit'
+                        variant='primary'
+                      >
+                        Submit
+                      </Button>
+                    </Form>
+                    ) : (
+                        <div>
+                            {auth.data.usertype==='Administrator' || auth.data.usertype==='Operator' ? <div></div> : <div>Please <Link to='/login'>sign in</Link> to write a review{' '}</div>
+                            }
+                         
+                        </div>
+                      )}
+
+
                 </Col>
                 <Col lg={4}>
                     <Card >
@@ -137,7 +203,7 @@ const ProductScreen = ({match, history}) => {
                                
                                 }} 
                                 variant="primary"
-                                disabled= {selectedVariant.countInStock === 0 || selectedQuantity === 0 ? true : false}
+                                disabled= {selectedVariant.countInStock === 0 || selectedQuantity === 0  ? true : false}
                                 
                                 >
                                 Add to cart
@@ -145,15 +211,13 @@ const ProductScreen = ({match, history}) => {
  
                         </Card.Body>
                     </Card>
-                
-                
-                
-                
                 </Col>
             </Row>
         </>
     )
 }
+
+
 
 export default ProductScreen;
 
@@ -190,3 +254,4 @@ function getSelectedProductCountInCart(itemsInCart, selectedVariant, product){
     if(index === -1) return 0;
     return itemsInCart[index].quantity;
 }
+

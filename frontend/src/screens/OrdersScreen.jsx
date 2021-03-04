@@ -1,11 +1,18 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import {useEffect} from 'react';
 import { Container, Row, Col} from 'react-bootstrap';
 import OrdersTable from './../components/OrdersTable';
-import { getAllOrders } from './../store/entities/orders';
+import { getAllOrders , loadOrders} from './../store/entities/orders';
 
 
 const OrdersScreen = () => {
-    const orders = useSelector(getAllOrders)
+    const dispatch = useDispatch()
+
+    const orders = useSelector(getAllOrders);
+
+    useEffect(() => {
+        dispatch(loadOrders());       
+    })
 
     return (
         <>

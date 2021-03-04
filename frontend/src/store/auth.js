@@ -105,6 +105,11 @@ export const getAuthDetails = createSelector(
     userData => userData
 );
 
+export const getAllAuthDetails = createSelector(
+    state => state.auth,
+    userData => userData
+);
+
 
 export const getLoggedInStatus = createSelector(
     state => state.auth,

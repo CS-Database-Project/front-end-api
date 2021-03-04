@@ -5,7 +5,7 @@ import { toastAction } from './../toastAction';
 
 const api = ({ dispatch }) => next => async action => {
   if (action.type !== actions.apiCallBegan.type) return next(action);
-  const { url, method, data, onStart, onSuccess, onError } = action.payload;
+  const { url, method, data, config, onStart, onSuccess, onError } = action.payload;
   if (onStart) dispatch({ type: onStart });
   next(action);
   try {
@@ -13,7 +13,8 @@ const api = ({ dispatch }) => next => async action => {
       baseURL: configData.API_URL,
       url,
       method,
-      data
+      data,
+      config
     });
     // General
     dispatch(actions.apiCallSuccess(response.data));

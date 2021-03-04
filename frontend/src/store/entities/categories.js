@@ -26,10 +26,48 @@ const slice = createSlice({
 
         // payload: [message: , data: ]
         categoriesReceived(categories, action) {
-            categories.list = action.payload.data;
+            const data = action.payload.data;
+            for(let c of data){
+                if(c.subCategories[0] === null){
+                    c.subCategories = []
+                }
+            }
+            categories.list = data;
             categories.loading = false;
             categories.lastFetch = Date.now();
         },
+
+        addMainCategoryRequested(categories, action){
+            categories.adding = true;
+            categories.mainCategoryAdded = false;
+        },
+
+        addMainCategoryRequestFailed(categories, action) {
+            categories.adding = false;
+        },
+
+        addMainCategoryRequestSucceeded(categories, action) {
+            categories.adding = false;
+            categories.list.push(action.payload.data);
+            categories.mainCategoryAdded = true;
+        },
+
+        addSubCategoryRequested(categories, action) {
+            categories.adding = true;
+            categories.subCategoryAdded = false;
+        },
+
+        addSubCategoryRequestFailed(categories, action) {
+            categories.adding = false;
+        },
+
+        addSubCategoryRequestSucceeded(categories, action) {
+            categories.adding = false;
+            const index = categories.list.findIndex(c => c.category.categoryId === action.payload.data.mainCategoryId);
+            categories.list[index].subCategories.push({ categoryId: action.payload.data.subCategoryId, name: action.payload.data.subCategoryName});
+            categories.subCategoryAdded = true;
+        },
+
 
         
     }
@@ -45,9 +83,15 @@ export const {
     productCreated,
     productRemoved,
     productUpdated,
-    categoriesRequestFailed } = slice.actions;
+    categoriesRequestFailed,
+    addMainCategoryRequested,
+    addMainCategoryRequestFailed,
+    addMainCategoryRequestSucceeded,
+    addSubCategoryRequested,
+    addSubCategoryRequestFailed,
+    addSubCategoryRequestSucceeded } = slice.actions;
 
-const categoriesURL = "/product";
+const categoriesURL = "product";
 const refreshTime = configData.REFRESH_TIME;
 
 
@@ -78,4 +122,36 @@ export const getCategoriesLoadingStatus = createSelector(
     state => state.entities.products.loading,
     loading => loading
 );
+
+
+export const getCategoryAddingStatus = createSelector(
+    state => state.entities.categories.adding,
+    adding => adding
+);
+
+export const addMainCategory = (categoryName) => {
+    
+    return (apiCallBegan({
+        url: categoriesURL + '/main-category-register',
+        data: { name: categoryName },
+        method: 'post',
+        onStart: addMainCategoryRequested.type,
+        onSuccess: addMainCategoryRequestSucceeded.type,
+        onError: addMainCategoryRequestFailed.type
+    }))
+};
+
+
+export const addSubCategory = (subCategoryName, mainCategoryId) => {
+
+    return (apiCallBegan({
+        url: categoriesURL + '/sub-category-register',
+        data: {mainCategoryId, subCategoryName },
+        method: 'post',
+        onStart: addSubCategoryRequested.type,
+        onSuccess: addSubCategoryRequestSucceeded.type,
+        onError: addSubCategoryRequestFailed.type
+    }))
+}
+
 

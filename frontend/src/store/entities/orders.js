@@ -17,18 +17,31 @@ const slice = createSlice({
         //Events => EventHandlers
         ordersCreateRequested(orders, action){
             orders.loading = true;
+            orders.orderPlaced = false;
         },
 
         ordersCreateRequestFailed(orders, action){
             orders.loading = false;
         },
 
+        ordersCreateRequestSucceeded(orders, action) {
+            orders.loading = false;
+            orders.orderPlaced = true;
+
+        },
         // payload: [message: , data: ]
         ordersReceived(orders, action){
             orders.list = action.payload.data;
             orders.loading = false;
             orders.lastFetch = Date.now();
         }, 
+        orderStatusUpdated(orders, action){
+            const { orderId,orderStatusId  } = action.payload.data;
+            console.log(action.payload);
+            const index = orders.list.findIndex(o => o.orderId === orderId );
+            console.log(orders.list[index]);
+            orders.list[index].orderStatusId = orderStatusId;
+        }
     }
 });
 
@@ -40,7 +53,10 @@ export default slice.reducer;
 export const { 
     ordersCreateRequested, 
     ordersReceived, 
-    ordersCreateRequestFailed } = slice.actions;
+    ordersCreateRequestFailed,
+    orderStatusUpdated,
+    ordersCreateRequestSucceeded
+} = slice.actions;
 
 const ordersURL = "order";
 const refreshTime = configData.REFRESH_TIME;
@@ -70,6 +86,11 @@ export const getAllOrders = createSelector(
     
 );
 
+export const getOrderPlacedStatus = createSelector(
+    state => state.entities.orders,
+    orders => orders.orderPlaced
+);
+
 export const getOrderById = orderId =>
     createSelector(
         state => state.entities.orders.list,
@@ -80,11 +101,30 @@ export const getOrderById = orderId =>
         }
     );
 
-export const getOrderByCustomerId = customerId =>
-    createSelector(
-        state => state.entities.orders.list,
-        orders => {
-            const h = orders.filter(o=> o.customerId === customerId);
-            return h;
-        }
-    );
+export const getOrderByCustomerId = customerId =>createSelector(
+        state => state.entities.orders,
+        orders => orders.list.filter(o => o.customerId === customerId)
+);
+
+export const placeOrder = (order) => (dispatch)=>{
+        return dispatch(
+            apiCallBegan({
+                url: ordersURL + '/placeOrder', 
+                method: "post",
+                data: order,
+                onStart: ordersCreateRequested.type,
+                onSuccess: ordersCreateRequestSucceeded.type,
+                onError: ordersCreateRequestFailed.type
+            })
+        );
+    }
+
+
+export const updateOrderStatus = (orderId,orderStatusId) =>{
+        return apiCallBegan({
+            url: `${ordersURL}/update-order-status/${orderId}`,
+            method: "put",
+            data: {orderId,orderStatusId},
+            onSuccess: orderStatusUpdated.type,
+        });
+}

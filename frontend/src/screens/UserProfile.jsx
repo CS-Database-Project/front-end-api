@@ -12,8 +12,8 @@ function UserProfile(props) {
     const orderData = useSelector(getOrderByCustomerId(userData.customerId));
 
     useEffect(() => {
-        console.log("Loading")
         dispatch(loadOrders());
+        console.log(orderData);
     });
 
     return (

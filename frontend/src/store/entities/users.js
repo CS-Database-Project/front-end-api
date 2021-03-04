@@ -67,6 +67,13 @@ const slice = createSlice({
             const { userId } = action.payload.data;
             const index = users.list.findIndex(u => u.userId === userId );
             users.list[index].activeStatus = true;
+        },
+
+        userMadeAdmin(users, action){
+            console.log(action.payload);
+            const { userId } = action.payload.data;
+            const index = users.list.findIndex(u => u.userId === userId);
+            users.list[index].usertype = "Administrator";
         }
     }
 });
@@ -86,7 +93,8 @@ export const {
     usersRegisterRequestFailed,
     usersRegisterRequestSucceeded,
     usersActivated, 
-    usersDeactivated } = slice.actions;
+    usersDeactivated,
+    userMadeAdmin } = slice.actions;
 
 const usersURL = "user";
 const refreshTime = configData.REFRESH_TIME;
@@ -116,7 +124,7 @@ export const getAllUsers = createSelector(
 export const registerUser = (user) => (dispatch) => {
     return dispatch(
         apiCallBegan({
-            url: `${usersURL}/user-register`,
+            url: `${usersURL}/register`,
             method: "post",
             data: user,
             onStart: usersRegisterRequested,
@@ -137,11 +145,20 @@ export const deactivateUser = (userId) =>{
 }
 
 export const activateUser = (userId) =>{
-return apiCallBegan({
-    url: `${usersURL}/change-account-status`,
-    method: "put",
-    data: {userId, activeStatus: true},
-    onSuccess: usersActivated.type,
-});
+    return apiCallBegan({
+        url: `${usersURL}/change-account-status`,
+        method: "put",
+        data: {userId, activeStatus: true},
+        onSuccess: usersActivated.type,
+    });
+}
+
+export const makeUserAdmin = (userId) => {
+    return apiCallBegan({
+        url: `${usersURL}/make-admin`,
+        method: "put",
+        data: { userId },
+        onSuccess: userMadeAdmin.type,
+    });
 }
 

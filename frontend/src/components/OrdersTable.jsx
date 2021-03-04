@@ -1,7 +1,9 @@
 import React from 'react';
-import {Table} from 'react-bootstrap';
+import {Table,Button} from 'react-bootstrap';
 
-function OrdersTable({orderData, heading = null}) {
+import {withRouter } from 'react-router-dom';
+
+function OrdersTable({orderData, heading = null,history}) {
 
     return (
       <div>
@@ -15,6 +17,7 @@ function OrdersTable({orderData, heading = null}) {
                 <th>DELIVERY METHOD</th>
                 <th>ORDER STATUS</th>
                 <th>COMMENTS</th>
+                <th></th>
             
               </tr>
             </thead>
@@ -26,8 +29,9 @@ function OrdersTable({orderData, heading = null}) {
                 <td width="40%">{`${o.orderDate}`}</td>
                 <td width="25%">{`${o.dispatchedDate}`}</td>
                 <td width="10%">{`${o.deliveryMethod}`}</td>
-                <td width="10%">{`${o.orderStatusId}`}</td>
+                <td width="5%">{`${o.status}`}</td>
                 <td width="5%">{`${o.comments}`}</td>
+                <td width="5%"><Button onClick={()=>{history.push({pathname:`/order-details/${o.orderId}`,state:o.orderId})}}>Details</Button></td>
               </tr>
             );
           })}
@@ -35,4 +39,4 @@ function OrdersTable({orderData, heading = null}) {
           </Table>
         </div>
     );
-}export default OrdersTable;
+}export default withRouter(OrdersTable);

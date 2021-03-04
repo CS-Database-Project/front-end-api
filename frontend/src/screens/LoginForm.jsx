@@ -61,8 +61,10 @@ class LoginForm extends CustomForm {
                     dirty,
                     errors
                 }) => (
+
                 <Form noValidate onSubmit={handleSubmit} className="mx-3">
                     <h5 className = 'heading'>Login Account</h5>
+
                     {this.props.auth.logging && <div className = 'login-spinner' ><Spinner animation="border"  variant="primary" /></div>}
                     {this.renderFormInput(
                         {   controlId: 'validationFormik01', 
@@ -94,6 +96,7 @@ class LoginForm extends CustomForm {
                     }
                         
                     <Button type='submit' className="login-btn">
+
                         Login
                     </Button>
 
@@ -116,6 +119,16 @@ class LoginForm extends CustomForm {
                     </div>
                         
                 </Form>
+                </Col>
+                <Col md={4}></Col>
+                <Col md={3} >
+                    <div >
+                        <LinkContainer className='my-5 mx-5' to = '/user-login'>
+                            <Button type="button">USER LOGIN</Button>
+                        </LinkContainer>
+                    </div>         
+                </Col>
+                </Row>
                 )}
             </Formik></Col></Row>
             

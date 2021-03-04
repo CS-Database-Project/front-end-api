@@ -31,7 +31,7 @@ function Cart({history}) {
                         <tbody>
                             {items.map(i => 
                                 <tr>
-                                    <td><Image className = 'cart-image' src={`/images/${i.productId}.jpg`}/></td>
+                                    <td><Image className = 'cart-image' src={`http://localhost:8000/files/${i.productId}.jpg`}/></td>
                                     <td>{i.title}</td>
                                     <td>{i.variantName}</td>
                                     <td>{i.unitPrice}</td>
