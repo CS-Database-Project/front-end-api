@@ -94,7 +94,7 @@ const PlaceOrderScreen= ({history})=>{
                         <Card style={{width:'100%'}}>
                         <Col style={{display:'flex'}}>
                             {/*<Link to = {`/products/${i.productId}`}>*/}
-                                <Card.Img src={`/images/${i.productId}.jpg`}  variant = 'top' style={{height:'7rem', width:'8rem', marginTop:'0.5rem'}}/>
+                                <Card.Img src={`http://localhost:8000/files/${i.productId}.jpg`}  variant = 'top' style={{height:'7rem', width:'8rem', marginTop:'0.5rem'}}/>
                             {/*</Link>*/}
     
                             <Card.Body style={{marginLeft:'20px'}}>

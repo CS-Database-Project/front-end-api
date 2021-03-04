@@ -81,7 +81,7 @@ const PlaceOrderScreen= ({match})=>{
                     <Row className='my-2 mx-2'>
                         <Card style={{width:'100%'}}>
                         <Col style={{display:'flex'}}>                           
-                            <Card.Img src={`/images/${i.productId}.jpg`}  variant = 'top' style={{height:'7rem', width:'8rem', marginTop:'0.5rem'}}/>                            
+                            <Card.Img src={`http://localhost:8000/files/${i.productId}.jpg`}  variant = 'top' style={{height:'7rem', width:'8rem', marginTop:'0.5rem'}}/>                            
                             <Card.Body style={{marginLeft:'20px'}}> 
                                 <Card.Text as='div' style={{fontSize:'17px', fontWeight:'500'}}><strong>{i.product}</strong></Card.Text>                              
                                 <Card.Text as='div' style={{fontSize:'17px', fontWeight:'500'}}>Variant: {i.variantName}</Card.Text>                                   
