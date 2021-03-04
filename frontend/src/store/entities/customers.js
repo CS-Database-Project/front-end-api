@@ -55,14 +55,29 @@ const slice = createSlice({
             const { customerId } = action.payload.data;
             const index = customers.list.findIndex(c => c.customerId === customerId );
             customers.list[index].activeStatus = true;
+        },
+
+        customersUpdated(customers, action){
+            const { customerId } = action.payload.data;
+            const index = customers.list.findIndex(c => c.customerId === customerId);
+            customers.list[index] = action.payload.data;
+            
+        },
+
+        customerUsernameUpdated(customers,action){
+            const { username} = action.payload.data;
+            const index = customers.list.findIndex(c => c.username=== username);
+            customers.list.splice(index, 1);
+            customers.list.push(action.payload);
+        },
+
+        customerPasswordUpdated(customers,action){
+            const { customerId} = action.payload.data;
+            console.log(action.payload.data);
+            const index = customers.list.findIndex(c => c.customerId=== customerId);
+            customers.list.splice(index, 1);
+            customers.list.push(action.payload);
         }
-
-
-        //customerUpdated(customers, action){
-            // const index = customers.list.findIndex(p => p.customerId === action.payload.customerId);
-            // customers.list.splice(index, 1);
-            // customers.list.push(action.payload);
-        // },
 
     }
 });
@@ -76,12 +91,14 @@ export const {
     customersReceived,
     customerCreated,
     customerActivated, 
-    customerDeactivated, 
-    customerUpdated,
+    customerDeactivated,
+    customersUpdated,
     customersRequestFailed,
     customersRegisterRequested,
     customersRegisterRequestFailed,
-    customersRegisterRequestSucceeded} = slice.actions;
+    customersRegisterRequestSucceeded,
+    customerUsernameUpdated ,
+    customerPasswordUpdated   } = slice.actions;
 
 const customersURL = "customer";
 const refreshTime = configData.REFRESH_TIME;
@@ -138,4 +155,37 @@ export const activateCustomer = (customerId) =>{
         data: {customerId, activeStatus: true},
         onSuccess: customerActivated.type,
     });
+}
+
+export const updateCustomerDetails = (customer) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${customersURL}/update-details`,
+            method: "put",
+            data: customer,
+            onSuccess: customersUpdated.type,
+        })
+    );
+}
+
+export const updateCustomerUsername = (username) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${customersURL}/change-username`,
+            method: "put",
+            data: username,
+            onSuccess: customerUsernameUpdated.type,
+        })
+    );
+}
+
+export const updateCustomerPassword = (customerId) => (dispatch) => {
+    return dispatch(
+        apiCallBegan({
+            url: `${customersURL}/change-password`,
+            method: "put",
+            data: customerId,
+            onSuccess: customerPasswordUpdated.type,
+        })
+    );
 }

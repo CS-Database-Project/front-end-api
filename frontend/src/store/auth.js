@@ -52,6 +52,10 @@ const slice = createSlice({
 
         paymentMethodSelected(user, action){
             user.paymentMethod=action.payload;
+        },
+
+        authDataUpdated(user, action){
+            user.data = {...user.data, ...action.payload};
         }
     }
 });
@@ -70,7 +74,8 @@ export const {
     checkOutStarted,
     buyMethodSelected,
     shippingAddressSelected,
-    paymentMethodSelected
+    paymentMethodSelected,
+    authDataUpdated
     } = slice.actions;
 
 
@@ -122,3 +127,6 @@ export const getCheckoutStatus = createSelector(
     state => state.auth,
     auth => auth.checkOutStarted
 );
+
+export const updateAuthData = (data) => authDataUpdated(data);
+
