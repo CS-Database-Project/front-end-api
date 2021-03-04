@@ -27,6 +27,16 @@ import OrdersScreen from './screens/OrdersScreen';
 import EditProfile from './screens/EditProfile';
 import ResetUsername from './screens/ResetUsername';
 import ResetPassword from './screens/ResetPassword';
+import CategoriesScreen from './screens/CategoriesScreen';
+import AddMainCategoryForm from './screens/AddMainCategoryForm';
+import AddSubCategoryForm from './screens/AddSubCategoryForm';
+import DeletedProductsScreen from './screens/DeletedProductsScreen';
+import AddCustomAttributeForm from './screens/AddCustomAttributeForm';
+import ManageStock from './screens/ManageStock';
+import OrderDetailsScreen from './screens/OrderDetailsScreen';
+import ProductRegisterForm from './screens/ProductRegisterForm';
+
+
 
 const App = () => {
 
@@ -48,6 +58,7 @@ const App = () => {
               pauseOnHover            
             ></ToastContainer>
             <Switch>
+            <Route path='/order-details/:orderId' component={OrderDetailsScreen} />
               <Route path='/user-register' component={UserRegisterForm} />
               <Route path='/buyMethod' component={BuyMethodScreen} />
               <Route path='/shipping' component={ShippingScreen} />
@@ -64,6 +75,14 @@ const App = () => {
               <Route path='/products/:productId' component = {ProductScreen} />
               <Route path='/customers' component = {ViewCustomers} />
               <Route path='/users' component = {ViewUsers} />
+              <Route path='/product-register' component={ProductRegisterForm} />
+              <Route path='/products' component={ProductsScreen} />
+              <Route path='/manage-stock' component={ManageStock} />
+              <Route path='/deleted-products' component={DeletedProductsScreen} />
+              <Route path='/categories' component={CategoriesScreen} />
+              <Route path='/add-main-category' component={AddMainCategoryForm} />
+              <Route path='/add-sub-category' component={AddSubCategoryForm} />
+              <Route path='/add-custom-attribute' component={AddCustomAttributeForm} />
               <Route path='/products' component={ProductsScreen} />
               <Route path='/orders' component={OrdersScreen} />
               <Route path='/Edit profile' component={EditProfile} />
