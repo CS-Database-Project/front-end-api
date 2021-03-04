@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import {  Formik } from 'formik';
 import { updateCustomerDetails } from './../store/entities/customers';
 import { toastAction } from './../store/toastAction';
-import { getAuthDetails } from './../store/auth';
+import { updateAuthData } from './../store/auth';
 
 class EditProfile extends CustomForm {
     schema =Yup.object().shape({
@@ -54,7 +54,7 @@ class EditProfile extends CustomForm {
 
     submitForm = (values) => {
         this.props.updateCustomerDetails(values);
-        this.props.updateAuthdata() 
+        this.props.updateAuthData(values) 
         console.log(values);
         console.log(this.props.auth.data.customerId)
     }
@@ -219,6 +219,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     updateCustomerDetails: (data) => dispatch(updateCustomerDetails(data)),
-    updateSuccessful: () => dispatch(toastAction({ message: "Profile Updated Successfully", type: 'info' }))
+    updateSuccessful: () => dispatch(toastAction({ message: "Profile Updated Successfully", type: 'info' })),
+    updateAuthData: (data) => dispatch(updateAuthData(data))
 });
 export default connect(mapStateToProps, mapDispatchToProps)(EditProfile);
