@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Form, Button, Col,Row,ListGroup,Image,Card} from 'react-bootstrap'
 import { Link } from 'react-router-dom' 
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import CheckoutSteps from '../components/CheckoutSteps'
 import { getLoggedInStatus, getAuthDetails ,getAllAuthDetails, setCheckOutStarted,buyMethodSelected,shippingAddressSelected,paymentMethodSelected} from '../store/auth';
 import { getItemsInCart } from './../store/cart';
 import { toastAction } from './../store/toastAction';
-import {placeOrder } from '../store/entities/orders';
+import {placeOrder, getOrderPlacedStatus } from '../store/entities/orders';
 
 const PlaceOrderScreen= ({history})=>{ 
     const dispatch = useDispatch();
@@ -48,6 +48,14 @@ const PlaceOrderScreen= ({history})=>{
     console.log(orderDetails.shipping.city);
     //const {customerDetails.customerId, }
     const loggedIn = useSelector(getLoggedInStatus);
+    const orderPlaced = useSelector(getOrderPlacedStatus);
+
+    useEffect(() => {
+        if(orderPlaced){
+            dispatch(toastAction({ message: "Order Placed Success...", type: 'info' }));
+            window.location ='/profile';
+        }
+    });
 
     return(
         

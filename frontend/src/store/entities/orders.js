@@ -17,12 +17,18 @@ const slice = createSlice({
         //Events => EventHandlers
         ordersCreateRequested(orders, action){
             orders.loading = true;
+            orders.orderPlaced = false;
         },
 
         ordersCreateRequestFailed(orders, action){
             orders.loading = false;
         },
 
+        ordersCreateRequestSucceeded(orders, action) {
+            orders.loading = false;
+            orders.orderPlaced = true;
+
+        },
         // payload: [message: , data: ]
         ordersReceived(orders, action){
             orders.list = action.payload.data;
@@ -48,7 +54,9 @@ export const {
     ordersCreateRequested, 
     ordersReceived, 
     ordersCreateRequestFailed,
-    orderStatusUpdated } = slice.actions;
+    orderStatusUpdated,
+    ordersCreateRequestSucceeded
+} = slice.actions;
 
 const ordersURL = "order";
 const refreshTime = configData.REFRESH_TIME;
@@ -78,6 +86,11 @@ export const getAllOrders = createSelector(
     
 );
 
+export const getOrderPlacedStatus = createSelector(
+    state => state.entities.orders,
+    orders => orders.orderPlaced
+);
+
 export const getOrderById = orderId =>
     createSelector(
         state => state.entities.orders.list,
@@ -88,14 +101,10 @@ export const getOrderById = orderId =>
         }
     );
 
-export const getOrderByCustomerId = customerId =>
-    createSelector(
-        state => state.entities.orders.list,
-        orders => {
-            const h = orders.filter(o=> o.customerId === customerId);
-            return h;
-        }
-    );
+export const getOrderByCustomerId = customerId =>createSelector(
+        state => state.entities.orders,
+        orders => orders.list.filter(o => o.customerId === customerId)
+);
 
 export const placeOrder = (order) => (dispatch)=>{
         return dispatch(
@@ -104,7 +113,7 @@ export const placeOrder = (order) => (dispatch)=>{
                 method: "post",
                 data: order,
                 onStart: ordersCreateRequested.type,
-                onSuccess: ordersReceived.type,
+                onSuccess: ordersCreateRequestSucceeded.type,
                 onError: ordersCreateRequestFailed.type
             })
         );

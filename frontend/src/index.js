@@ -16,7 +16,8 @@ store.subscribe(() => {
     entities: {
       products: store.getState().entities.products,
       categories: store.getState().entities.categories,
-      customers: store.getState().entities.customers
+      customers: store.getState().entities.customers,
+      orders: store.getState().entities.orders
     }
   });
 });
